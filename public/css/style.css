@@ -1,0 +1,16 @@
+.first-card {
+    background-color: #8240aa !important;
+}
+.second-card {
+    background-color: #6a1b9a !important;
+}
+.third-card {
+    background-color: #55107f !important;
+}
+.cards {
+    background-color: #8e4fb5 !important;
+}
+
+.theme--dark.v-application {
+    background: #212121 !important;
+}

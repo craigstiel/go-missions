@@ -5,22 +5,55 @@
  */
 
 require('./bootstrap');
+import '@mdi/font/css/materialdesignicons.css'
+import 'material-design-icons-iconfont/dist/material-design-icons.css'
+import '@fortawesome/fontawesome-free/css/all.css'
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+
+const opts = {
+    theme: {
+        dark: true
+    },
+    icons: {
+        iconfont: 'mdiSvg' || 'mdi' || 'md' || 'fa' || 'fa4'
+    },
+}
 
 Vue.use(VueRouter)
+Vue.use(Vuetify,opts)
 
-import Task from './comsonents/Task';
-import AddTask from './comsonents/AddTask';
-import AllTasks from './comsonents/AllTasks';
+import App from './components/App';
+import Home from './components/Home';
+import AllTasks from './components/AllTasks';
+import Task from './components/Task';
+import AddTask from './components/AddTask';
 
 const router = new VueRouter({
-    mode: 'history',
     routes: [
         {
             path: '/',
-            name: 'tasks',
-            component: AllTasks,
+            name: 'home',
+            component: Home,
+            children: [
+                {
+                    path: '/tasks',
+                    name: 'tasks',
+                    component: AllTasks,
+                },
+                {
+                    path: '/show',
+                    name: 'show_task',
+                    component: Task,
+                },
+                {
+                    path: '/add',
+                    name: 'add_task',
+                    component: AddTask,
+                },
+            ]
         },
     ],
 });
@@ -38,6 +71,7 @@ const router = new VueRouter({
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+Vue.component('v-image', require('./components/useful/ImageUploader.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -45,8 +79,8 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-    components: { App },
+new Vue({
+    vuetify: new Vuetify(opts),
     router,
-});
+    render: h => h(App)
+}).$mount("#app");
