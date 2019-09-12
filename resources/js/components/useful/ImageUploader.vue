@@ -23,10 +23,6 @@
         <div class="images-preview" v-show="images.length">
             <div class="img-wrapper" v-for="(image, index) in images" :key="index">
                 <img v-model="images" :src="image" :alt="`Image Uplaoder ${index}`">
-                <div class="details">
-                    <span class="name" v-text="files[index].name"></span>
-                    <span class="size" v-text="getFileSize(files[index].size)"></span>
-                </div>
             </div>
         </div>
     </div>
@@ -195,22 +191,7 @@
                 box-shadow: 5px 5px 20px #3e3737;
 
                 img {
-                    max-height: 105px;
-                }
-            }
-
-            .details {
-                font-size: 12px;
-                background: #6a1b9a;
-                color: #000;
-                display: flex;
-                flex-direction: column;
-                align-items: self-start;
-                padding: 3px 6px;
-
-                .name {
-                    overflow: hidden;
-                    height: 18px;
+                    max-height: 150px;
                 }
             }
         }

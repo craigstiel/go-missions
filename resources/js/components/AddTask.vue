@@ -9,12 +9,24 @@
                 <v-select :items="items" label="Priority" v-model="item" outlined></v-select>
             </v-col>
         </v-row>
-        <v-col cols="12" md="7">
-            <v-textarea outlined name="input-7-4" label="Description" :rules="descriptionRules" v-model="description"></v-textarea>
-        </v-col>
-        <v-col cols="12" md="7">
-            <v-image v-model="value" style="margin-top: -20px"></v-image>
-        </v-col>
+        <v-row>
+            <v-col cols="12" md="7" key=1>
+                <v-textarea style="margin-left: 15px" outlined name="input-7-4" label="Description" :rules="descriptionRules" v-model="description"></v-textarea>
+            </v-col>
+            <v-col cols="12" md="1" key=2></v-col>
+            <v-col cols="12" md="3" key=3 style="margin-top: -10px">
+                <v-select :items="types" label="Type" v-model="type" outlined></v-select>
+            </v-col>
+        </v-row>
+        <v-row>
+            <v-col cols="12" md="7" key=1>
+                <v-image v-model="value" style="margin-top: -20px"></v-image>
+            </v-col>
+            <v-col cols="12" md="1" key=2></v-col>
+            <v-col cols="12" md="3" key=3 style="margin-top: -80px">
+                <v-select :items="masters" label="Master" v-model="master" outlined></v-select>
+            </v-col>
+        </v-row>
         <v-card-actions>
             <v-btn text>Save</v-btn>
         </v-card-actions>
@@ -34,7 +46,11 @@
             title: '',
             description: '',
             items: ['low', 'medium', 'high'],
+            types: [],
+            masters: [],
+            type: null,
             item: null,
+            master: null,
             value: [],
         }),
         methods: {},
