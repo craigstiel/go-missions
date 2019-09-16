@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Tymon\JWTAuth\Facades\JWTAuth;
+use Illuminate\Support\Facades\Auth;
 use App\User;
 
 class AuthController extends Controller
@@ -16,6 +19,16 @@ class AuthController extends Controller
         $user->is_master = $request->is_master;
         $user->password = bcrypt($request->password);
         $user->save();
+
+        if($request->is_master === true) {
+            DB::table('user_position')
+                ->insert([
+                    'user_id' => $user->id,
+                    'position' => 'master',
+                    'is_active' => false,
+                    'created_at' => DB::raw('current_timestamp')
+                ]);
+        }
         $user->sendEmailVerificationNotification();
         return response([
             'status' => 'success',
@@ -26,7 +39,7 @@ class AuthController extends Controller
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        if ( ! $token = JWTAuth::attempt($credentials)) {
+        if (!$token = JWTAuth::attempt($credentials)) {
             return response([
                 'status' => 'error',
                 'error' => 'invalid.credentials',
@@ -41,7 +54,7 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find(Auth::id());
         return response([
             'status' => 'success',
             'data' => $user

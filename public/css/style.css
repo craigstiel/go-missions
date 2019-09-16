@@ -14,3 +14,16 @@
 .theme--dark.v-application {
     background: #212121 !important;
 }
+
+.delete-button {
+    position: absolute !important;
+    right: 0 !important;
+    top: 0 !important;
+}
+
+.add-button {
+    position: absolute !important;
+    right: 0 !important;
+    margin-top: 30px !important;
+}
+

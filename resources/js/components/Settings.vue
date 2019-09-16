@@ -1,12 +1,246 @@
 <template>
-    <v-card width="1000" height="400" class="mx-auto mycontent-left">
-        <v-card-title>I'm a title</v-card-title>
-        <v-card-text>I'm card text</v-card-text>
-        <v-card-actions>
-            <v-btn text>Click</v-btn>
-        </v-card-actions>
+    <v-card width="1000" class="mx-auto mycontent-left" style="margin-top: 30px">
+        <div>
+            <v-toolbar color="purple darken-3" dark flat>
+                <template>
+                    <v-tabs v-model="tab" background-color="transparent">
+                        <v-tabs-slider color="blue lighten-1"></v-tabs-slider>
+                        <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
+                    </v-tabs>
+                </template>
+            </v-toolbar>
+            <v-tabs-items v-model="tab">
+                <v-tab-item>
+                    <v-card flat>
+                        <v-card-text>
+                            <v-row>
+                                <v-col cols="12" md="3" key=1>
+                                    <v-checkbox v-model="mult" label="Tasks only for admin" color="error" value="error" hide-details></v-checkbox>
+                                </v-col>
+                                <v-col cols="12" md="2" key=2>
+                                    <div class="my-2 mt-5"><v-btn @click="approve_multiple()" small color="error" dark>Approve</v-btn></div>
+                                </v-col>
+                            </v-row>
+                            <v-card v-if="multiple && dicts.new_masters[0]">
+                                <v-card-text style="margin-top: 20px; min-height: 50px">
+                                    <v-progress-circular v-if="new_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                                    <div v-if="!new_progress">
+                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">New masters</div>
+                                        <v-row>
+                                        <v-card max-width="250" min-height="70" class="second-card col-md-3 ml-3" :key="master.id" v-for="master in dicts.new_masters">
+                                            <v-btn class="delete-button" @click="delete_new_master(master.id)" color="error" fab x-small dark><i class="fas fa-times"></i></v-btn>
+                                            <v-btn class="add-button" @click="approve_master(master.id)" color="success" fab x-small dark><i class="fas fa-check"></i></v-btn>
+                                            <v-card-text style="font-size: 16px;">{{ master.name }}</v-card-text>
+                                        </v-card>
+                                        </v-row>
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                            <v-card v-if="multiple && dicts.active_masters[0]">
+                                <v-card-text style="margin-top: 20px; min-height: 50px">
+                                    <v-progress-circular v-if="active_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                                    <div v-if="!active_progress">
+                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">Active masters</div>
+                                        <v-row>
+                                        <v-card max-width="230" min-height="70" class="second-card col-md-3 ml-3" :key="master.id" v-for="master in dicts.active_masters">
+                                            <v-btn class="delete-button" @click="delete_active_master(master.id)" color="error" fab x-small dark><i class="fas fa-times"></i></v-btn>
+                                            <v-btn class="add-button" @click="disapprove_master(master.id)" color="warning" fab x-small dark><i class="fas fa-minus"></i></v-btn>
+                                            <v-card-text style="font-size: 16px;">{{ master.name }}</v-card-text>
+                                        </v-card>
+                                        </v-row>
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                            <v-card v-if="!multiple">
+                                <v-card-text style="margin-top: 20px; min-height: 50px">
+                                    <v-progress-circular v-if="new_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                                    <div v-if="!new_progress">
+                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">Masters</div>
+                                        <v-row>
+                                            <v-card max-width="250" min-height="70" class="second-card col-md-3 ml-3" :key="master.id" v-for="master in dicts.new_masters">
+                                                <v-card-text style="font-size: 16px;">{{ master.name }}</v-card-text>
+                                            </v-card>
+                                        </v-row>
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+                <v-tab-item>
+                    <v-card flat>
+                        <v-card-text>
+                            <v-dialog v-model="dialog" persistent max-width="600px">
+                            <template v-slot:activator="{ on }">
+                                <div class="my-2"><v-btn color="error" v-on="on" dark large>Add type</v-btn></div>
+                            </template>
+                                <v-form ref="form" lazy-validation>
+                            <v-card>
+                                <v-card-title>
+                                    <span class="headline">Add type</span>
+                                </v-card-title>
+                                <v-card-text>
+                                    <v-container>
+                                        <v-row>
+                                            <v-col cols="12" sm="6" md="6"><v-text-field label="Type name*" required v-model="type.name"></v-text-field></v-col>
+                                            <v-col cols="12" sm="6" md="6"><v-text-field label="Type system name*" hint="In English, please." v-model="type.system_name" required></v-text-field></v-col>
+                                        </v-row>
+                                        <div class="d-flex">
+                                            <v-color-picker v-model="color" class="mx-auto"></v-color-picker>
+                                        </div>
+                                    </v-container>
+                                </v-card-text>
+                                <v-card-actions>
+                                    <div class="flex-grow-1"></div>
+                                    <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+                                    <v-btn color="blue darken-1" text @click="add_type()">Save</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                                </v-form>
+                            </v-dialog>
+                            <v-card>
+                                <v-card-text style="min-height: 50px">
+<!--                                    <v-progress-circular v-if="active_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>-->
+                                    <div>
+                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">Types</div>
+                                    </div>
+                                </v-card-text>
+                            </v-card>
+                        </v-card-text>
+                    </v-card>
+                </v-tab-item>
+            </v-tabs-items>
+        </div>
     </v-card>
 </template>
+
+Playground
+<script>
+    export default {
+        mounted: function () {
+            this.get_active_masters();
+            this.get_new_masters();
+            this.get_types();
+            this.get_multiple();
+        },
+        data() {
+            return {
+                tab: null,
+                multiple: null,
+                mult: null,
+                color: '#8E00FF',
+                new_progress: true,
+                active_progress: true,
+                dialog: false,
+                type: null,
+                dicts: {
+                    active_masters: [],
+                    new_masters: [],
+                    types: [],
+                },
+                items: [
+                    'masters', 'types',
+                ],
+            }
+        },
+        methods: {
+            get_active_masters: function() {
+                let _this = this;
+                axios.get('/dict/masters/get')
+                    .then(function (response) {
+                        _this.dicts.active_masters = response.data.masters;
+                        _this.active_progress = false;
+                    });
+            },
+            get_new_masters: function() {
+                let _this = this;
+                axios.get('/dict/new_masters/get')
+                    .then(function (response) {
+                        _this.dicts.new_masters = response.data.new_masters;
+                        _this.new_progress = false;
+                    });
+            },
+            get_types: function() {
+                let _this = this;
+                axios.get('/dict/task_types/get')
+                    .then(function (response) {
+                        _this.dicts.types = response.data.types;
+                    });
+            },
+            get_multiple: function() {
+                let _this = this;
+                axios.get('/dict/multiple/get')
+                    .then(function (response) {
+                        _this.multiple = response.data.multiple;
+                        _this.mult = _this.multiple === 0 ? 'error' : null;
+                    });
+            },
+            delete_new_master: function() {
+                let _this = this;
+                this.new_progress = true;
+                axios.delete('/masters/delete/' + id)
+                    .then(function (response) {
+                        _this.get_new_masters();
+                    });
+            },
+            delete_active_master: function(id) {
+                let _this = this;
+                this.active_progress = true;
+                axios.delete('/masters/delete/' + id)
+                    .then(function (response) {
+                        _this.get_active_masters();
+                    });
+            },
+            approve_master: function(id) {
+                let _this = this;
+                this.new_progress = true;
+                this.active_progress = true;
+                axios.put('/masters/approve/' + id)
+                    .then(function (response) {
+                        _this.get_new_masters();
+                        _this.get_active_masters();
+                    });
+            },
+            disapprove_master: function(id) {
+                let _this = this;
+                this.new_progress = true;
+                this.active_progress = true;
+                axios.put('/masters/disapprove/' + id)
+                    .then(function (response) {
+                        _this.get_new_masters();
+                        _this.get_active_masters();
+                    });
+            },
+            approve_multiple: function () {
+                let _this = this;
+                let data = {
+                    multiple: this.mult === 'error' ? false : true,
+                };
+                axios.post('/multiple/approve', data)
+                    .then(function () {
+                        _this.get_new_masters();
+                        _this.get_multiple();
+                        if(_this.multiple === true)
+                            _this.get_active_masters();
+                    });
+            },
+            add_type: function () {
+                let _this = this;
+                if (this.$refs.form.validate()) {
+                    let data = {
+                        name: _this.type.name,
+                        system_name: _this.type.system_name,
+                        color: _this.color,
+                    };
+                    axios.post('/types/add', data)
+                        .then(function () {
+                            _this.get_types();
+                        });
+                }
+            }
+        }
+    }
+</script>
 
 <style>
     .mycontent-left {

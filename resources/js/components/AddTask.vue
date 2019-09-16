@@ -6,7 +6,7 @@
             </v-col>
             <v-col cols="12" md="1" key=2></v-col>
             <v-col cols="12" md="3" key=3>
-                <v-select :items="items" label="Priority" v-model="item" outlined></v-select>
+                <v-select :items="dicts.items" label="Priority" v-model="item" outlined></v-select>
             </v-col>
         </v-row>
         <v-row>
@@ -15,16 +15,16 @@
             </v-col>
             <v-col cols="12" md="1" key=2></v-col>
             <v-col cols="12" md="3" key=3 style="margin-top: -10px">
-                <v-select :items="types" label="Type" v-model="type" outlined></v-select>
+                <v-select :items="dicts.types" item-text="name" label="Type" v-model="type" outlined></v-select>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12" md="7" key=1>
-                <v-image v-model="value" style="margin-top: -20px"></v-image>
+                <v-image v-model="value" style="margin-top: -20px; margin-left: 15px"></v-image>
             </v-col>
             <v-col cols="12" md="1" key=2></v-col>
             <v-col cols="12" md="3" key=3 style="margin-top: -80px">
-                <v-select :items="masters" label="Master" v-model="master" outlined></v-select>
+                <v-select :items="dicts.masters" item-text="name" label="Master" v-model="master" outlined></v-select>
             </v-col>
         </v-row>
         <v-card-actions>
@@ -35,6 +35,17 @@
 
 <script>
     export default {
+        mounted: function () {
+            let _this = this;
+            axios.get('/dict/masters/get')
+                .then(function (response) {
+                    _this.dicts.masters = response.data.masters;
+                });
+            axios.get('/dict/task_types/get')
+                .then(function (response) {
+                    _this.dicts.types = response.data.types;
+                });
+        },
         data: () => ({
             titleRules: [
                 v => !!v || 'Title is required',
@@ -45,9 +56,11 @@
             ],
             title: '',
             description: '',
-            items: ['low', 'medium', 'high'],
-            types: [],
-            masters: [],
+            dicts: {
+                masters: [],
+                items: ['low', 'medium', 'high'],
+                types: [],
+            },
             type: null,
             item: null,
             master: null,

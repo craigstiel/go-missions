@@ -34,10 +34,10 @@ import AllTasks from './components/AllTasks';
 import Task from './components/Task';
 import AddTask from './components/AddTask';
 import Settings from './components/Settings';
-import Register from './components/Register';
-import Login from './components/Login';
+import Register from './components/auth/Register';
+import Login from './components/auth/Login';
 
-axios.defaults.baseURL = 'http://go-mission/';
+axios.defaults.baseURL = 'http://go-missions/';
 
 const router = new VueRouter({
     routes: [

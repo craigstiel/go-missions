@@ -22,8 +22,9 @@
                               counter @click:append="show1 = !show1" ></v-text-field>
             </v-col>
             <v-col cols="12" md="12">
-                <v-btn :disabled="!valid" color="success" class="mr-4" @click="register">Validate</v-btn>
+                <v-btn :disabled="!valid" color="success" class="mr-4" @click="register">Sign up</v-btn>
             </v-col>
+            <v-card-text>To enter your account you should verify email.</v-card-text>
         </v-form>
     </v-card>
 </template>
@@ -41,7 +42,7 @@
                 master: false,
                 show1: false,
                 show2: true,
-                height: 550,
+                height: 570,
                 nameRules: [
                     v => !!v || 'Name is required',
                     v => (v && v.length <= 255) || 'Name must be less than 255 characters',
@@ -64,9 +65,9 @@
         watch: {
             master(){
                 if(this.master === false)
-                    this.height = 550;
+                    this.height = 570;
                 else
-                    this.height = 480;
+                    this.height = 500;
             },
         },
         methods: {
@@ -82,7 +83,7 @@
                             telegram: app.telegram,
                             is_master: app.master,
                         },
-                        redirect: null
+                        redirect: '/login'
                     });
                 }
             }
