@@ -3332,6 +3332,20 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     var _this = this;
@@ -3340,15 +3354,16 @@ __webpack_require__.r(__webpack_exports__);
       _this.dicts.masters = response.data.masters;
     });
     axios.get('/dict/task_types/get').then(function (response) {
-      _this.dicts.types = response.data.types;
+      _this.dicts.types = response.data.task_types;
+    });
+    axios.get('/dict/multiple/get').then(function (response) {
+      _this.multiple = response.data.multiple;
     });
   },
   data: function data() {
     return {
       titleRules: [function (v) {
         return !!v || 'Title is required';
-      }, function (v) {
-        return v && v.length > 255 || 'Name must be less than 255 characters';
       }],
       descriptionRules: [function (v) {
         return !!v || 'Description is required';
@@ -3363,10 +3378,30 @@ __webpack_require__.r(__webpack_exports__);
       type: null,
       item: null,
       master: null,
+      dialog: false,
+      multiple: true,
       value: []
     };
   },
-  methods: {}
+  methods: {
+    add_task: function add_task() {
+      var _this = this;
+
+      if (this.$refs.form.validate()) {
+        var data = {
+          title: _this.title,
+          description: _this.description,
+          type: _this.type,
+          priority: _this.item,
+          master: _this.master,
+          images: _this.value
+        };
+        axios.post('/task/add', data).then(function () {
+          _this.dialog = true;
+        });
+      }
+    }
+  }
 });
 
 /***/ }),
@@ -3380,7 +3415,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-//
 //
 //
 //
@@ -40536,177 +40570,271 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "v-card",
-    {
-      staticClass: "mx-auto mycontent-left",
-      staticStyle: { "margin-top": "30px" },
-      attrs: { width: "1000" }
-    },
+    "v-form",
+    { ref: "form" },
     [
       _c(
-        "v-row",
+        "v-card",
+        {
+          staticClass: "mx-auto mycontent-left",
+          staticStyle: { "margin-top": "30px" },
+          attrs: { width: "1000" }
+        },
         [
           _c(
-            "v-col",
-            { key: "1", attrs: { cols: "12", md: "7" } },
+            "v-toolbar",
+            { attrs: { color: "purple darken-3", dark: "" } },
             [
-              _c("v-text-field", {
-                staticStyle: { "margin-left": "15px" },
-                attrs: { rules: _vm.titleRules, label: "Title", required: "" },
-                model: {
-                  value: _vm.title,
-                  callback: function($$v) {
-                    _vm.title = $$v
-                  },
-                  expression: "title"
-                }
-              })
+              _c(
+                "v-toolbar-title",
+                {
+                  staticStyle: {
+                    "font-size": "16px",
+                    "font-family": "'Roboto', sans-serif"
+                  }
+                },
+                [_vm._v("ADD TASK")]
+              )
             ],
             1
           ),
           _vm._v(" "),
-          _c("v-col", { key: "2", attrs: { cols: "12", md: "1" } }),
-          _vm._v(" "),
           _c(
-            "v-col",
-            { key: "3", attrs: { cols: "12", md: "3" } },
+            "v-row",
             [
-              _c("v-select", {
-                attrs: {
-                  items: _vm.dicts.items,
-                  label: "Priority",
-                  outlined: ""
+              _c(
+                "v-col",
+                { key: "1", attrs: { cols: "12", md: "7" } },
+                [
+                  _c("v-text-field", {
+                    staticStyle: { "margin-left": "15px" },
+                    attrs: {
+                      rules: _vm.titleRules,
+                      label: "Title",
+                      required: ""
+                    },
+                    model: {
+                      value: _vm.title,
+                      callback: function($$v) {
+                        _vm.title = $$v
+                      },
+                      expression: "title"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-col", { key: "2", attrs: { cols: "12", md: "1" } }),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                {
+                  key: "3",
+                  staticStyle: { "margin-top": "20px" },
+                  attrs: { cols: "12", md: "3" }
                 },
-                model: {
-                  value: _vm.item,
-                  callback: function($$v) {
-                    _vm.item = $$v
-                  },
-                  expression: "item"
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-row",
-        [
-          _c(
-            "v-col",
-            { key: "1", attrs: { cols: "12", md: "7" } },
-            [
-              _c("v-textarea", {
-                staticStyle: { "margin-left": "15px" },
-                attrs: {
-                  outlined: "",
-                  name: "input-7-4",
-                  label: "Description",
-                  rules: _vm.descriptionRules
-                },
-                model: {
-                  value: _vm.description,
-                  callback: function($$v) {
-                    _vm.description = $$v
-                  },
-                  expression: "description"
-                }
-              })
+                [
+                  _c("v-select", {
+                    attrs: {
+                      items: _vm.dicts.items,
+                      label: "Priority",
+                      outlined: ""
+                    },
+                    model: {
+                      value: _vm.item,
+                      callback: function($$v) {
+                        _vm.item = $$v
+                      },
+                      expression: "item"
+                    }
+                  })
+                ],
+                1
+              )
             ],
             1
           ),
           _vm._v(" "),
-          _c("v-col", { key: "2", attrs: { cols: "12", md: "1" } }),
-          _vm._v(" "),
           _c(
-            "v-col",
-            {
-              key: "3",
-              staticStyle: { "margin-top": "-10px" },
-              attrs: { cols: "12", md: "3" }
-            },
+            "v-row",
             [
-              _c("v-select", {
-                attrs: {
-                  items: _vm.dicts.types,
-                  "item-text": "name",
-                  label: "Type",
-                  outlined: ""
+              _c(
+                "v-col",
+                { key: "1", attrs: { cols: "12", md: "7" } },
+                [
+                  _c("v-textarea", {
+                    staticStyle: {
+                      "margin-left": "15px",
+                      "margin-top": "-30px"
+                    },
+                    attrs: {
+                      outlined: "",
+                      name: "input-7-4",
+                      label: "Description",
+                      rules: _vm.descriptionRules
+                    },
+                    model: {
+                      value: _vm.description,
+                      callback: function($$v) {
+                        _vm.description = $$v
+                      },
+                      expression: "description"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-col", { key: "2", attrs: { cols: "12", md: "1" } }),
+              _vm._v(" "),
+              _c(
+                "v-col",
+                {
+                  key: "3",
+                  staticStyle: { "margin-top": "-10px" },
+                  attrs: { cols: "12", md: "3" }
                 },
-                model: {
-                  value: _vm.type,
-                  callback: function($$v) {
-                    _vm.type = $$v
-                  },
-                  expression: "type"
-                }
-              })
-            ],
-            1
-          )
-        ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-row",
-        [
-          _c(
-            "v-col",
-            { key: "1", attrs: { cols: "12", md: "7" } },
-            [
-              _c("v-image", {
-                staticStyle: { "margin-top": "-20px", "margin-left": "15px" },
-                model: {
-                  value: _vm.value,
-                  callback: function($$v) {
-                    _vm.value = $$v
-                  },
-                  expression: "value"
-                }
-              })
+                [
+                  _c("v-select", {
+                    attrs: {
+                      items: _vm.dicts.types,
+                      "item-text": "name",
+                      label: "Type",
+                      outlined: ""
+                    },
+                    model: {
+                      value: _vm.type,
+                      callback: function($$v) {
+                        _vm.type = $$v
+                      },
+                      expression: "type"
+                    }
+                  })
+                ],
+                1
+              )
             ],
             1
           ),
           _vm._v(" "),
-          _c("v-col", { key: "2", attrs: { cols: "12", md: "1" } }),
-          _vm._v(" "),
           _c(
-            "v-col",
-            {
-              key: "3",
-              staticStyle: { "margin-top": "-80px" },
-              attrs: { cols: "12", md: "3" }
-            },
+            "v-row",
             [
-              _c("v-select", {
-                attrs: {
-                  items: _vm.dicts.masters,
-                  "item-text": "name",
-                  label: "Master",
-                  outlined: ""
-                },
-                model: {
-                  value: _vm.master,
-                  callback: function($$v) {
-                    _vm.master = $$v
-                  },
-                  expression: "master"
-                }
-              })
+              _c(
+                "v-col",
+                { key: "1", attrs: { cols: "12", md: "7" } },
+                [
+                  _c("v-image", {
+                    staticStyle: {
+                      "margin-top": "-20px",
+                      "margin-left": "15px"
+                    },
+                    model: {
+                      value: _vm.value,
+                      callback: function($$v) {
+                        _vm.value = $$v
+                      },
+                      expression: "value"
+                    }
+                  })
+                ],
+                1
+              ),
+              _vm._v(" "),
+              _c("v-col", { key: "2", attrs: { cols: "12", md: "1" } }),
+              _vm._v(" "),
+              _vm.multiple
+                ? _c(
+                    "v-col",
+                    {
+                      key: "3",
+                      staticStyle: { "margin-top": "-50px" },
+                      attrs: { cols: "12", md: "3" }
+                    },
+                    [
+                      _c("v-select", {
+                        attrs: {
+                          items: _vm.dicts.masters,
+                          "item-text": "name",
+                          label: "Master",
+                          outlined: ""
+                        },
+                        model: {
+                          value: _vm.master,
+                          callback: function($$v) {
+                            _vm.master = $$v
+                          },
+                          expression: "master"
+                        }
+                      })
+                    ],
+                    1
+                  )
+                : _vm._e()
             ],
             1
-          )
+          ),
+          _vm._v(" "),
+          _c(
+            "v-card-actions",
+            [
+              _c(
+                "v-btn",
+                {
+                  attrs: { text: "" },
+                  on: {
+                    click: function($event) {
+                      return _vm.add_task()
+                    }
+                  }
+                },
+                [_vm._v("Save")]
+              )
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm.dialog === true
+            ? _c(
+                "v-dialog",
+                { attrs: { "max-width": "290" } },
+                [
+                  _c(
+                    "v-card",
+                    [
+                      _c("v-card-title", { staticClass: "headline" }, [
+                        _vm._v("Task was added successfully.")
+                      ]),
+                      _vm._v(" "),
+                      _c(
+                        "v-card-actions",
+                        [
+                          _c("div", { staticClass: "flex-grow-1" }),
+                          _vm._v(" "),
+                          _c(
+                            "v-btn",
+                            {
+                              attrs: { color: "green darken-1", text: "" },
+                              on: {
+                                click: function($event) {
+                                  _vm.dialog = false
+                                }
+                              }
+                            },
+                            [_vm._v("OK")]
+                          )
+                        ],
+                        1
+                      )
+                    ],
+                    1
+                  )
+                ],
+                1
+              )
+            : _vm._e()
         ],
-        1
-      ),
-      _vm._v(" "),
-      _c(
-        "v-card-actions",
-        [_c("v-btn", { attrs: { text: "" } }, [_vm._v("Save")])],
         1
       )
     ],

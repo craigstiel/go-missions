@@ -39,3 +39,6 @@ Route::put('/masters/disapprove/{id}', 'SettingsController@disapprove_master');
 Route::post('/multiple/approve', 'SettingsController@approve_multiple');
 Route::post('/types/add', 'SettingsController@add_type');
 Route::delete('/types/delete/{id}', 'SettingsController@delete_type');
+
+
+Route::post('/task/add', 'TaskController@add_task');

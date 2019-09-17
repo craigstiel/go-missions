@@ -1,17 +1,21 @@
 <template>
+    <v-form ref="form">
     <v-card width="1000" class="mx-auto mycontent-left" style="margin-top: 30px">
+        <v-toolbar color="purple darken-3" dark>
+            <v-toolbar-title style="font-size: 16px; font-family: 'Roboto', sans-serif;">ADD TASK</v-toolbar-title>
+        </v-toolbar>
         <v-row>
             <v-col cols="12" md="7" key=1>
                 <v-text-field style="margin-left: 15px" v-model="title" :rules="titleRules" label="Title" required></v-text-field>
             </v-col>
             <v-col cols="12" md="1" key=2></v-col>
-            <v-col cols="12" md="3" key=3>
+            <v-col cols="12" md="3" key=3 style="margin-top: 20px">
                 <v-select :items="dicts.items" label="Priority" v-model="item" outlined></v-select>
             </v-col>
         </v-row>
         <v-row>
             <v-col cols="12" md="7" key=1>
-                <v-textarea style="margin-left: 15px" outlined name="input-7-4" label="Description" :rules="descriptionRules" v-model="description"></v-textarea>
+                <v-textarea style="margin-left: 15px; margin-top: -30px" outlined name="input-7-4" label="Description" :rules="descriptionRules" v-model="description"></v-textarea>
             </v-col>
             <v-col cols="12" md="1" key=2></v-col>
             <v-col cols="12" md="3" key=3 style="margin-top: -10px">
@@ -23,14 +27,24 @@
                 <v-image v-model="value" style="margin-top: -20px; margin-left: 15px"></v-image>
             </v-col>
             <v-col cols="12" md="1" key=2></v-col>
-            <v-col cols="12" md="3" key=3 style="margin-top: -80px">
+            <v-col cols="12" md="3" key=3 style="margin-top: -50px" v-if="multiple">
                 <v-select :items="dicts.masters" item-text="name" label="Master" v-model="master" outlined></v-select>
             </v-col>
         </v-row>
         <v-card-actions>
-            <v-btn text>Save</v-btn>
+            <v-btn text @click="add_task()">Save</v-btn>
         </v-card-actions>
+        <v-dialog v-if="dialog === true" max-width="290">
+            <v-card>
+                <v-card-title class="headline">Task was added successfully.</v-card-title>
+                <v-card-actions>
+                    <div class="flex-grow-1"></div>
+                    <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-card>
+    </v-form>
 </template>
 
 <script>
@@ -43,13 +57,16 @@
                 });
             axios.get('/dict/task_types/get')
                 .then(function (response) {
-                    _this.dicts.types = response.data.types;
+                    _this.dicts.types = response.data.task_types;
+                });
+            axios.get('/dict/multiple/get')
+                .then(function (response) {
+                    _this.multiple = response.data.multiple;
                 });
         },
         data: () => ({
             titleRules: [
                 v => !!v || 'Title is required',
-                v => (v && v.length > 255) || 'Name must be less than 255 characters',
             ],
             descriptionRules: [
                 v => !!v || 'Description is required',
@@ -64,9 +81,29 @@
             type: null,
             item: null,
             master: null,
+            dialog: false,
+            multiple: true,
             value: [],
         }),
-        methods: {},
+        methods: {
+            add_task: function () {
+                let _this = this;
+                if (this.$refs.form.validate()) {
+                    let data = {
+                        title: _this.title,
+                        description: _this.description,
+                        type: _this.type,
+                        priority: _this.item,
+                        master: _this.master,
+                        images: _this.value,
+                    };
+                    axios.post('/task/add', data)
+                        .then(function () {
+                            _this.dialog = true;
+                        });
+                }
+            },
+        },
     }
 </script>
 
