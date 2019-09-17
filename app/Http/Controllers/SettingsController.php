@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\System;
+use App\TaskTypes;
 use App\User;
 use App\UserPosition;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class SettingsController extends Controller
 {
@@ -61,6 +63,33 @@ class SettingsController extends Controller
     }
 
     public function add_type(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'system_name' => 'required',
+        ]);
 
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
+        $type = new TaskTypes();
+        $type->name = $request->name;
+        $type->system_name = $request->system_name;
+        $type->color = $request->color;
+        $type->save();
+
+        return response([
+            'status' => 'success',
+            'data' => 'Task type was added.'
+        ], 200);
+    }
+
+    public function delete_type($id) {
+        TaskTypes::where('id', $id)->delete();
+
+        return response([
+            'status' => 'success',
+            'data' => 'Task type was deleted.'
+        ], 200);
     }
 }

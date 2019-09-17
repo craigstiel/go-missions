@@ -3712,6 +3712,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     this.get_active_masters();
@@ -3727,8 +3752,13 @@ __webpack_require__.r(__webpack_exports__);
       color: '#8E00FF',
       new_progress: true,
       active_progress: true,
+      type_progress: true,
       dialog: false,
-      type: null,
+      delete_type_dialog: false,
+      type: {
+        name: null,
+        system_name: null
+      },
       dicts: {
         active_masters: [],
         new_masters: [],
@@ -3758,7 +3788,8 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       axios.get('/dict/task_types/get').then(function (response) {
-        _this.dicts.types = response.data.types;
+        _this.dicts.types = response.data.task_types;
+        _this.type_progress = false;
       });
     },
     get_multiple: function get_multiple() {
@@ -3818,7 +3849,7 @@ __webpack_require__.r(__webpack_exports__);
 
         _this.get_multiple();
 
-        if (_this.multiple === true) _this.get_active_masters();
+        _this.get_active_masters();
       });
     },
     add_type: function add_type() {
@@ -3831,13 +3862,19 @@ __webpack_require__.r(__webpack_exports__);
           color: _this.color
         };
         axios.post('/types/add', data).then(function () {
-          _this.get_new_masters();
+          _this.get_types();
 
-          _this.get_multiple();
-
-          if (_this.multiple === true) _this.get_active_masters();
+          _this.dialog = false;
         });
       }
+    },
+    delete_type: function delete_type(id) {
+      var _this = this;
+
+      this.type_progress = true;
+      axios["delete"]('/types/delete/' + id).then(function (response) {
+        _this.get_types();
+      });
     }
   }
 });
@@ -42000,21 +42037,261 @@ var render = function() {
                                 "v-card-text",
                                 { staticStyle: { "min-height": "50px" } },
                                 [
-                                  _c("div", [
-                                    _c(
-                                      "div",
-                                      {
-                                        staticClass: "flex font-weight-light",
+                                  _vm.type_progress
+                                    ? _c("v-progress-circular", {
                                         staticStyle: {
-                                          "font-size": "18px",
-                                          "font-family": "'Roboto', sans-serif",
-                                          "padding-bottom": "20px"
+                                          position: "unset !important"
+                                        },
+                                        attrs: {
+                                          indeterminate: "",
+                                          color: "purple"
                                         }
-                                      },
-                                      [_vm._v("Types")]
-                                    )
-                                  ])
-                                ]
+                                      })
+                                    : _vm._e(),
+                                  _vm._v(" "),
+                                  !_vm.type_progress
+                                    ? _c(
+                                        "div",
+                                        [
+                                          _c(
+                                            "div",
+                                            {
+                                              staticClass:
+                                                "flex font-weight-light",
+                                              staticStyle: {
+                                                "font-size": "18px",
+                                                "font-family":
+                                                  "'Roboto', sans-serif",
+                                                "padding-bottom": "20px"
+                                              }
+                                            },
+                                            [_vm._v("Types")]
+                                          ),
+                                          _vm._v(" "),
+                                          _c(
+                                            "v-row",
+                                            _vm._l(_vm.dicts.types, function(
+                                              type
+                                            ) {
+                                              return _c(
+                                                "v-card",
+                                                {
+                                                  key: type.id,
+                                                  staticClass: "col-md-3 ml-3",
+                                                  style: {
+                                                    "background-color":
+                                                      type.color
+                                                  },
+                                                  attrs: {
+                                                    "max-width": "250",
+                                                    "min-height": "70"
+                                                  }
+                                                },
+                                                [
+                                                  _c(
+                                                    "v-card-text",
+                                                    {
+                                                      staticStyle: {
+                                                        "font-size": "16px"
+                                                      }
+                                                    },
+                                                    [_vm._v(_vm._s(type.name))]
+                                                  ),
+                                                  _vm._v(" "),
+                                                  _c(
+                                                    "v-dialog",
+                                                    {
+                                                      attrs: {
+                                                        persistent: "",
+                                                        "max-width": "400px"
+                                                      },
+                                                      scopedSlots: _vm._u(
+                                                        [
+                                                          {
+                                                            key: "activator",
+                                                            fn: function(ref) {
+                                                              var on = ref.on
+                                                              return [
+                                                                _c(
+                                                                  "div",
+                                                                  {
+                                                                    staticClass:
+                                                                      "my-2"
+                                                                  },
+                                                                  [
+                                                                    _c(
+                                                                      "v-btn",
+                                                                      _vm._g(
+                                                                        {
+                                                                          staticClass:
+                                                                            "delete-button",
+                                                                          attrs: {
+                                                                            color:
+                                                                              "error",
+                                                                            fab:
+                                                                              "",
+                                                                            "x-small":
+                                                                              "",
+                                                                            dark:
+                                                                              ""
+                                                                          }
+                                                                        },
+                                                                        on
+                                                                      ),
+                                                                      [
+                                                                        _c(
+                                                                          "i",
+                                                                          {
+                                                                            staticClass:
+                                                                              "fas fa-times"
+                                                                          }
+                                                                        )
+                                                                      ]
+                                                                    )
+                                                                  ],
+                                                                  1
+                                                                )
+                                                              ]
+                                                            }
+                                                          }
+                                                        ],
+                                                        null,
+                                                        true
+                                                      ),
+                                                      model: {
+                                                        value:
+                                                          _vm.delete_type_dialog,
+                                                        callback: function(
+                                                          $$v
+                                                        ) {
+                                                          _vm.delete_type_dialog = $$v
+                                                        },
+                                                        expression:
+                                                          "delete_type_dialog"
+                                                      }
+                                                    },
+                                                    [
+                                                      _vm._v(" "),
+                                                      _c(
+                                                        "v-form",
+                                                        {
+                                                          ref: "delete",
+                                                          refInFor: true
+                                                        },
+                                                        [
+                                                          _c(
+                                                            "v-card",
+                                                            [
+                                                              _c(
+                                                                "v-card-title",
+                                                                [
+                                                                  _c(
+                                                                    "span",
+                                                                    {
+                                                                      staticClass:
+                                                                        "headline",
+                                                                      staticStyle: {
+                                                                        color:
+                                                                          "#BD1818"
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "Delete type"
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "v-card-text",
+                                                                [
+                                                                  _vm._v(
+                                                                    "\n                                                            Do you really want to delete this task type?\n                                                        "
+                                                                  )
+                                                                ]
+                                                              ),
+                                                              _vm._v(" "),
+                                                              _c(
+                                                                "v-card-actions",
+                                                                [
+                                                                  _c("div", {
+                                                                    staticClass:
+                                                                      "flex-grow-1"
+                                                                  }),
+                                                                  _vm._v(" "),
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    {
+                                                                      attrs: {
+                                                                        color:
+                                                                          "blue darken-1",
+                                                                        text: ""
+                                                                      },
+                                                                      on: {
+                                                                        click: function(
+                                                                          $event
+                                                                        ) {
+                                                                          _vm.delete_type_dialog = false
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "Close"
+                                                                      )
+                                                                    ]
+                                                                  ),
+                                                                  _vm._v(" "),
+                                                                  _c(
+                                                                    "v-btn",
+                                                                    {
+                                                                      attrs: {
+                                                                        color:
+                                                                          "blue darken-1",
+                                                                        text: ""
+                                                                      },
+                                                                      on: {
+                                                                        click: function(
+                                                                          $event
+                                                                        ) {
+                                                                          return _vm.delete_type(
+                                                                            type.id
+                                                                          )
+                                                                        }
+                                                                      }
+                                                                    },
+                                                                    [
+                                                                      _vm._v(
+                                                                        "Delete"
+                                                                      )
+                                                                    ]
+                                                                  )
+                                                                ],
+                                                                1
+                                                              )
+                                                            ],
+                                                            1
+                                                          )
+                                                        ],
+                                                        1
+                                                      )
+                                                    ],
+                                                    1
+                                                  )
+                                                ],
+                                                1
+                                              )
+                                            }),
+                                            1
+                                          )
+                                        ],
+                                        1
+                                      )
+                                    : _vm._e()
+                                ],
+                                1
                               )
                             ],
                             1

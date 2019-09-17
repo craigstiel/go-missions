@@ -100,9 +100,34 @@
                             </v-dialog>
                             <v-card>
                                 <v-card-text style="min-height: 50px">
-<!--                                    <v-progress-circular v-if="active_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>-->
-                                    <div>
+                                    <v-progress-circular v-if="type_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                                    <div v-if="!type_progress">
                                         <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">Types</div>
+                                        <v-row>
+                                            <v-card max-width="250" min-height="70" :style="{'background-color': type.color}" class="col-md-3 ml-3" :key="type.id" v-for="type in dicts.types">
+                                                <v-card-text style="font-size: 16px;">{{ type.name }}</v-card-text>
+                                                <v-dialog v-model="delete_type_dialog" persistent max-width="400px">
+                                                    <template v-slot:activator="{ on }">
+                                                        <div class="my-2"><v-btn class="delete-button" v-on="on" color="error" fab x-small dark><i class="fas fa-times"></i></v-btn></div>
+                                                    </template>
+                                                    <v-form ref="delete">
+                                                        <v-card>
+                                                            <v-card-title>
+                                                                <span class="headline" style="color: #BD1818;">Delete type</span>
+                                                            </v-card-title>
+                                                            <v-card-text>
+                                                                Do you really want to delete this task type?
+                                                            </v-card-text>
+                                                            <v-card-actions>
+                                                                <div class="flex-grow-1"></div>
+                                                                <v-btn color="blue darken-1" text @click="delete_type_dialog = false">Close</v-btn>
+                                                                <v-btn color="blue darken-1" text @click="delete_type(type.id)">Delete</v-btn>
+                                                            </v-card-actions>
+                                                        </v-card>
+                                                    </v-form>
+                                                </v-dialog>
+                                                </v-card>
+                                        </v-row>
                                     </div>
                                 </v-card-text>
                             </v-card>
@@ -131,8 +156,13 @@ Playground
                 color: '#8E00FF',
                 new_progress: true,
                 active_progress: true,
+                type_progress: true,
                 dialog: false,
-                type: null,
+                delete_type_dialog: false,
+                type: {
+                    name: null,
+                    system_name: null
+                },
                 dicts: {
                     active_masters: [],
                     new_masters: [],
@@ -164,7 +194,8 @@ Playground
                 let _this = this;
                 axios.get('/dict/task_types/get')
                     .then(function (response) {
-                        _this.dicts.types = response.data.types;
+                        _this.dicts.types = response.data.task_types;
+                        _this.type_progress = false;
                     });
             },
             get_multiple: function() {
@@ -220,8 +251,7 @@ Playground
                     .then(function () {
                         _this.get_new_masters();
                         _this.get_multiple();
-                        if(_this.multiple === true)
-                            _this.get_active_masters();
+                        _this.get_active_masters();
                     });
             },
             add_type: function () {
@@ -235,8 +265,17 @@ Playground
                     axios.post('/types/add', data)
                         .then(function () {
                             _this.get_types();
+                            _this.dialog = false;
                         });
                 }
+            },
+            delete_type: function (id) {
+                let _this = this;
+                this.type_progress = true;
+                axios.delete('/types/delete/' + id)
+                    .then(function (response) {
+                        _this.get_types();
+                    });
             }
         }
     }
