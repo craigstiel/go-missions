@@ -53,7 +53,7 @@ class MyNotification extends Notification
         return (new MailMessage)
             ->subject(Lang::getFromJson('Verify email address'))
             ->line(Lang::getFromJson('Please, confirm your email addres on ' .  config('app.name') . '.' ))
-            ->action(Lang::getFromJson('Confirm email address'), '/login')
+            ->action(Lang::getFromJson('Confirm email address'), config('app.name') . '/#/login')
             ->line(Lang::getFromJson('If you did not create an account, no further action is required.'));
     }
 

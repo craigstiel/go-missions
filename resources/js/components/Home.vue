@@ -68,7 +68,7 @@
                 {icon: 'add', text: 'Add task', link: 'add_task'},
                 {divider: true},
                 {icon: 'settings', text: 'Settings', link: 'settings'},
-                {icon: 'fas fa-users-cog', text: 'Profile'},
+                {icon: 'fas fa-users-cog', text: 'Profile', link: 'profile'},
             ],
             auth: [
                 {icon: 'fas fa-user-plus', text: 'Sign up', link: 'register'},

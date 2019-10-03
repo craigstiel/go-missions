@@ -40,7 +40,6 @@
         methods: {
             login(){
                 var app = this;
-                var app = this
                 if (this.$refs.form.validate()) {
                     this.$auth.login({
                         params: {

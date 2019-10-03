@@ -19,7 +19,7 @@
             </v-col>
             <v-col cols="12" md="1" key=2></v-col>
             <v-col cols="12" md="3" key=3 style="margin-top: -10px">
-                <v-select :items="dicts.types" item-text="name" label="Type" v-model="type" outlined></v-select>
+                <v-select :items="dicts.types" item-value="id" item-text="name" label="Type" v-model="type" outlined></v-select>
             </v-col>
         </v-row>
         <v-row>
@@ -28,18 +28,18 @@
             </v-col>
             <v-col cols="12" md="1" key=2></v-col>
             <v-col cols="12" md="3" key=3 style="margin-top: -50px" v-if="multiple">
-                <v-select :items="dicts.masters" item-text="name" label="Master" v-model="master" outlined></v-select>
+                <v-select :items="dicts.masters" item-value="id" item-text="name" label="Master" v-model="master" outlined></v-select>
             </v-col>
         </v-row>
-        <v-card-actions>
-            <v-btn text @click="add_task()">Save</v-btn>
-        </v-card-actions>
-        <v-dialog v-if="dialog === true" max-width="290">
+        <v-dialog v-model="dialog" persistent max-width="290">
+            <template v-slot:activator="{ on }">
+                <v-btn @click="add_task()" v-if="lock_btn" v-on="on">Save</v-btn>
+            </template>
             <v-card>
-                <v-card-title class="headline">Task was added successfully.</v-card-title>
+                <v-card-title class="headline">Task was added successful.</v-card-title>
                 <v-card-actions>
                     <div class="flex-grow-1"></div>
-                    <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
+                    <v-btn color="green darken-1" text @click="$router.push({name: 'tasks'})">OK</v-btn>
                 </v-card-actions>
             </v-card>
         </v-dialog>
@@ -82,9 +82,22 @@
             item: null,
             master: null,
             dialog: false,
+            lock_btn: false,
             multiple: true,
             value: [],
         }),
+        watch: {
+            title: function() {
+                if(this.description !== '') {
+                    this.lock_btn = true;
+                }
+            },
+            description: function() {
+                if(this.title !== '') {
+                    this.lock_btn = true;
+                }
+            },
+        },
         methods: {
             add_task: function () {
                 let _this = this;

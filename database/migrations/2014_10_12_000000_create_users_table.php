@@ -21,6 +21,7 @@ class CreateUsersTable extends Migration
             $table->string('telegram')->nullable(true);
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
+            $table->text('api_token')->nullable(true);
             $table->boolean('is_master');
             $table->rememberToken();
             $table->timestamps();

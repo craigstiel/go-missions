@@ -31,13 +31,13 @@ Vue.use(VueAxios, axios)
 import App from './components/App';
 import Home from './components/Home';
 import AllTasks from './components/AllTasks';
-import Task from './components/Task';
+import Profile from './components/Profile';
 import AddTask from './components/AddTask';
 import Settings from './components/Settings';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 
-axios.defaults.baseURL = 'http://go-missions/';
+axios.defaults.baseURL = 'http://go-missions/api';
 
 const router = new VueRouter({
     routes: [
@@ -55,14 +55,6 @@ const router = new VueRouter({
                     }
                 },
                 {
-                    path: '/show',
-                    name: 'show_task',
-                    component: Task,
-                    meta: {
-                        auth: true
-                    }
-                },
-                {
                     path: '/add',
                     name: 'add_task',
                     component: AddTask,
@@ -74,6 +66,14 @@ const router = new VueRouter({
                     path: '/settings',
                     name: 'settings',
                     component: Settings,
+                    meta: {
+                        auth: true
+                    }
+                },
+                {
+                    path: '/profile',
+                    name: 'profile',
+                    component: Profile,
                     meta: {
                         auth: true
                     }
@@ -119,6 +119,8 @@ App.router = Vue.router
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default));
 
 Vue.component('v-image', require('./components/useful/ImageUploader.vue').default);
+Vue.component('v-prew-image', require('./components/useful/EnlargeImage.vue').default);
+Vue.component('v-task', require('./components/useful/TaskModal.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

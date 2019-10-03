@@ -6,9 +6,11 @@ use App\Tasks;
 use App\TaskTypes;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Facades\JWTAuth;
 
 class TaskController extends Controller
 {
@@ -42,18 +44,22 @@ class TaskController extends Controller
             $type = $new_type->id;
         }
 
-        $task = new Tasks();
-        $task->title = $request->title;
-        $task->description = $request->description;
-        $task->type = $request->type ? $request->type : $type;
-        $task->priority = $request->priority ? $request->priority : 'medium';
-        $task->master = $request->master ? $request->master : $master->id;
-        $task->created_at = Carbon::now();
-        $task->save();
+        if (JWTAuth::check()) {
+            $task = new Tasks();
+            $task->title = $request->title;
+            $task->description = $request->description;
+            $task->type = $request->type ? $request->type : $type;
+            $task->status = 0;
+            $task->priority = $request->priority ? $request->priority : 'medium';
+            $task->created_by = JWTAuth::user()->id;
+            $task->master = $request->master ? $request->master : $master->id;
+            $task->created_at = Carbon::now();
+            $task->save();
+        }
 
         foreach ($request->images as $image) {
             $fileName = Carbon::now()->timestamp . '_' . uniqid() . '.' . explode('/', explode(':', substr($image, 0, strpos($image, ';')))[1])[1];
-            Storage::put('members/'.$fileName, $image);
+            Storage::put('tasks/'.$fileName, $image);
 
             DB::table('tasks_images')->insert([
                 'name' => $fileName,

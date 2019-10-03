@@ -14,8 +14,9 @@ class AdminSeeder extends Seeder
         $user = DB::table('users')->insertGetId([
             'name' => Str::random(10),
             'email' => 'admin@gmail.com',
-            'password' => bcrypt('admin'),
+            'password' => bcrypt('adminadmin'),
             'is_master' => true,
+            'api_token' => 'UktlY6Ov2aidQyuu4gKN1CdYdyTeennrWCuJoOB7Xyr6vTf4k3gLruqJ46nJrJ5u',
             'created_at' => \Illuminate\Support\Facades\DB::raw('current_timestamp'),
         ]);
 

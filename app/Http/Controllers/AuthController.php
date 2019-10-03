@@ -4,13 +4,31 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+use Tymon\JWTAuth\Exceptions\JWTException;
+use Tymon\JWTAuth\Exceptions\TokenExpiredException;
+use Tymon\JWTAuth\Exceptions\TokenInvalidException;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
 use App\User;
 
 class AuthController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('auth:api', ['except' => ['login', 'registration']]);
+    }
+
     public function register(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['errors' => $validator->errors()]);
+        }
+
         $user = new User();
         $user->email = $request->email;
         $user->name = $request->name;
@@ -29,17 +47,14 @@ class AuthController extends Controller
                     'created_at' => DB::raw('current_timestamp')
                 ]);
         }
-        $user->sendEmailVerificationNotification();
-        return response([
-            'status' => 'success',
-            'data' => $user
-        ], 200);
+
+        return response()->json(compact('user'),201);
     }
 
     public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
-        if (!$token = JWTAuth::attempt($credentials)) {
+        if ( ! $token = JWTAuth::attempt($credentials)) {
             return response([
                 'status' => 'error',
                 'error' => 'invalid.credentials',
@@ -54,7 +69,7 @@ class AuthController extends Controller
 
     public function user(Request $request)
     {
-        $user = User::find(Auth::id());
+        $user = User::find(Auth::user()->id);
         return response([
             'status' => 'success',
             'data' => $user
@@ -63,17 +78,22 @@ class AuthController extends Controller
 
     public function refresh()
     {
-        return response([
-            'status' => 'success'
-        ]);
+        return $this->respondWithToken(auth()->refresh());
     }
 
     public function logout()
     {
-        JWTAuth::invalidate();
-        return response([
-            'status' => 'success',
-            'msg' => 'Logged out Successfully.'
-        ], 200);
+        auth()->logout();
+
+        return response()->json(['message' => 'Successfully logged out']);
+    }
+
+    protected function respondWithToken($token)
+    {
+        return response()->json([
+            'access_token' => $token,
+            'token_type' => 'bearer',
+            'expires_in' => auth()->factory()->getTTL() * 60
+        ]);
     }
 }
