@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\TaskImages;
 use App\Tasks;
 use App\TaskTypes;
 use Carbon\Carbon;
@@ -52,7 +53,7 @@ class TaskController extends Controller
             $task->status = 0;
             $task->priority = $request->priority ? $request->priority : 'medium';
             $task->created_by = JWTAuth::user()->id;
-            $task->master = $request->master ? $request->master : $master->id;
+            $task->master = $request->master ? $request->master : $master->user_id;
             $task->created_at = Carbon::now();
             $task->save();
         }
@@ -68,5 +69,46 @@ class TaskController extends Controller
             ]);
         }
 
+        return response([
+            'status' => 'success',
+            'data' => $task
+        ]);
+    }
+
+    public function to_work($id) {
+        $task = Tasks::where('id', $id)->first();
+        $task->status = 1;
+        $task->save();
+
+        return response([
+            'status' => 'success',
+            'data' => $task
+        ]);
+    }
+
+    public function done($id) {
+        $task = Tasks::where('id', $id)->first();
+        $task->status = 2;
+        $task->save();
+
+        return response([
+            'status' => 'success',
+            'data' => $task
+        ]);
+    }
+
+    public function delete_task($id) {
+        TaskImages::where('task_id', $id)->delete();
+        Tasks::where('id', $id)->delete();
+
+        return response([
+            'status' => 'success'
+        ]);
+    }
+
+    public function count() {
+        $tasks_count = Tasks::where('master', Auth::user()->id)->where('status', '0')->count();
+
+        return response()->json(['tasks_count' => $tasks_count]);
     }
 }

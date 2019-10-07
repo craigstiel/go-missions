@@ -105,7 +105,7 @@ Vue.use(require('@websanova/vue-auth'), {
     http: require('@websanova/vue-auth/drivers/http/axios.1.x.js'),
     router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
 });
-App.router = Vue.router
+App.router = Vue.router;
 
 /**
  * The following block of code may be used to automatically register your

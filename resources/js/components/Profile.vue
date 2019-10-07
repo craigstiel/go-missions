@@ -10,8 +10,11 @@
         </v-toolbar>
         <v-tabs-items v-model="tab">
             <v-tab-item>
+                <v-form ref="form">
                 <v-card flat style="min-height: 50px">
-                    <v-progress-circular v-if="profile_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                    <div style="text-align: center"  v-if="profile_progress">
+                        <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
+                    </div>
                     <v-card-text v-else>
                         <v-row>
                             <v-col cols="12" md="6" key=1>
@@ -22,81 +25,74 @@
                                               :rules="emailRules" required></v-text-field>
                                 <v-text-field v-else style="margin-left: 15px" label="Email" v-model="profile.email" readonly></v-text-field>
                             </v-col>
-                            <v-col v-if="profile.position" cols="12" md="6" key=1 style="margin-top: -30px">
+                            <v-col v-if="profile.position" cols="12" md="6" key=3 style="margin-top: -30px">
                                 <v-text-field style="margin-left: 15px" label="Telegram" v-model="profile.telegram"></v-text-field>
                             </v-col>
-                            <v-col v-else cols="12" md="6" key=1 style="margin-top: -30px">
+                            <v-col v-else cols="12" md="6" key=4 style="margin-top: -30px">
                                 <v-text-field style="margin-left: 15px" label="Phone" v-model="profile.phone"></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="6" key=2></v-col>
-                            <v-col cols="12" md="6" key=1 v-if="profile.position">
+                            <v-col cols="12" md="6" key=5></v-col>
+                            <v-col cols="12" md="6" key=6 v-if="profile.position">
                                 <v-card>
                                     <v-card-text>
                                         <v-container>
                                             <v-row>
-                                                <v-col cols="12" md="5" key=1><v-card-text>Position:</v-card-text></v-col>
-                                                <v-col cols="12" md="7" key=2><v-card-text>{{profile.position}}</v-card-text></v-col>
-                                                <v-col cols="12" md="5" key=1 style="margin-top: -30px"><v-card-text>Active:</v-card-text></v-col>
-                                                <v-col cols="12" md="3" key=2 style="margin-top: -30px"><v-card-text>{{profile.is_active}}</v-card-text></v-col>
+                                                <v-col cols="12" md="5" key=11><v-card-text>Position:</v-card-text></v-col>
+                                                <v-col cols="12" md="7" key=12><v-card-text>{{profile.position}}</v-card-text></v-col>
+                                                <v-col cols="12" md="5" key=13 style="margin-top: -30px"><v-card-text>Active:</v-card-text></v-col>
+                                                <v-col cols="12" md="3" key=14 style="margin-top: -30px"><v-card-text>{{profile.is_active}}</v-card-text></v-col>
                                             </v-row>
                                         </v-container>
                                     </v-card-text>
                                 </v-card>
                             </v-col>
                         </v-row>
+                        <v-btn v-if="!profile_progress" @click="change_profile()">Change</v-btn>
                     </v-card-text>
-                    <v-dialog v-if="!profile_progress" v-model="dialog" persistent max-width="290">
-                        <template v-slot:activator="{ on }">
-                            <v-btn @click="change_profile()" v-on="on">Change</v-btn>
-                        </template>
-                        <v-card>
-                            <v-card-title class="headline">Profile was changed successful.</v-card-title>
-                            <v-card-actions>
-                                <div class="flex-grow-1"></div>
-                                <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
                 </v-card>
+                </v-form>
+                <v-dialog v-model="dialog" hide-overlay persistent width="300">
+                    <v-card>
+                        <v-card-title class="headline">Profile was saved successfully.</v-card-title>
+                        <v-card-actions>
+                            <div class="flex-grow-1"></div>
+                            <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
+                        </v-card-actions>
+                    </v-card>
+                </v-dialog>
             </v-tab-item>
             <v-tab-item>
                 <v-card flat style="min-height: 50px">
-                    <v-progress-circular v-if="profile_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                    <div style="text-align: center"  v-if="profile_progress">
+                        <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
+                    </div>
                     <v-card-text v-else>
                         <v-row>
-                            <v-col cols="12" md="6" key=1>
-                                <v-text-field v-model="old_password" :append-icon="show1 ? 'visibility' : 'visibility_off'" :rules="[passwordRules.required, passwordRules.min]"
-                                              :type="show1 ? 'text' : 'password'" name="input-10-1" label="Previous password" hint="At least 8 characters"
-                                              counter @click:append="show1 = !show1" ></v-text-field>
-                            </v-col>
-                            <v-col cols="12" md="6" key=2></v-col>
-                            <v-col cols="12" md="6" key=1>
+                            <v-col cols="12" md="6" key=9>
                                 <v-text-field v-model="new_password" :append-icon="show2 ? 'visibility' : 'visibility_off'" :rules="[passwordRules.required, passwordRules.min]"
                                               :type="show2 ? 'text' : 'password'" name="input-10-1" label="New password" hint="At least 8 characters"
                                               counter @click:append="show2 = !show1" ></v-text-field>
                             </v-col>
-                            <v-col cols="12" md="6" key=1>
+                            <v-col cols="12" md="6" key=10>
                                 <v-text-field v-model="confirm_new_password" :append-icon="show3 ? 'visibility' : 'visibility_off'" :rules="[passwordRules.required, passwordRules.min]"
                                               :type="show3 ? 'text' : 'password'" name="input-10-1" label="Confirm new password" hint="At least 8 characters"
                                               counter @click:append="show3 = !show3" ></v-text-field>
                             </v-col>
                         </v-row>
+                        <v-btn v-if="!profile_progress" @click="change_password()">Change</v-btn>
                     </v-card-text>
-                    <v-dialog v-if="!profile_progress" v-model="dialog" persistent max-width="290">
-                        <template v-slot:activator="{ on }">
-                            <v-btn @click="change_password()" v-on="on">Change</v-btn>
-                        </template>
-                        <v-card>
-                            <v-card-title class="headline">Password was changed successful.</v-card-title>
-                            <v-card-actions>
-                                <div class="flex-grow-1"></div>
-                                <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
-                            </v-card-actions>
-                        </v-card>
-                    </v-dialog>
                 </v-card>
             </v-tab-item>
         </v-tabs-items>
+        <v-dialog v-model="dialog_pas" hide-overlay persistent width="300">
+            <v-card>
+                <v-card-title class="headline">Password was saved successfully.</v-card-title>
+                <v-card-actions>
+                    <div class="flex-grow-1"></div>
+                    <v-btn color="green darken-1" text @click="dialog_pas = false">OK</v-btn>
+                </v-card-actions>
+            </v-card>
+        </v-dialog>
     </v-card>
 </template>
 
@@ -119,11 +115,9 @@
                     phone: '',
                     telegram: '',
                 },
-                show1: false,
                 show2: false,
                 show3: false,
                 profile_progress: true,
-                old_password: null,
                 new_password: null,
                 confirm_new_password: null,
                 items: [
@@ -131,6 +125,7 @@
                 ],
                 tab: null,
                 dialog: false,
+                dialog_pas: false,
                 nameRules: [
                     v => !!v || 'Name is required',
                     v => (v && v.length <= 255) || 'Name must be less than 255 characters',
@@ -151,8 +146,11 @@
             };
         },
         watch: {
-            old_password: function () {
-
+            confirm_new_password: function () {
+                if(this.new_password === this.confirm_new_password)
+                {
+                    this.profile.password = this.new_password;
+                }
             },
         },
         methods: {
@@ -174,14 +172,16 @@
                 }
             },
             change_password: function () {
+                this.profile_progress = true;
                 let _this = this;
                 if (this.$refs.form.validate()) {
                     let data = {
-                        password: _this.profile.name,
+                        password: _this.profile.password,
                     };
                     axios.put('/profile/password/edit', data)
                         .then(function () {
-                            _this.dialog = true;
+                            _this.dialog_pas = true;
+                            _this.profile_progress = false;
                         });
                 }
             }

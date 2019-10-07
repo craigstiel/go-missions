@@ -23,7 +23,9 @@
                             </v-row>
                             <v-card v-if="multiple && dicts.new_masters[0]">
                                 <v-card-text style="margin-top: 20px; min-height: 50px">
-                                    <v-progress-circular v-if="new_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                                    <div style="text-align: center"  v-if="new_progress">
+                                        <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
+                                    </div>
                                     <div v-if="!new_progress">
                                         <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">New masters</div>
                                         <v-row>
@@ -38,13 +40,16 @@
                             </v-card>
                             <v-card v-if="multiple && dicts.active_masters[0]">
                                 <v-card-text style="margin-top: 20px; min-height: 50px">
-                                    <v-progress-circular v-if="active_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                                    <div style="text-align: center"  v-if="active_progress">
+                                        <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
+                                    </div>
                                     <div v-if="!active_progress">
                                         <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">Active masters</div>
                                         <v-row>
                                         <v-card max-width="230" min-height="70" class="second-card col-md-3 ml-3" :key="master.id" v-for="master in dicts.active_masters">
-                                            <v-btn class="delete-button" @click="delete_active_master(master.id)" color="error" fab x-small dark><i class="fas fa-times"></i></v-btn>
-                                            <v-btn class="add-button" @click="disapprove_master(master.id)" color="warning" fab x-small dark><i class="fas fa-minus"></i></v-btn>
+                                            <v-btn class="delete-button" @click="delete_active_master(master.id)" v-if="master.position !== 'admin'" color="error" fab x-small dark><i class="fas fa-times"></i></v-btn>
+                                            <v-btn class="add-button" @click="disapprove_master(master.id)" v-if="master.position !== 'admin'" color="warning" fab x-small dark><i class="fas fa-minus"></i></v-btn>
+                                            <v-btn class="delete-button" v-if="master.position === 'admin'" color="error" x-small dark>admin</v-btn>
                                             <v-card-text style="font-size: 16px;">{{ master.name }}</v-card-text>
                                         </v-card>
                                         </v-row>
@@ -53,7 +58,9 @@
                             </v-card>
                             <v-card v-if="!multiple">
                                 <v-card-text style="margin-top: 20px; min-height: 50px">
-                                    <v-progress-circular v-if="new_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                                    <div style="text-align: center"  v-if="new_progress">
+                                        <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
+                                    </div>
                                     <div v-if="!new_progress">
                                         <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">Masters</div>
                                         <v-row>
@@ -100,7 +107,9 @@
                             </v-dialog>
                             <v-card>
                                 <v-card-text style="min-height: 50px">
-                                    <v-progress-circular v-if="type_progress" indeterminate color="purple" style="position: unset !important"></v-progress-circular>
+                                    <div style="text-align: center"  v-if="type_progress">
+                                        <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
+                                    </div>
                                     <div v-if="!type_progress">
                                         <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">Types</div>
                                         <v-row>

@@ -45,6 +45,10 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::delete('/types/delete/{id}', 'SettingsController@delete_type');
 
     Route::post('/task/add', 'TaskController@add_task');
+    Route::put('/task/to_work/{id}', 'TaskController@to_work');
+    Route::put('/task/done/{id}', 'TaskController@done');
+    Route::delete('/task/delete/{id}', 'TaskController@delete_task');
+    Route::get('/task/count/get', 'TaskController@count');
 
     Route::put('/profile/edit', 'UserController@edit_user');
     Route::put('/profile/password/edit', 'UserController@edit_password');

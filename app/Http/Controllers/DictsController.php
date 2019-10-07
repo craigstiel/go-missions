@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Tymon\JWTAuth\Facades\JWTAuth;
@@ -14,7 +15,7 @@ class DictsController extends Controller
         $masters = DB::table('users as u')
             ->leftJoin('user_position as up', 'u.id', '=', 'up.user_id')
             ->where('up.is_active', '=', true)
-            ->select('u.id', 'u.name')
+            ->select('u.id', 'u.name', 'up.position')
             ->get();
 
         return response()->json(['masters' => $masters, 'master' => auth()->user()]);
@@ -70,7 +71,7 @@ class DictsController extends Controller
         $tasks = DB::table('tasks as t')
             ->where('t.status', '=', $status_id)
             ->select('t.title','t.id as id', 't.description', 'tt.name as type', 'tt.color as type_color', 'c.name as client', 'c.phone as client_phone',
-                'c.email as client_email', 'm.name as master', 't.created_at')
+                'c.email as client_email', 'm.name as master', 't.created_at', 't.status')
             ->leftJoin('task_types as tt', 'tt.id', 't.type')
             ->leftJoin('users as c', 'c.id', 't.created_by')
             ->leftJoin('users as m', 'm.id', 't.master')
@@ -84,8 +85,8 @@ class DictsController extends Controller
             });
 
         foreach ($tasks as $task) {
-            $user = DB::table('user_position')->where('user_id', '=', JWTAuth::user()->id)->first();
-            $task->user_position = $user->position;
+            $user = DB::table('user_position')->where('user_id', '=', Auth::user()->id)->first();
+            $task->user_position = $user ? $user->position : 'company';
 
             $images = DB::table('tasks_images')->where('task_id', '=', $task->id)->get();
             $task->images = [];

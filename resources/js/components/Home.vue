@@ -3,8 +3,12 @@
         <v-app-bar app clipped-left color="purple darken-3">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
             <span class="overline ml-3 mr-5" style="font-size: 20px !important; font-family: 'Archivo Black', sans-serif;">GO!Missions</span>
-            <v-text-field v-if="$auth.check()" solo-inverted flat hide-details label="Search" prepend-inner-icon="search"></v-text-field>
+<!--            <v-text-field v-if="$auth.check()" solo-inverted flat hide-details label="Search" prepend-inner-icon="search"></v-text-field>-->
             <div class="flex-grow-1"></div>
+            <v-badge v-if="tasks_count > 0" class="align-self-center" style="margin-right: 22px" color="error">
+                <template v-slot:badge>{{ tasks_count }}</template>
+                <v-icon large color="grey" style="cursor: pointer" @click="$router.push({name: 'tasks'})">mail</v-icon>
+            </v-badge>
         </v-app-bar>
 
         <v-navigation-drawer v-model="drawer" app clipped color="grey darken-4">
@@ -52,6 +56,13 @@
                     <router-view></router-view>
                 </v-row>
             </v-container>
+            <v-footer dark padless style="position: fixed; bottom: 0; width: 100%;">
+                <v-card class="flex" flat tile>
+                    <v-card-text class="py-2 white--text text-center">
+                        {{ new Date().getFullYear() }} — Craigstiel
+                    </v-card-text>
+                </v-card>
+            </v-footer>
         </v-content>
     </div>
 </template>
@@ -61,8 +72,16 @@
         props: {
             source: String,
         },
+        mounted: function () {
+            let _this = this;
+            axios.get('/task/count/get')
+                .then(function (response) {
+                    _this.tasks_count = response.data.tasks_count;
+                });
+        },
         data: () => ({
             drawer: null,
+            tasks_count: null,
             items: [
                 {icon: 'fas fa-tasks', text: 'Task board', link: 'tasks'},
                 {icon: 'add', text: 'Add task', link: 'add_task'},

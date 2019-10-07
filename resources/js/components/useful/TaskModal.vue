@@ -1,12 +1,24 @@
 <template>
-    <v-card>
     <v-card-text>
         <v-container>
+<!--            <div style="text-align: center"  v-if="progress">-->
+<!--                <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>-->
+<!--            </div>-->
             <v-row>
-                <v-col cols="12" md="12"><v-card-title>{{task.title}}</v-card-title></v-col>
+                <v-col cols="12" md="2"><v-btn x-small color="primary">{{ task.status_name }}</v-btn></v-col>
+                <v-col cols="12" md="10"></v-col>
+                <v-col cols="12" md="8" style="margin-top: -20px"><v-card-title>{{task.title}}</v-card-title></v-col>
+                <v-col cols="12" md="2" style="margin-top: -20px">
+                    <div class="my-2 mt-5">
+                        <v-btn v-if="task.status === 0" small color="success" dark @click="to_work()">to work</v-btn>
+                        <v-btn v-if="task.status === 1" small color="success" dark @click="done()">done</v-btn>
+                    </div></v-col>
+                <v-col cols="12" md="2" style="margin-top: -20px">
+                    <div class="my-2 mt-5" v-if="task.user_position === 'admin'"><v-btn @click="delete_task()" small color="error" dark>delete</v-btn></div>
+                    <div class="my-2 mt-5" v-else></div></v-col>
                 <v-col cols="12" md="10" style="margin-top: -30px"><v-card-text>{{task.description}}</v-card-text></v-col>
                 <v-col cols="12" md="2" style="margin-top: -30px"><v-card-text>{{task.priority}}</v-card-text></v-col>
-                <v-col cols="12" md="12" style="margin-top: -30px" v-if="task.images !== null">
+                <v-col cols="12" md="12" style="margin-top: -30px" v-if="task.images[0]">
                     <v-card>
                         <v-card-text>
                             <v-container v-for="image in task.images" :key="image.id" >
@@ -39,17 +51,24 @@
             </v-row>
         </v-container>
     </v-card-text>
-    <v-card-actions>
-        <div class="flex-grow-1"></div>
-        <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-    </v-card-actions>
-    </v-card>
 </template>
 
 <script>
     export default {
-        props: ['task'],
+        props: ['value'],
         mounted: function () {
+            this.task = this.value;
+            switch (this.task.status) {
+                case 0:
+                    this.task.status_name = 'New task';
+                    break;
+                case 1:
+                    this.task.status_name = 'Active task';
+                    break;
+                case 2:
+                    this.task.status_name = 'Completed task';
+                    break;
+            }
             let _this = this;
             axios.get('/dict/masters/get')
                 .then(function (response) {
@@ -60,7 +79,47 @@
             dicts: {
                 masters: [],
             },
+            task: null,
         }),
+        watch: {
+            value: function () {
+                this.task = this.value;
+                switch (this.task.status) {
+                    case 0:
+                        this.task.status_name = 'New task';
+                        break;
+                    case 1:
+                        this.task.status_name = 'Active task';
+                        break;
+                    case 2:
+                        this.task.status_name = 'Completed task';
+                        break;
+                }
+            },
+        },
+        methods: {
+            to_work: function () {
+                let _this = this;
+                axios.put('/task/to_work/' + _this.task.id)
+                    .then(function (response) {
+                        _this.value.status = 1;
+                    });
+            },
+            done: function () {
+                let _this = this;
+                axios.put('/task/done/' + _this.task.id)
+                    .then(function (response) {
+                        _this.value.status = 2;
+                    });
+            },
+            delete_task: function () {
+                let _this = this;
+                axios.delete('/task/delete/' + _this.task.id)
+                    .then(function (response) {
+                        _this.value.status = 3;
+                    });
+            }
+        }
     }
 </script>
 
