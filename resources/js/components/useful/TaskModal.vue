@@ -1,14 +1,11 @@
 <template>
     <v-card-text>
         <v-container>
-<!--            <div style="text-align: center"  v-if="progress">-->
-<!--                <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>-->
-<!--            </div>-->
-            <v-row>
+            <v-row v-if="task">
                 <v-col cols="12" md="2"><v-btn x-small color="primary">{{ task.status_name }}</v-btn></v-col>
                 <v-col cols="12" md="10"></v-col>
                 <v-col cols="12" md="8" style="margin-top: -20px"><v-card-title>{{task.title}}</v-card-title></v-col>
-                <v-col cols="12" md="2" style="margin-top: -20px">
+                <v-col cols="12" md="2" style="margin-top: -20px" v-if="task.user_position !== 'company'">
                     <div class="my-2 mt-5">
                         <v-btn v-if="task.status === 0" small color="success" dark @click="to_work()">to work</v-btn>
                         <v-btn v-if="task.status === 1" small color="success" dark @click="done()">done</v-btn>
@@ -100,25 +97,31 @@
         methods: {
             to_work: function () {
                 let _this = this;
-                axios.put('/task/to_work/' + _this.task.id)
-                    .then(function (response) {
-                        _this.value.status = 1;
-                    });
+                if(this.task.user_position) {
+                    axios.put('/task/to_work/' + _this.task.id)
+                        .then(function (response) {
+                            _this.value.status = 1;
+                        });
+                }
             },
             done: function () {
                 let _this = this;
-                axios.put('/task/done/' + _this.task.id)
-                    .then(function (response) {
-                        _this.value.status = 2;
-                    });
+                if(this.task.user_position) {
+                    axios.put('/task/done/' + _this.task.id)
+                        .then(function (response) {
+                            _this.value.status = 2;
+                        });
+                }
             },
             delete_task: function () {
                 let _this = this;
-                axios.delete('/task/delete/' + _this.task.id)
-                    .then(function (response) {
-                        _this.value.status = 3;
-                    });
-            }
+                if(this.task.user_position === 'admin') {
+                    axios.delete('/task/delete/' + _this.task.id)
+                        .then(function (response) {
+                            _this.value.status = 3;
+                        });
+                }
+            },
         }
     }
 </script>

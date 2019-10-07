@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 
@@ -38,5 +39,19 @@ class UserController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
         return response()->json(compact('user'),201);
+    }
+
+    public function is_admin () {
+        $user = \DB::table('users as u')
+            ->leftJoin('user_position as up', 'u.id', 'up.user_id')
+            ->where('u.id', '=', Auth::user()->id)
+            ->first();
+
+        if(isset($user)) {
+            $user_status = $user->position;
+        } else {
+            $user_status = 'company';
+        }
+        return response()->json(compact('user_status'),201);
     }
 }

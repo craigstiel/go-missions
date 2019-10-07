@@ -1,5 +1,13 @@
 <template>
     <div class="row">
+        <v-toolbar v-if="user_status === 'is_admin'" class="col-md-12" color="purple darken-3" dark style="height: 45px;">
+            <v-col cols="12" md="1" key=2 style="margin-top: -55px;">
+                <div class="my-2 mt-5"><v-btn small color="error"  style="align-self: normal;" dark>Only my</v-btn></div>
+            </v-col>
+            <v-col cols="12" md="1" key=3 style="margin-top: -55px;">
+                <div class="my-2 mt-5"><v-btn small color="error"  style="align-self: normal;" dark>All</v-btn></div>
+            </v-col>
+        </v-toolbar>
         <div class="col-md-4">
             <v-card flat tile class="first-card">
                 <v-container key="New tasks" fluid>
@@ -91,6 +99,7 @@
     export default {
         mounted: function () {
             let _this = this;
+            this.is_admin();
             this.get_new_task();
             this.get_active_task();
             this.get_completed_task();
@@ -105,6 +114,7 @@
             completed_tasks: [],
             dialog: false,
             value: null,
+            user_status: null,
             status: null,
             new_progress: true,
             active_progress: true,
@@ -154,6 +164,13 @@
                     .then(function (response) {
                         _this.completed_tasks = response.data.tasks;
                         _this.completed_progress = false;
+                    });
+            },
+            is_admin: function () {
+                let _this = this;
+                axios.get('/profile/is_admin')
+                    .then(function (response) {
+                        _this.user_status = response.data.user_status;
                     });
             }
         },

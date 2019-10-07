@@ -58,7 +58,7 @@
                 ],
                 phoneRules: [
                     v => !!v || 'Phone is required',
-                    v => /^\+?([0-9]{2})\)?[-. ]?([0-9]{4})[-. ]?([0-9]{4})$/.test(v) || 'Phone must be valid',
+                    v => /^[\+]?\d{2,}?[(]?\d{2,}[)]?[-\s\.]?\d{2,}?[-\s\.]?\d{2,}[-\s\.]?\d{0,9}$/im.test(v) || 'Phone must be valid',
                 ],
             };
         },

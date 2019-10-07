@@ -4,21 +4,27 @@
             <v-toolbar-title style="font-size: 16px; font-family: 'Roboto', sans-serif;">ADD TASK</v-toolbar-title>
         </v-toolbar>
         <v-card width="1000" flat>
-            <v-form ref="form" lazy-validation v-model="valid">
+            <ValidationObserver ref="obs">
             <v-card-text>
                 <div style="text-align: center"  v-if="task_progress">
                     <v-progress-circular indeterminate color="purple" style="margin: 10px;padding: 50px"></v-progress-circular>
                 </div>
                 <v-row v-else>
                     <v-col cols="12" md="7" key=1>
-                        <v-text-field style="margin-left: 15px" v-model="title" :rules="titleRules" label="Title" required></v-text-field>
+                        <ValidationProvider name="title" rules="required">
+                            <v-text-field style="margin-left: 15px" v-model="title" slot-scope="{errors, valid}" :error-messages="errors"
+                                      :success="valid" label="Title"></v-text-field>
+                        </ValidationProvider>
                     </v-col>
                     <v-col cols="12" md="1" key=2></v-col>
                     <v-col cols="12" md="3" key=3 style="margin-top: 20px">
                         <v-select :items="dicts.items" label="Priority" v-model="item" outlined></v-select>
                     </v-col>
                     <v-col cols="12" md="7" key=4>
-                        <v-textarea style="margin-left: 15px; margin-top: -30px" outlined name="input-7-4" label="Description" :rules="descriptionRules" v-model="description"></v-textarea>
+                        <ValidationProvider name="description" rules="required">
+                            <v-textarea style="margin-left: 15px; margin-top: -30px" outlined label="Description" slot-scope="{errors, valid}" :error-messages="errors"
+                                        :success="valid" v-model="description"></v-textarea>
+                        </ValidationProvider>
                     </v-col>
                     <v-col cols="12" md="1" key=5></v-col>
                     <v-col cols="12" md="3" key=6 style="margin-top: -10px">
@@ -32,7 +38,7 @@
                         <v-select :items="dicts.masters" item-value="id" item-text="name" label="Master" v-model="master" outlined></v-select>
                     </v-col>
                 </v-row>
-                <v-btn @click="add_task()" :disabled="valid" v-if="!task_progress">Save</v-btn>
+                <v-btn @click="add_task()" v-if="!task_progress">Save</v-btn>
             </v-card-text>
             <v-dialog v-model="dialog" hide-overlay persistent width="300">
                 <v-card>
@@ -43,13 +49,18 @@
                     </v-card-actions>
                 </v-card>
             </v-dialog>
-            </v-form>
+            </ValidationObserver>
         </v-card>
     </v-card>
 </template>
 
 <script>
+    import { ValidationObserver, ValidationProvider } from "vee-validate";
     export default {
+        components: {
+            ValidationProvider,
+            ValidationObserver
+        },
         mounted: function () {
             let _this = this;
             axios.get('/dict/masters/get')
@@ -68,13 +79,6 @@
                 });
         },
         data: () => ({
-            valid: true,
-            titleRules: [
-                v => !!v || 'Title is required',
-            ],
-            descriptionRules: [
-                v => !!v || 'Description is required',
-            ],
             title: '',
             description: '',
             dicts: {
@@ -90,21 +94,12 @@
             multiple: true,
             value: [],
         }),
-        watch: {
-            description: function () {
-                if (this.title.length > 3 && this.description.length > 3)
-                    this.valid = false;
-            },
-            task: function () {
-                if (this.title.length > 3 && this.description.length > 3)
-                    this.valid = false;
-            },
-        },
         methods: {
-            add_task: function () {
-                this.task_progress = true;
+            add_task: async function () {
                 let _this = this;
-                if (this.$refs.form.validate()) {
+                const result = await this.$refs.obs.validate();
+                if (result) {
+                    this.task_progress = true;
                     let data = {
                         title: _this.title,
                         description: _this.description,

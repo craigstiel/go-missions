@@ -14,6 +14,12 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import VeeValidate, {
+    Validator
+} from "vee-validate";
+import ru from "vee-validate/dist/locale/ru";
+
+Validator.localize("ru", ru);
 
 const opts = {
     theme: {
@@ -27,6 +33,7 @@ const opts = {
 Vue.use(VueRouter)
 Vue.use(Vuetify,opts)
 Vue.use(VueAxios, axios)
+Vue.use(VeeValidate)
 
 import App from './components/App';
 import Home from './components/Home';

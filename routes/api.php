@@ -17,6 +17,7 @@ Auth::routes(['verify' => true]);
 
 Route::post('/auth/register', 'AuthController@register');
 Route::post('/auth/login', 'AuthController@login');
+
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::get('auth/user', 'AuthController@user');
     Route::post('auth/logout', 'AuthController@logout');
@@ -52,6 +53,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
 
     Route::put('/profile/edit', 'UserController@edit_user');
     Route::put('/profile/password/edit', 'UserController@edit_password');
+    Route::get('/profile/is_admin', 'UserController@is_admin');
 });
 
 Route::middleware('auth:api')->get('/user', function (Request $request) {
