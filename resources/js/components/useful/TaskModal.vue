@@ -101,6 +101,7 @@
                     axios.put('/task/to_work/' + _this.task.id)
                         .then(function (response) {
                             _this.value.status = 1;
+                            _this.$bus.$emit("GetCount");
                         });
                 }
             },
@@ -119,6 +120,7 @@
                     axios.delete('/task/delete/' + _this.task.id)
                         .then(function (response) {
                             _this.value.status = 3;
+                            _this.$bus.$emit("GetCount");
                         });
                 }
             },

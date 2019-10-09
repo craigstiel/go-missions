@@ -1,17 +1,26 @@
 <template>
     <div class="row">
-        <v-toolbar v-if="user_status === 'is_admin'" class="col-md-12" color="purple darken-3" dark style="height: 45px;">
+        <v-toolbar v-if="user_status === 'admin'" class="col-md-12" color="purple darken-3" dark style="height: 45px;">
             <v-col cols="12" md="1" key=2 style="margin-top: -55px;">
-                <div class="my-2 mt-5"><v-btn small color="error"  style="align-self: normal;" dark>Only my</v-btn></div>
+                <div class="my-2 mt-5">
+                    <v-btn small color="error" v-if="all_tasks === false" outlined style="align-self: normal;"
+                           @click="all_tasks = false" dark>Only my</v-btn>
+                    <v-btn small color="error" v-else style="align-self: normal;" @click="all_tasks = false" dark>Only my</v-btn></div>
             </v-col>
             <v-col cols="12" md="1" key=3 style="margin-top: -55px;">
-                <div class="my-2 mt-5"><v-btn small color="error"  style="align-self: normal;" dark>All</v-btn></div>
+                <div class="my-2 mt-5">
+                    <v-btn small color="error" v-if="all_tasks === true" outlined style="align-self: normal;" @click="all_tasks = true" dark>All</v-btn>
+                    <v-btn small color="error" v-else style="align-self: normal;" @click="all_tasks = true" dark>All</v-btn>
+                </div>
             </v-col>
         </v-toolbar>
         <div class="col-md-4">
             <v-card flat tile class="first-card">
                 <v-container key="New tasks" fluid>
-                    <div class="flex font-weight-light" style="font-size: 24px; font-family: 'Roboto', sans-serif;">New tasks</div>
+                    <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
+                        <template v-slot:badge>{{ new_tasks.length }}</template>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">New tasks</span>
+                    </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
                         <div style="text-align: center" v-if="new_progress">
@@ -39,7 +48,10 @@
         <div class="col-md-4">
             <v-card flat tile class="second-card">
                 <v-container key="In procces" fluid>
-                    <div class="flex font-weight-light" style="font-size: 24px; font-family: 'Roboto', sans-serif;">In procces</div>
+                    <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
+                        <template v-slot:badge>{{ active_tasks.length }}</template>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">In progress</span>
+                    </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
                         <div style="text-align: center" v-if="active_progress">
@@ -67,7 +79,10 @@
         <div class="col-md-4">
             <v-card flat tile class="third-card">
                 <v-container key="Done" fluid>
-                    <div class="flex font-weight-light" style="font-size: 24px; font-family: 'Roboto', sans-serif;">Done</div>
+                    <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
+                        <template v-slot:badge>{{ completed_tasks.length }}</template>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">Done</span>
+                    </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
                         <div style="text-align: center" v-if="completed_progress">
@@ -117,6 +132,7 @@
             user_status: null,
             status: null,
             new_progress: true,
+            all_tasks: false,
             active_progress: true,
             completed_progress: true,
             dicts: {
@@ -134,6 +150,14 @@
                     this.get_active_task();
                     this.get_completed_task();
                 }
+            },
+            all_tasks: function () {
+                this.new_progress = true;
+                this.active_progress = true;
+                this.completed_progress = true;
+                this.get_new_task();
+                this.get_active_task();
+                this.get_completed_task();
             }
         },
         methods: {
@@ -144,27 +168,51 @@
             },
             get_new_task: function () {
                 let _this = this;
-                axios.get('/dict/new_tasks/get')
-                    .then(function (response) {
-                        _this.new_tasks = response.data.tasks;
-                        _this.new_progress = false;
-                    });
+                if(this.all_tasks === false) {
+                    axios.get('/dict/new_tasks/get')
+                        .then(function (response) {
+                            _this.new_tasks = response.data.tasks;
+                            _this.new_progress = false;
+                        });
+                } else {
+                    axios.get('/dict/new_tasks/get/all')
+                        .then(function (response) {
+                            _this.new_tasks = response.data.tasks;
+                            _this.new_progress = false;
+                        });
+                }
             },
             get_active_task: function () {
                 let _this = this;
-                axios.get('/dict/active_tasks/get')
-                    .then(function (response) {
-                        _this.active_tasks = response.data.tasks;
-                        _this.active_progress = false;
-                    });
+                if(this.all_tasks === false) {
+                    axios.get('/dict/active_tasks/get')
+                        .then(function (response) {
+                            _this.active_tasks = response.data.tasks;
+                            _this.active_progress = false;
+                        });
+                } else {
+                    axios.get('/dict/active_tasks/get/all')
+                        .then(function (response) {
+                            _this.active_tasks = response.data.tasks;
+                            _this.active_progress = false;
+                        });
+                }
             },
             get_completed_task: function () {
                 let _this = this;
-                axios.get('/dict/completed_tasks/get')
-                    .then(function (response) {
-                        _this.completed_tasks = response.data.tasks;
-                        _this.completed_progress = false;
-                    });
+                if(this.all_tasks === false) {
+                    axios.get('/dict/completed_tasks/get')
+                        .then(function (response) {
+                            _this.completed_tasks = response.data.tasks;
+                            _this.completed_progress = false;
+                        });
+                } else {
+                    axios.get('/dict/completed_tasks/get/all')
+                        .then(function (response) {
+                            _this.completed_tasks = response.data.tasks;
+                            _this.completed_progress = false;
+                        });
+                }
             },
             is_admin: function () {
                 let _this = this;

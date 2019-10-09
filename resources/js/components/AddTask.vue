@@ -109,9 +109,15 @@
                         images: _this.value,
                     };
                     axios.post('/task/add', data)
-                        .then(function () {
-                            _this.dialog = true;
-                            _this.task_progress = false;
+                        .then(function (response) {
+                            if (response.status === 200) {
+                                _this.dialog = true;
+                                _this.task_progress = false;
+                                _this.$bus.$emit("GetCount");
+                            }
+                        })
+                        .catch((error) => {
+                            console.log('error: ' + error);
                         });
                 }
             },

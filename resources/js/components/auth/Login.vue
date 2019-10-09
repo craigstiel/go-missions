@@ -54,6 +54,8 @@
                         redirect: '/',
                         fetchUser: true,
                     });
+                    app.$bus.$emit("GetCount");
+                    app.$bus.$emit("GetAdmin");
                 }
             },
         }

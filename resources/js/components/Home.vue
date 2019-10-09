@@ -30,9 +30,9 @@
             </v-list>
             <v-list v-if="$auth.check()" dense class="grey darken-4">
                 <template v-for="(item, i) in items">
-                    <v-divider v-if="item.divider" :key="i" dark class="my-4"
+                    <v-divider v-if="item.divider" :key="i+20" dark class="my-4"
                                :style="{'padding-bottom': user_status==='admin' ? '142%' : '160%'}"></v-divider>
-                    <v-list-item v-else :key="i" @click="$router.push({name: item.link})">
+                    <v-list-item v-else :key="i+20" @click="$router.push({name: item.link})">
                         <v-list-item-action>
                             <v-icon>{{ item.icon }}</v-icon>
                         </v-list-item-action>
@@ -44,8 +44,8 @@
                     </v-list-item>
                 </template>
                 <template v-if="user_status === 'admin'" v-for="(item, i) in admin">
-                    <v-divider v-if="item.divider" :key="i" dark class="my-4"></v-divider>
-                    <v-list-item v-else :key="i" @click="$router.push({name: item.link})">
+                    <v-divider v-if="item.divider" :key="i+10" dark class="my-4"></v-divider>
+                    <v-list-item v-else :key="i+10" @click="$router.push({name: item.link})">
                         <v-list-item-action>
                             <v-icon>{{ item.icon }}</v-icon>
                         </v-list-item-action>
@@ -87,15 +87,15 @@
         },
         mounted: function () {
             let _this = this;
+            this.$bus.$on("GetCount", () => {
+                _this.GetCount();
+            });
+            this.$bus.$on("GetAdmin", () => {
+                _this.GetAdmin();
+            });
             if(this.$auth.check()) {
-                axios.get('/task/count/get')
-                    .then(function (response) {
-                        _this.tasks_count = response.data.tasks_count;
-                    });
-                axios.get('/profile/is_admin')
-                        .then(function (response) {
-                            _this.user_status = response.data.user_status;
-                        });
+                _this.GetCount();
+                _this.GetAdmin();
             }
         },
         data: () => ({
@@ -116,6 +116,22 @@
                 {icon: 'fas fa-sign-in-alt', text: 'Sign in', link: 'login'},
             ],
         }),
+        methods:{
+            GetCount: function () {
+                let _this = this;
+                axios.get('/task/count/get')
+                    .then(function (response) {
+                        _this.tasks_count = response.data.tasks_count;
+                    });
+            },
+            GetAdmin: function () {
+                let _this = this;
+                axios.get('/profile/is_admin')
+                    .then(function (response) {
+                        _this.user_status = response.data.user_status;
+                    });
+            }
+        }
     }
 </script>
 

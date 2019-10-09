@@ -70,7 +70,7 @@ class TaskController extends Controller
         }
 
         return response([
-            'status' => 'success',
+            'status' => 200,
             'data' => $task
         ]);
     }

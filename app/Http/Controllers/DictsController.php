@@ -53,20 +53,34 @@ class DictsController extends Controller
 
     public function new_tasks()
     {
-       return response()->json(['tasks' => $this->correct_task(0)]);
+       return response()->json(['tasks' => $this->correct_task(0, false)]);
     }
 
     public function active_tasks()
     {
-        return response()->json(['tasks' => $this->correct_task(1)]);
+        return response()->json(['tasks' => $this->correct_task(1, false)]);
     }
 
     public function completed_tasks()
     {
-        return response()->json(['tasks' => $this->correct_task(2)]);
+        return response()->json(['tasks' => $this->correct_task(2, false)]);
+    }
+    public function new_tasks_all()
+    {
+       return response()->json(['tasks' => $this->correct_task(0, true)]);
     }
 
-    public function correct_task($status_id)
+    public function active_tasks_all()
+    {
+        return response()->json(['tasks' => $this->correct_task(1, true)]);
+    }
+
+    public function completed_tasks_all()
+    {
+        return response()->json(['tasks' => $this->correct_task(2, true)]);
+    }
+
+    public function correct_task($status_id, $all_tasks)
     {
         $tasks = DB::table('tasks as t')
             ->where('t.status', '=', $status_id)
@@ -74,8 +88,29 @@ class DictsController extends Controller
                 'c.email as client_email', 'm.name as master', 't.created_at', 't.status')
             ->leftJoin('task_types as tt', 'tt.id', 't.type')
             ->leftJoin('users as c', 'c.id', 't.created_by')
-            ->leftJoin('users as m', 'm.id', 't.master')
-            ->get()
+            ->leftJoin('users as m', 'm.id', 't.master');
+
+        $user = DB::table('user_position')->where('user_id', '=', Auth::user()->id)->first();
+        if (!$user) {
+            $tasks = $tasks->where('c.id', Auth::user()->id);
+        }
+        elseif($user->position === 'master') {
+            $tasks = $tasks->where(function ($query) {
+                $query->where('m.id', Auth::user()->id)
+                    ->orWhere('c.id', Auth::user()->id);
+            });
+        }
+        elseif($user->position === 'admin') {
+            if($all_tasks === false) {
+                $tasks = $tasks
+                    ->where(function ($query) {
+                        $query->where('m.id', Auth::user()->id)
+                            ->orWhere('c.id', Auth::user()->id);
+                    });
+            }
+        }
+
+        $tasks = $tasks->get()
             ->transform(function ($item, $key) {
                 $item->short_description = mb_substr($item->description, 0, 100);
                 if (strlen($item->short_description) < strlen($item->description)) {
@@ -85,7 +120,6 @@ class DictsController extends Controller
             });
 
         foreach ($tasks as $task) {
-            $user = DB::table('user_position')->where('user_id', '=', Auth::user()->id)->first();
             $task->user_position = $user ? $user->position : 'company';
 
             $images = DB::table('tasks_images')->where('task_id', '=', $task->id)->get();

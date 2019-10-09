@@ -4,6 +4,7 @@
  * building robust, powerful web applications using Vue and Laravel.
  */
 
+
 require('./bootstrap');
 import '@mdi/font/css/materialdesignicons.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
@@ -18,6 +19,7 @@ import VeeValidate, {
     Validator
 } from "vee-validate";
 import ru from "vee-validate/dist/locale/ru";
+import {setupBus} from "./other/eventBus";
 
 Validator.localize("ru", ru);
 
@@ -34,6 +36,7 @@ Vue.use(VueRouter)
 Vue.use(Vuetify,opts)
 Vue.use(VueAxios, axios)
 Vue.use(VeeValidate)
+setupBus();
 
 import App from './components/App';
 import Home from './components/Home';

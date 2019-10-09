@@ -36,6 +36,9 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::get('/dict/new_tasks/get', 'DictsController@new_tasks');
     Route::get('/dict/active_tasks/get', 'DictsController@active_tasks');
     Route::get('/dict/completed_tasks/get', 'DictsController@completed_tasks');
+    Route::get('/dict/new_tasks/get/all', 'DictsController@new_tasks_all');
+    Route::get('/dict/active_tasks/get/all', 'DictsController@active_tasks_all');
+    Route::get('/dict/completed_tasks/get/all', 'DictsController@completed_tasks_all');
     Route::get('/dict/profile/get', 'DictsController@profile');
 
     Route::delete('/masters/delete/{id}', 'SettingsController@delete_master');
