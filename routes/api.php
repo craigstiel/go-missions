@@ -53,6 +53,7 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::put('/task/done/{id}', 'TaskController@done');
     Route::delete('/task/delete/{id}', 'TaskController@delete_task');
     Route::get('/task/count/get', 'TaskController@count');
+    Route::put('/task/master/change/{id}', 'TaskController@change_master');
 
     Route::put('/profile/edit', 'UserController@edit_user');
     Route::put('/profile/password/edit', 'UserController@edit_password');

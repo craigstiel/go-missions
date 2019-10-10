@@ -1,16 +1,16 @@
 <template>
     <div class="row">
         <v-toolbar v-if="user_status === 'admin'" class="col-md-12" color="purple darken-3" dark style="height: 45px;">
-            <v-col cols="12" md="1" key=2 style="margin-top: -55px;">
+            <v-col cols="12" md="2" key=2 style="margin-top: -55px;">
                 <div class="my-2 mt-5">
                     <v-btn small color="error" v-if="all_tasks === false" outlined style="align-self: normal;"
-                           @click="all_tasks = false" dark>Only my</v-btn>
-                    <v-btn small color="error" v-else style="align-self: normal;" @click="all_tasks = false" dark>Only my</v-btn></div>
+                           @click="all_tasks = false" dark>{{ $ml.with('VueJS').get('only_my') }}</v-btn>
+                    <v-btn small color="error" v-else style="align-self: normal;" @click="all_tasks = false" dark>{{ $ml.with('VueJS').get('only_my') }}</v-btn></div>
             </v-col>
-            <v-col cols="12" md="1" key=3 style="margin-top: -55px;">
+            <v-col cols="12" md="1" key=3 style="margin-top: -55px; margin-left: -60px;">
                 <div class="my-2 mt-5">
-                    <v-btn small color="error" v-if="all_tasks === true" outlined style="align-self: normal;" @click="all_tasks = true" dark>All</v-btn>
-                    <v-btn small color="error" v-else style="align-self: normal;" @click="all_tasks = true" dark>All</v-btn>
+                    <v-btn small color="error" v-if="all_tasks === true" outlined style="align-self: normal;" @click="all_tasks = true" dark>{{ $ml.with('VueJS').get('all') }}</v-btn>
+                    <v-btn small color="error" v-else style="align-self: normal;" @click="all_tasks = true" dark>{{ $ml.with('VueJS').get('all') }}</v-btn>
                 </div>
             </v-col>
         </v-toolbar>
@@ -19,7 +19,7 @@
                 <v-container key="New tasks" fluid>
                     <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
                         <template v-slot:badge>{{ new_tasks.length }}</template>
-                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">New tasks</span>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">{{ $ml.with('VueJS').get('new_tasks') }}</span>
                     </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
@@ -39,7 +39,7 @@
                         <v-task v-model="value"></v-task>
                         <v-card-actions>
                             <div class="flex-grow-1"></div>
-                            <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+                            <v-btn color="blue darken-1" text @click="dialog = false">{{ $ml.with('VueJS').get('close') }}</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -50,7 +50,7 @@
                 <v-container key="In procces" fluid>
                     <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
                         <template v-slot:badge>{{ active_tasks.length }}</template>
-                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">In progress</span>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">{{ $ml.with('VueJS').get('in_progress') }}</span>
                     </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
@@ -70,7 +70,7 @@
                         <v-task v-model="value"></v-task>
                         <v-card-actions>
                             <div class="flex-grow-1"></div>
-                            <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+                            <v-btn color="blue darken-1" text @click="dialog = false">{{ $ml.with('VueJS').get('close') }}</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
@@ -81,7 +81,7 @@
                 <v-container key="Done" fluid>
                     <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
                         <template v-slot:badge>{{ completed_tasks.length }}</template>
-                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">Done</span>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">{{ $ml.with('VueJS').get('done') }}</span>
                     </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
@@ -101,7 +101,7 @@
                         <v-task v-model="value" :dialog="dialog"></v-task>
                         <v-card-actions>
                             <div class="flex-grow-1"></div>
-                            <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
+                            <v-btn color="blue darken-1" text @click="dialog = false">{{ $ml.with('VueJS').get('close') }}</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>

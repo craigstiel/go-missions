@@ -111,4 +111,14 @@ class TaskController extends Controller
 
         return response()->json(['tasks_count' => $tasks_count]);
     }
+
+    public function change_master (Request $request, $id) {
+        $task = Tasks::find($id);
+        $task->master = $request->master;
+        $task->save();
+
+        return response([
+            'status' => 'success'
+        ]);
+    }
 }

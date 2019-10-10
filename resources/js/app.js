@@ -3,8 +3,6 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
-
-
 require('./bootstrap');
 import '@mdi/font/css/materialdesignicons.css'
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
@@ -20,6 +18,7 @@ import VeeValidate, {
 } from "vee-validate";
 import ru from "vee-validate/dist/locale/ru";
 import {setupBus} from "./other/eventBus";
+import './other/multLang';
 
 Validator.localize("ru", ru);
 

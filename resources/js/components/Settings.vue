@@ -5,7 +5,8 @@
                 <template>
                     <v-tabs v-model="tab" background-color="transparent">
                         <v-tabs-slider color="blue lighten-1"></v-tabs-slider>
-                        <v-tab v-for="item in items" :key="item">{{ item }}</v-tab>
+                        <v-tab>{{$ml.with('VueJS').get('masters')}}</v-tab>
+                        <v-tab>{{$ml.with('VueJS').get('types')}}</v-tab>
                     </v-tabs>
                 </template>
             </v-toolbar>
@@ -15,10 +16,10 @@
                         <v-card-text>
                             <v-row>
                                 <v-col cols="12" md="3" key=1>
-                                    <v-checkbox v-model="mult" label="Tasks only for admin" color="error" value="error" hide-details></v-checkbox>
+                                    <v-checkbox v-model="mult" :label="$ml.with('VueJS').get('for_admin')" color="error" value="error" hide-details></v-checkbox>
                                 </v-col>
                                 <v-col cols="12" md="2" key=2>
-                                    <div class="my-2 mt-5"><v-btn @click="approve_multiple()" small color="error" dark>Approve</v-btn></div>
+                                    <div class="my-2 mt-5"><v-btn @click="approve_multiple()" small color="error" dark>{{$ml.with('VueJS').get('approve')}}</v-btn></div>
                                 </v-col>
                             </v-row>
                             <v-card v-if="multiple && dicts.new_masters[0]">
@@ -27,7 +28,7 @@
                                         <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
                                     </div>
                                     <div v-if="!new_progress">
-                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">New masters</div>
+                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">{{$ml.with('VueJS').get('active_masters')}}</div>
                                         <v-row>
                                         <v-card max-width="250" min-height="70" class="second-card col-md-3 ml-3" :key="master.id" v-for="master in dicts.new_masters">
                                             <v-btn class="delete-button" @click="delete_new_master(master.id)" color="error" fab x-small dark><i class="fas fa-times"></i></v-btn>
@@ -44,12 +45,12 @@
                                         <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
                                     </div>
                                     <div v-if="!active_progress">
-                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">Active masters</div>
+                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">{{$ml.with('VueJS').get('active_masters')}}</div>
                                         <v-row>
                                         <v-card max-width="230" min-height="70" class="second-card col-md-3 ml-3" :key="master.id" v-for="master in dicts.active_masters">
                                             <v-btn class="delete-button" @click="delete_active_master(master.id)" v-if="master.position !== 'admin'" color="error" fab x-small dark><i class="fas fa-times"></i></v-btn>
                                             <v-btn class="add-button" @click="disapprove_master(master.id)" v-if="master.position !== 'admin'" color="warning" fab x-small dark><i class="fas fa-minus"></i></v-btn>
-                                            <v-btn class="delete-button" v-if="master.position === 'admin'" color="error" x-small dark>admin</v-btn>
+                                            <v-btn class="delete-button" v-if="master.position === 'admin'" color="error" x-small dark>{{$ml.with('VueJS').get('admin')}}</v-btn>
                                             <v-card-text style="font-size: 16px;">{{ master.name }}</v-card-text>
                                         </v-card>
                                         </v-row>
@@ -79,18 +80,18 @@
                         <v-card-text>
                             <v-dialog v-model="dialog" persistent max-width="600px">
                             <template v-slot:activator="{ on }">
-                                <div class="my-2"><v-btn color="error" v-on="on" dark large>Add type</v-btn></div>
+                                <div class="my-2"><v-btn color="error" v-on="on" dark large>{{$ml.with('VueJS').get('add_type')}}</v-btn></div>
                             </template>
                                 <v-form ref="form" lazy-validation>
                             <v-card>
                                 <v-card-title>
-                                    <span class="headline">Add type</span>
+                                    <span class="headline">{{$ml.with('VueJS').get('add_type')}}</span>
                                 </v-card-title>
                                 <v-card-text>
                                     <v-container>
                                         <v-row>
-                                            <v-col cols="12" sm="6" md="6"><v-text-field label="Type name*" required v-model="type.name"></v-text-field></v-col>
-                                            <v-col cols="12" sm="6" md="6"><v-text-field label="Type system name*" hint="In English, please." v-model="type.system_name" required></v-text-field></v-col>
+                                            <v-col cols="12" sm="6" md="6"><v-text-field :label="$ml.with('VueJS').get('type_name')" required v-model="type.name"></v-text-field></v-col>
+                                            <v-col cols="12" sm="6" md="6"><v-text-field :label="$ml.with('VueJS').get('type_system_name')" hint="In English, please." v-model="type.system_name" required></v-text-field></v-col>
                                         </v-row>
                                         <div class="d-flex">
                                             <v-color-picker v-model="color" class="mx-auto"></v-color-picker>
@@ -99,8 +100,8 @@
                                 </v-card-text>
                                 <v-card-actions>
                                     <div class="flex-grow-1"></div>
-                                    <v-btn color="blue darken-1" text @click="dialog = false">Close</v-btn>
-                                    <v-btn color="blue darken-1" text @click="add_type()">Save</v-btn>
+                                    <v-btn color="blue darken-1" text @click="dialog = false">{{$ml.with('VueJS').get('close')}}</v-btn>
+                                    <v-btn color="blue darken-1" text @click="add_type()">{{$ml.with('VueJS').get('save')}}</v-btn>
                                 </v-card-actions>
                             </v-card>
                                 </v-form>
@@ -111,7 +112,7 @@
                                         <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
                                     </div>
                                     <div v-if="!type_progress">
-                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">Types</div>
+                                        <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">{{$ml.with('VueJS').get('types')}}</div>
                                         <v-row>
                                             <v-card max-width="250" min-height="70" :style="{'background-color': type.color}" class="col-md-3 ml-3" :key="type.id" v-for="type in dicts.types">
                                                 <v-card-text style="font-size: 16px;">{{ type.name }}</v-card-text>
@@ -177,9 +178,6 @@ Playground
                     new_masters: [],
                     types: [],
                 },
-                items: [
-                    'masters', 'types',
-                ],
             }
         },
         methods: {

@@ -7,15 +7,15 @@
          :class="{ dragging: isDragging }">
 
         <div class="upload-control" v-show="images.length">
-            <label for="file">Select file</label>
-            <button @click="upload">Upload</button>
+            <label for="file">{{ $ml.with('VueJS').get('select_file') }}</label>
+            <button @click="upload">{{ $ml.with('VueJS').get('upload') }}</button>
         </div>
 
         <div v-show="!images.length">
-            <p style="color: #AB75CC">Drag your image here</p>
-            <div style="color: #AB75CC">or</div>
+            <p style="color: #AB75CC">{{ $ml.with('VueJS').get('drag') }}</p>
+            <div style="color: #AB75CC">{{ $ml.with('VueJS').get('or') }}</div>
             <div class="file-input">
-                <label for="file">Select file</label>
+                <label for="file">{{ $ml.with('VueJS').get('select_file') }}</label>
                 <input type="file" id="file" @change="onInputChange" multiple>
             </div>
         </div>

@@ -6,11 +6,11 @@
             </v-col>
             <v-col cols="12" md="12" style="margin-top: -20px">
                 <v-text-field v-model="password" :append-icon="show1 ? 'visibility' : 'visibility_off'" :rules="[passwordRules.required, passwordRules.min]"
-                              :type="show1 ? 'text' : 'password'" name="input-10-1" label="Password" hint="At least 8 characters"
+                              :type="show1 ? 'text' : 'password'" name="input-10-1" :label="$ml.with('VueJS').get('pass')"
                               counter @click:append="show1 = !show1" ></v-text-field>
             </v-col>
             <v-col cols="12" md="12">
-                <v-btn :disabled="!valid" color="success" class="mr-4" @click="login">Sing in</v-btn>
+                <v-btn :disabled="!valid" color="success" class="mr-4" @click="login">{{$ml.with('VueJS').get('sign_in')}}</v-btn>
             </v-col>
         </v-form>
     </v-card>

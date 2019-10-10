@@ -139,8 +139,6 @@ class DictsController extends Controller
             ->select('u.id', 'u.name', 'u.email', 'u.phone', 'u.telegram', 'up.position', 'up.is_active', 'u.password')
             ->first();
 
-        $user->is_active = $user->is_active === 1 ? 'Yes' : 'No';
-
         return response()->json(['profile' => $user]);
     }
 }
