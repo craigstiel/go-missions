@@ -1,37 +1,49 @@
 <template>
-    <v-card width="600" :height="height" class="mx-auto mycontent-left" style="margin-top: 30px">
-        <v-form ref="form" v-model="valid" lazy-validation>
-            <v-col cols="12" md="12">
-                <v-text-field v-model="name" :counter="255" :rules="nameRules" :label="$ml.with('VueJS').get('full_name')" required ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="12" style="margin-top: -20px">
-                <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
-            </v-col>
-            <v-col cols="12" md="12" style="margin-top: -20px">
-                <v-text-field v-model="telegram" label="Telegram"></v-text-field>
-            </v-col>
-            <v-col cols="12" md="12" style="margin-top: -20px">
-                <v-switch v-model="master" :label="$ml.with('VueJS').get('master')"></v-switch>
-            </v-col>
-            <v-col cols="12" md="12" style="margin-top: -20px" v-if="!master">
-                <v-text-field v-model="phone" :rules="phoneRules" :label="$ml.with('VueJS').get('phone')" required></v-text-field>
-            </v-col>
-            <v-col cols="12" md="12" style="margin-top: -20px">
-                <v-text-field v-model="password" :append-icon="show1 ? 'visibility' : 'visibility_off'" :rules="[passwordRules.required, passwordRules.min]"
-                              :type="show1 ? 'text' : 'password'" name="input-10-1" :label="$ml.with('VueJS').get('pass')"
-                              counter @click:append="show1 = !show1" ></v-text-field>
-            </v-col>
-            <v-col cols="12" md="12">
-                <v-btn :disabled="!valid" color="success" class="mr-4" @click="register">{{$ml.with('VueJS').get('sign_up')}}</v-btn>
-            </v-col>
-            <v-card-text>{{$ml.with('VueJS').get('reg_rule')}}.</v-card-text>
-        </v-form>
-    </v-card>
+    <v-row>
+        <v-col md="2"></v-col>
+        <v-col cols="12" md="8">
+            <v-card :height="height" class="mx-auto mycontent-left">
+                <v-form ref="form" v-model="valid" lazy-validation>
+                    <v-col cols="12" md="12">
+                        <v-text-field v-model="name" :counter="255" :rules="nameRules"
+                                      :label="$ml.with('VueJS').get('full_name')" required></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12" style="margin-top: -20px">
+                        <v-text-field v-model="email" :rules="emailRules" label="E-mail" required></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12" style="margin-top: -20px">
+                        <v-text-field v-model="telegram" label="Telegram"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12" style="margin-top: -20px">
+                        <v-switch v-model="master" :label="$ml.with('VueJS').get('master')"></v-switch>
+                    </v-col>
+                    <v-col cols="12" md="12" style="margin-top: -20px" v-if="!master">
+                        <v-text-field v-model="phone" :rules="phoneRules" :label="$ml.with('VueJS').get('phone')"
+                                      required></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12" style="margin-top: -20px">
+                        <v-text-field v-model="password" :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                                      :rules="[passwordRules.required, passwordRules.min]"
+                                      :type="show1 ? 'text' : 'password'" name="input-10-1"
+                                      :label="$ml.with('VueJS').get('pass')"
+                                      counter @click:append="show1 = !show1"></v-text-field>
+                    </v-col>
+                    <v-col cols="12" md="12">
+                        <v-btn :disabled="!valid" color="success" class="mr-4" @click="register">
+                            {{$ml.with('VueJS').get('sign_up')}}
+                        </v-btn>
+                    </v-col>
+                    <v-card-text>{{$ml.with('VueJS').get('reg_rule')}}.</v-card-text>
+                </v-form>
+            </v-card>
+        </v-col>
+        <v-col md="2"></v-col>
+    </v-row>
 </template>
 
 <script>
     export default {
-        data(){
+        data() {
             return {
                 name: '',
                 email: '',
@@ -63,15 +75,15 @@
             };
         },
         watch: {
-            master(){
-                if(this.master === false)
+            master() {
+                if (this.master === false)
                     this.height = 570;
                 else
                     this.height = 500;
             },
         },
         methods: {
-            register(){
+            register() {
                 var app = this
                 if (this.$refs.form.validate()) {
                     this.$auth.register({

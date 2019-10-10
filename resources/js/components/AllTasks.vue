@@ -1,5 +1,6 @@
 <template>
-    <div class="row">
+    <v-row>
+        <v-col cols="12" md="12">
         <v-toolbar v-if="user_status === 'admin'" class="col-md-12" color="purple darken-3" dark style="height: 45px;">
             <v-col cols="12" md="2" key=2 style="margin-top: -55px;">
                 <div class="my-2 mt-5">
@@ -14,12 +15,13 @@
                 </div>
             </v-col>
         </v-toolbar>
-        <div class="col-md-4">
+        </v-col>
+        <v-col cols="12" md="4" sm="12">
             <v-card flat tile class="first-card">
                 <v-container key="New tasks" fluid>
                     <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
                         <template v-slot:badge>{{ new_tasks.length }}</template>
-                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">{{ $ml.with('VueJS').get('new_tasks') }}</span>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif; margin-left: 20px">{{ $ml.with('VueJS').get('new_tasks') }}</span>
                     </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
@@ -27,30 +29,21 @@
                             <v-progress-circular indeterminate color="purple" style="margin: 10px; left: -350%"></v-progress-circular>
                         </div>
                         <v-col v-else v-for="task in new_tasks" :key="task.id" cols="12" sm="6" md="12">
-                            <v-card max-width="344" class="mx-auto cards">
-                                <v-card-title><a @click="show(task)" style="color:white; font-size: 18px">{{task.title}}</a></v-card-title>
-                                <v-card-text style="margin-top: -10px;">{{task.short_description}}</v-card-text>
+                            <v-card @click="show(task)" max-width="344" class="mx-auto cards" style="cursor: pointer">
+                                <v-card-title><a style="color:white; font-size: 18px; line-height: 20px;">{{task.title}}</a></v-card-title>
+                                <v-card-text>{{task.short_description}}</v-card-text>
                             </v-card>
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-dialog v-model="dialog" hide-overlay persistent width="800">
-                    <v-card>
-                        <v-task v-model="value"></v-task>
-                        <v-card-actions>
-                            <div class="flex-grow-1"></div>
-                            <v-btn color="blue darken-1" text @click="dialog = false">{{ $ml.with('VueJS').get('close') }}</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
             </v-card>
-        </div>
-        <div class="col-md-4">
+        </v-col>
+        <v-col cols="12" md="4" sm="12">
             <v-card flat tile class="second-card">
                 <v-container key="In procces" fluid>
                     <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
                         <template v-slot:badge>{{ active_tasks.length }}</template>
-                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">{{ $ml.with('VueJS').get('in_progress') }}</span>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif; margin-left: 20px">{{ $ml.with('VueJS').get('in_progress') }}</span>
                     </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
@@ -58,30 +51,30 @@
                             <v-progress-circular indeterminate color="purple" style="margin: 10px; left: -350%"></v-progress-circular>
                         </div>
                         <v-col v-else v-for="task in active_tasks" :key="task.id" cols="12" sm="6" md="12">
-                            <v-card max-width="344" class="mx-auto cards">
-                                <v-card-title><a @click="show(task)" style="color:white; font-size: 18px">{{task.title}}</a></v-card-title>
-                                <v-card-text style="margin-top: -10px;">{{task.short_description}}</v-card-text>
+                            <v-card @click="show(task)" style="cursor: pointer" max-width="344" class="mx-auto cards">
+                                <v-card-title><a style="color:white; font-size: 18px; line-height: 20px;">{{task.title}}</a></v-card-title>
+                                <v-card-text>{{task.short_description}}</v-card-text>
                             </v-card>
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-dialog v-model="dialog" hide-overlay persistent width="800">
+                <v-dialog v-model="dialog">
                     <v-card>
                         <v-task v-model="value"></v-task>
                         <v-card-actions>
                             <div class="flex-grow-1"></div>
-                            <v-btn color="blue darken-1" text @click="dialog = false">{{ $ml.with('VueJS').get('close') }}</v-btn>
+                            <v-btn color="blue darken-1" text @click="dialog = false" style="margin-top: -30px">{{ $ml.with('VueJS').get('close') }}</v-btn>
                         </v-card-actions>
                     </v-card>
                 </v-dialog>
             </v-card>
-        </div>
-        <div class="col-md-4">
+        </v-col>
+        <v-col cols="12" md="4" sm="12">
             <v-card flat tile class="third-card">
                 <v-container key="Done" fluid>
                     <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
                         <template v-slot:badge>{{ completed_tasks.length }}</template>
-                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif;">{{ $ml.with('VueJS').get('done') }}</span>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif; margin-left: 20px">{{ $ml.with('VueJS').get('done') }}</span>
                     </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
@@ -89,25 +82,16 @@
                             <v-progress-circular indeterminate color="purple" style="margin: 10px; left: -350%"></v-progress-circular>
                         </div>
                         <v-col v-else v-for="task in completed_tasks" :key="task.id" cols="12" sm="6" md="12">
-                            <v-card max-width="344" class="mx-auto cards">
-                                <v-card-title><a @click="show(task)" style="color:white; font-size: 18px">{{task.title}}</a></v-card-title>
-                                <v-card-text style="margin-top: -10px;">{{task.short_description}}</v-card-text>
+                            <v-card @click="show(task)" max-width="344" class="mx-auto cards" style="cursor: pointer">
+                                <v-card-title><a style="color:white; font-size: 18px; line-height: 20px;">{{task.title}}</a></v-card-title>
+                                <v-card-text>{{task.short_description}}</v-card-text>
                             </v-card>
                         </v-col>
                     </v-row>
                 </v-container>
-                <v-dialog v-model="dialog" hide-overlay persistent width="800">
-                    <v-card>
-                        <v-task v-model="value" :dialog="dialog"></v-task>
-                        <v-card-actions>
-                            <div class="flex-grow-1"></div>
-                            <v-btn color="blue darken-1" text @click="dialog = false">{{ $ml.with('VueJS').get('close') }}</v-btn>
-                        </v-card-actions>
-                    </v-card>
-                </v-dialog>
             </v-card>
-        </div>
-    </div>
+        </v-col>
+    </v-row>
 </template>
 
 <script>
@@ -239,5 +223,9 @@
     .image {
         width: 400px;
         max-width: 100%;
+    }
+    .v-dialog {
+        box-shadow: none !important;
+        width: 70% !important;
     }
 </style>

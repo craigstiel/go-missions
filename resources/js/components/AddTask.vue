@@ -1,57 +1,63 @@
 <template>
-    <v-card width="1000" class="mx-auto mycontent-left" style="margin-top: 10px">
-        <v-toolbar color="purple darken-3" dark>
-            <v-toolbar-title style="font-size: 16px; font-family: 'Roboto', sans-serif;">{{ $ml.with('VueJS').get('add_task_caps') }}</v-toolbar-title>
-        </v-toolbar>
-        <v-card width="1000" flat>
-            <ValidationObserver ref="obs">
-            <v-card-text>
-                <div style="text-align: center"  v-if="task_progress">
-                    <v-progress-circular indeterminate color="purple" style="margin: 10px;padding: 50px"></v-progress-circular>
-                </div>
-                <v-row v-else>
-                    <v-col cols="12" md="7" key=1>
-                        <ValidationProvider name="title" rules="required">
-                            <v-text-field style="margin-left: 15px" v-model="title" slot-scope="{errors, valid}" :error-messages="errors"
-                                      :success="valid" :label="$ml.with('VueJS').get('title')"></v-text-field>
-                        </ValidationProvider>
-                    </v-col>
-                    <v-col cols="12" md="1" key=2></v-col>
-                    <v-col cols="12" md="3" key=3 style="margin-top: 20px">
-                        <v-select :items="dicts.items" :label="$ml.with('VueJS').get('priority')" v-model="item" outlined></v-select>
-                    </v-col>
-                    <v-col cols="12" md="7" key=4>
-                        <ValidationProvider name="description" rules="required">
-                            <v-textarea style="margin-left: 15px; margin-top: -30px" outlined :label="$ml.with('VueJS').get('description')" slot-scope="{errors, valid}" :error-messages="errors"
-                                        :success="valid" v-model="description"></v-textarea>
-                        </ValidationProvider>
-                    </v-col>
-                    <v-col cols="12" md="1" key=5></v-col>
-                    <v-col cols="12" md="3" key=6 style="margin-top: -10px">
-                        <v-select :items="dicts.types" item-value="id" item-text="name" :label="$ml.with('VueJS').get('type')" v-model="type" outlined></v-select>
-                    </v-col>
-                    <v-col cols="12" md="7" key=7>
-                        <v-image v-model="value" style="margin-top: -20px; margin-left: 15px"></v-image>
-                    </v-col>
-                    <v-col cols="12" md="1" key=8></v-col>
-                    <v-col cols="12" md="3" key=9 style="margin-top: -50px" v-if="multiple">
-                        <v-select :items="dicts.masters" item-value="id" item-text="name" :label="$ml.with('VueJS').get('master')" v-model="master" outlined></v-select>
-                    </v-col>
-                </v-row>
-                <v-btn @click="add_task()" v-if="!task_progress">{{ $ml.with('VueJS').get('save') }}</v-btn>
-            </v-card-text>
-            <v-dialog v-model="dialog" hide-overlay persistent width="300">
-                <v-card>
-                    <v-card-title class="headline">{{ $ml.with('VueJS').get('add_success') }}.</v-card-title>
-                    <v-card-actions>
-                        <div class="flex-grow-1"></div>
-                        <v-btn color="green darken-1" text @click="$router.push({name: 'tasks'})">OK</v-btn>
-                    </v-card-actions>
+    <div class="row">
+        <v-col md="1"></v-col>
+        <v-col cols="12" md="10" key=12>
+            <v-card class="mx-auto mycontent-left" style="margin-top: -30px">
+                <v-toolbar color="purple darken-3" dark>
+                    <v-toolbar-title style="font-size: 16px; font-family: 'Roboto', sans-serif; margin-left: 15px">{{ $ml.with('VueJS').get('add_task_caps') }}</v-toolbar-title>
+                </v-toolbar>
+                <v-card flat>
+                    <ValidationObserver ref="obs">
+                        <v-card-text>
+                            <div style="text-align: center"  v-if="task_progress">
+                                <v-progress-circular indeterminate color="purple" style="margin: 10px;padding: 50px"></v-progress-circular>
+                            </div>
+                            <v-row v-else>
+                                <v-col cols="7" md="7" sm="7" key=1>
+                                    <ValidationProvider name="title" rules="required">
+                                        <v-text-field style="margin-left: 15px" v-model="title" slot-scope="{errors, valid}" :error-messages="errors"
+                                                :success="valid" :label="$ml.with('VueJS').get('title')"></v-text-field>
+                                    </ValidationProvider>
+                                </v-col>
+                                <v-col cols="1" md="1" sm="1" key=2></v-col>
+                                <v-col cols="3" md="3" sm="3" key=3 style="margin-top: 20px">
+                                    <v-select :items="dicts.items" :label="$ml.with('VueJS').get('priority')" v-model="item" outlined></v-select>
+                                </v-col>
+                                <v-col cols="7" md="7" sm="7" key=4>
+                                    <ValidationProvider name="description" rules="required">
+                                        <v-textarea style="margin-left: 15px; margin-top: -30px" outlined :label="$ml.with('VueJS').get('description')" slot-scope="{errors, valid}"
+                                                    :error-messages="errors" :success="valid" v-model="description"></v-textarea>
+                                    </ValidationProvider>
+                                </v-col>
+                                <v-col cols="1" md="1" sm="1" key=5></v-col>
+                                <v-col cols="3" md="3" sm="3" key=6 style="margin-top: -10px">
+                                    <v-select :items="dicts.types" item-value="id" item-text="name" :label="$ml.with('VueJS').get('type')" v-model="type" outlined></v-select>
+                                </v-col>
+                                <v-col cols="7" md="7" sm="7" key=7>
+                                    <v-image v-model="value" style="margin-top: -20px; margin-left: 15px"></v-image>
+                                </v-col>
+                                <v-col cols="1" md="1" sm="1" key=8></v-col>
+                                <v-col cols="3" md="3" sm="3" key=9 style="margin-top: -50px" v-if="multiple">
+                                    <v-select :items="dicts.masters" item-value="id" item-text="name" :label="$ml.with('VueJS').get('master')"
+                                              v-model="master" outlined></v-select>
+                                </v-col>
+                            </v-row>
+                            <v-btn @click="add_task()" v-if="!task_progress">{{ $ml.with('VueJS').get('save') }}</v-btn>
+                        </v-card-text>
+                        <v-dialog v-model="dialog" hide-overlay persistent width="300">
+                            <v-card>
+                                <v-card-title class="headline">{{ $ml.with('VueJS').get('add_success') }}.</v-card-title>
+                                <v-card-actions>
+                                    <div class="flex-grow-1"></div>
+                                    <v-btn color="green darken-1" text @click="$router.push({name: 'tasks'})">OK</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-dialog>
+                    </ValidationObserver>
                 </v-card>
-            </v-dialog>
-            </ValidationObserver>
-        </v-card>
-    </v-card>
+            </v-card>
+        </v-col>
+    </div>
 </template>
 
 <script>

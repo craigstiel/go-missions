@@ -85,7 +85,7 @@ class DictsController extends Controller
         $tasks = DB::table('tasks as t')
             ->where('t.status', '=', $status_id)
             ->select('t.title','t.id as id', 't.description', 'tt.name as type', 'tt.color as type_color', 'c.name as client', 'c.phone as client_phone',
-                'c.email as client_email', 'm.name as master', 't.created_at', 't.status')
+                'c.email as client_email', 'm.name as master', 't.created_at', 't.status', 't.priority')
             ->leftJoin('task_types as tt', 'tt.id', 't.type')
             ->leftJoin('users as c', 'c.id', 't.created_by')
             ->leftJoin('users as m', 'm.id', 't.master');

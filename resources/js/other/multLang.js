@@ -67,6 +67,10 @@ export default new MLCreate({
             profile: 'Profile',
             settings: 'Settings',
             reg_rule: 'To enter your account you should verify email',
+            del_type: 'Do you really want to delete this task type?',
+            low: 'Low',
+            medium: 'Medium',
+            high: 'High',
         }),
 
         new MLanguage('russian').create({
@@ -87,7 +91,7 @@ export default new MLCreate({
             new_task: 'Новое задание',
             active_task: 'Активное задание',
             completed_task: 'Выполненное задание',
-            in_progress: 'В процессе',
+            in_progress: 'В работе',
             done: 'Выполнены',
             only_my: 'Только мои',
             all: 'Все',
@@ -129,6 +133,10 @@ export default new MLCreate({
             profile: 'Профиль',
             settings: 'Настройки',
             reg_rule: 'Для входа в аккаунт вам необходимо верифицировать e-mail',
+            del_type: 'Вы действительно хотите удалить этот тип?',
+            low: 'Низкий',
+            medium: 'Средний',
+            high: 'Высокий',
         })
     ]
 })
