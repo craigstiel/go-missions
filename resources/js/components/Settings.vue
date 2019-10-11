@@ -128,9 +128,9 @@
                                                                     hint="In English, please." v-model="type.system_name" required></v-text-field>
                                                             </v-col>
                                                         </v-row>
-                                                        <div class="d-flex">
+                                                        <v-col cols="12" sm="12" md="12">
                                                             <v-color-picker v-model="color" class="mx-auto"></v-color-picker>
-                                                        </div>
+                                                        </v-col>
                                                     </v-container>
                                                 </v-card-text>
                                                 <v-card-actions>
@@ -343,5 +343,9 @@ Playground
 <style>
     .mycontent-left {
         border-right: 1px dashed #333;
+    }
+    .v-application--is-ltr .v-tabs-bar.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows)>.v-slide-group__wrapper>
+    .v-tabs-bar__content>.v-tabs-slider-wrapper+.v-tab {
+        margin-left: 0 !important;
     }
 </style>

@@ -8,7 +8,6 @@
 
         <div class="upload-control" v-show="images.length">
             <label for="file">{{ $ml.with('VueJS').get('select_file') }}</label>
-            <button @click="upload">{{ $ml.with('VueJS').get('upload') }}</button>
         </div>
 
         <div v-show="!images.length">
@@ -220,6 +219,14 @@
                 padding: 2px 5px;
                 margin-right: 10px;
             }
+        }
+    }
+    @media screen and (max-width: 600px) {
+        .uploader .file-input[data-v-1e8761db] {
+            width: 70%;
+        }
+        body {
+            line-height: 20px;
         }
     }
 </style>

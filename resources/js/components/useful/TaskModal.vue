@@ -1,22 +1,22 @@
 <template>
     <v-card-text>
-        <v-container>
+<!--        <v-container>-->
             <v-row v-if="task">
-                <v-col cols="12" md="3" sm="3"><v-chip class="ma-2" color="primary" text-color="white">{{ status_name }}</v-chip></v-col>
-                <v-col md="9"></v-col>
-                <v-col cols="12" md="8" sm="8" class="mg-task-20"><v-card-title>{{task.title}}</v-card-title></v-col>
-                <v-col cols="6" md="2" sm="2" class="mg-task-20" v-if="task.user_position !== 'company'">
+                <v-col cols="12" md="4" sm="4"><v-chip class="ma-2" color="primary" text-color="white">{{ status_name }}</v-chip></v-col>
+                <v-col md="8" sm="8"></v-col>
+                <v-col cols="12" md="8" sm="8" class="mg-task-20 xs-task-50 sm-task-30"><v-card-title>{{task.title}}</v-card-title></v-col>
+                <v-col cols="6" md="2" sm="2" class="mg-task-20 xs-task-30 sm-task-30" v-if="task.user_position !== 'company'">
                     <div class="my-2 mt-5">
                         <v-btn v-if="task.status === 0" small color="success" dark @click="to_work()">{{$ml.with('VueJS').get('to_work')}}</v-btn>
                         <v-btn v-if="task.status === 1" small color="success" dark @click="done()">{{$ml.with('VueJS').get('to_done')}}</v-btn>
                     </div></v-col>
-                <v-col cols="6" md="2" sm="2" class="mg-task-20">
+                <v-col cols="6" md="2" sm="2" class="mg-task-20 xs-task-30 sm-task-30">
                     <div class="my-2 mt-5" v-if="task.user_position === 'admin'"><v-btn @click="delete_task()" small color="error" dark>
                         {{ $ml.with('VueJS').get('delete') }}</v-btn></div>
                     <div class="my-2 mt-5" v-else></div></v-col>
-                <v-col cols="12" md="10" sm="10" class="mg-task-30"><v-card-text>{{task.description}}</v-card-text></v-col>
-                <v-col md="2" sm="2" class="mg-task-30"></v-col>
-                <v-col cols="12" md="12" sm="12" class="mg-task-30" v-if="task.images[0]">
+                <v-col cols="12" md="10" sm="10" class="mg-task-30 sm-task-30"><v-card-text>{{task.description}}</v-card-text></v-col>
+                <v-col md="2" sm="2" class="mg-task-30 sm-task-30"></v-col>
+                <v-col cols="12" md="12" sm="12" class="mg-task-30 sm-task-30" style="padding-bottom: 20px" v-if="task.images[0]">
                     <v-card>
                         <v-card-text>
                             <v-row>
@@ -29,38 +29,39 @@
                         </v-card-text>
                     </v-card>
                 </v-col>
-                <v-col cols="12" md="2" sm="3" class="mg-task-20"><v-card-text>{{$ml.with('VueJS').get('type')}}:</v-card-text></v-col>
-                <v-col cols="12" md="3" sm="5" class="mg-task-20"><v-card-text :style="{'color': task.type_color}">{{task.type}}</v-card-text></v-col>
-                <v-col md="2" sm="4" class="mg-task-20"></v-col>
-                <v-col cols="5" md="2" sm="3" class="mg-task-20"><v-card-text>{{$ml.with('VueJS').get('master')}}:</v-card-text></v-col>
-                <v-col cols="7" md="3" sm="8" class="mg-task-20" v-if="task.user_position !== 'admin'"><v-card-text>{{task.master}}</v-card-text></v-col>
-                <v-col cols="7" md="3" sm="8" class="mg-task-20" v-else>
+                <v-col cols="12" md="2" sm="2" class="mg-task-20 sm-task-30"><v-card-text>{{$ml.with('VueJS').get('type')}}:</v-card-text></v-col>
+                <v-col cols="12" md="3" sm="3" class="mg-task-20 sm-task-30"><v-card-text class="null-pad" :style="{'color': task.type_color}">
+                    {{task.type}}</v-card-text></v-col>
+                <v-col md="2" sm="1" class="mg-task-20 sm-task-30"></v-col>
+                <v-col cols="5" md="2" sm="2" class="mg-task-20 sm-task-30"><v-card-text class="null-pad">{{$ml.with('VueJS').get('master')}}:</v-card-text></v-col>
+                <v-col cols="7" md="3" sm="4" class="mg-task-20 sm-task-30" v-if="task.user_position !== 'admin'"><v-card-text>{{task.master}}</v-card-text></v-col>
+                <v-col cols="7" md="3" sm="4" class="mg-task-20 sm-task-30" v-else>
                     <v-row>
-                        <v-col cols="7" md="12" sm="7">
+                        <v-col cols="7" md="12" sm="12">
                             <v-select :items="dicts.masters" item-text="name" item-value="id" dense solo :label="task.master" v-model="master"></v-select>
                         </v-col>
-                        <v-col cols="5" md="12" sm="5">
-                            <v-btn @click="change_master()" :loading="loading" class="mg-task-30" small color="error" dark>{{$ml.with('VueJS').get('change')}}</v-btn>
+                        <v-col cols="5" md="12" sm="12">
+                            <v-btn @click="change_master()" :loading="loading" class="mg-task-30 sm-task-30" small color="error" dark>{{$ml.with('VueJS').get('change')}}</v-btn>
                         </v-col>
                     </v-row>
                 </v-col>
-                <v-col cols="5" md="2" sm="5" class="mg-task-120"><v-card-text>{{$ml.with('VueJS').get('date')}}:</v-card-text></v-col>
-                <v-col cols="7" md="3" sm="7" class="mg-task-120"><v-card-text>{{task.created_at}}</v-card-text></v-col>
-                <v-col cols="0" md="7" sm="0" class="mg-task-120"></v-col>
-                <v-col cols="12" md="2" sm="4" class="mg-task-50" style="margin-left: 15px">{{$ml.with('VueJS').get('client')}}:</v-col>
-                <v-col cols="12" md="5" sm="8" class="mg-task-50">
+                <v-col cols="5" md="2" sm="2" class="mg-task-120 sm-task-120"><v-card-text>{{$ml.with('VueJS').get('date')}}:</v-card-text></v-col>
+                <v-col cols="7" md="3" sm="5" class="mg-task-120 sm-task-120"><v-card-text>{{task.created_at}}</v-card-text></v-col>
+                <v-col cols="0" md="7" sm="5" class="mg-task-120 sm-task-120"></v-col>
+                <v-col cols="12" md="2" sm="2" class="mg-task-50 sm-task-50" style="margin-left: 15px">{{$ml.with('VueJS').get('client')}}:</v-col>
+                <v-col cols="12" md="5" sm="5" class="mg-task-50 sm-task-50">
                     <v-card>
                         <v-card-text>
                             <v-container>
                                 <v-card-title style="font-size: 16px">{{task.client}}</v-card-title>
-                                <v-card-text class="mg-task-20">{{task.client_phone}}</v-card-text>
-                                <v-card-text class="mg-task-20">{{task.client_email}}</v-card-text>
+                                <v-card-text>{{task.client_phone}}</v-card-text>
+                                <v-card-text class="mg-task-20 sm-task-20">{{task.client_email}}</v-card-text>
                             </v-container>
                         </v-card-text>
                     </v-card>
                 </v-col>
-                <v-col cols="12" md="2" sm="5"><v-card-text class="mg-task-20">{{$ml.with('VueJS').get('priority')}}:</v-card-text></v-col>
-                <v-col cols="12" md="3" sm="7" style="margin-left: -30px" class="mg-task-20">
+                <v-col cols="12" md="2" sm="2"><v-card-text class="mg-task-20 null-pad md-null-pad">{{$ml.with('VueJS').get('priority')}}:</v-card-text></v-col>
+                <v-col cols="12" md="3" sm="3" style="margin-left: -30px" class="mg-task-20 null-pad">
                     <v-chip v-if="task.priority === 'medium'" class="ma-2" color="warning" text-color="white"><v-avatar left>
                         <v-icon>mdi-chevron-up</v-icon></v-avatar>{{$ml.with('VueJS').get('medium')}}</v-chip>
                     <v-chip v-if="task.priority === 'low'" class="ma-2" color="success" text-color="white"><v-avatar left>
@@ -69,7 +70,7 @@
                         <v-icon>mdi-chevron-double-up</v-icon></v-avatar>{{$ml.with('VueJS').get('high')}}</v-chip>
                 </v-col>
             </v-row>
-        </v-container>
+<!--        </v-container>-->
     </v-card-text>
 </template>
 
@@ -176,7 +177,7 @@
 </script>
 
 <style scoped>
-    @media (min-width: 960px) {
+    @media screen and (min-width: 960px) {
         .mg-task-20 {
             margin-top: -20px;
         }
@@ -191,6 +192,39 @@
         }
         .mg-task-50 {
             margin-top: -50px;
+        }
+        .md-null-pad {
+            padding-right: 0 !important;
+        }
+    }
+    @media screen and (max-width: 600px) {
+        .xs-task-50 {
+            margin-top: -50px;
+        }
+        .xs-task-30 {
+            margin-top: -30px;
+        }
+    }
+    @media (min-width: 600px) and (max-width: 960px) {
+        .sm-task-30 {
+            margin-top: -30px;
+        }
+        .sm-task-20 {
+            margin-top: -20px;
+        }
+        .sm-task-50 {
+            margin-top: -50px;
+        }
+        .sm-task-120 {
+            margin-top: -120px;
+        }
+        .container {
+            padding: 0 !important;
+            padding-right: 0 !important;
+            padding-left: 0 !important;
+        }
+        .null-pad {
+            padding-right: 0 !important;
         }
     }
 </style>

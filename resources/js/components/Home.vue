@@ -1,5 +1,5 @@
 <template>
-    <v-row>
+    <v-col cols="12">
         <v-app-bar app clipped-left color="purple darken-3">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
             <span class="overline" style="font-size: 18px !important; font-family: 'Archivo Black', sans-serif;">GO!Missions</span>
@@ -39,35 +39,34 @@
                         <v-list-item-title class="grey--text">{{ $ml.with('VueJS').get('add_task') }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-divider :style="{'padding-bottom': user_status==='admin' ? '142%' : '160%'}"></v-divider>
-                <v-list-item @click="$router.push({name: 'profile'})">
+                <v-divider></v-divider>
+                <v-list-item @click="$router.push({name: 'profile'})" style="bottom: 100px; position: absolute; width: 100%;">
                     <v-list-item-action><v-icon>fas fa-users-cog</v-icon></v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title class="grey--text">{{ $ml.with('VueJS').get('profile') }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item v-if="user_status === 'admin'" @click="$router.push({name: 'settings'})">
+                <v-list-item v-if="user_status === 'admin'" @click="$router.push({name: 'settings'})" style="bottom: 50px; position: absolute; width: 100%;">
                     <v-list-item-action><v-icon>settings</v-icon></v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title class="grey--text">{{ $ml.with('VueJS').get('settings') }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
-                <v-list-item @click.prevent="$auth.logout()">
+                <v-list-item @click.prevent="$auth.logout()" style="bottom: 0; position: absolute; width: 100%;">
                     <v-list-item-action><v-icon>fas fa-sign-out-alt</v-icon></v-list-item-action>
                     <v-list-item-content>
-                        <v-list-item-title class="grey--text">{{ $ml.with('VueJS').get('sign_out') }}</v-list-item-title>
+                        <v-list-item-title class="gbottom: 0;rey--text">{{ $ml.with('VueJS').get('sign_out') }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
         </v-navigation-drawer>
-
         <v-content>
             <v-container fluid class="grey grey darken-4 fill-height">
                 <v-row justify="center" align="center">
                     <router-view></router-view>
                 </v-row>
             </v-container>
-            <v-footer dark padless style="position: fixed; bottom: 0; width: 100%;">
+            <v-footer dark padless style="position: fixed;  width: 100%; bottom: 0">
                 <v-row>
                     <v-card class="flex" flat tile>
                         <v-card-text class="py-2 white--text text-center">
@@ -77,7 +76,7 @@
                 </v-row>
             </v-footer>
         </v-content>
-    </v-row>
+    </v-col>
 </template>
 
 <script>

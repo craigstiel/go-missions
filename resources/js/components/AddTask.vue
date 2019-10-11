@@ -44,14 +44,23 @@
                             </v-row>
                             <v-btn @click="add_task()" v-if="!task_progress">{{ $ml.with('VueJS').get('save') }}</v-btn>
                         </v-card-text>
-                        <v-dialog v-model="dialog" hide-overlay persistent width="300">
-                            <v-card>
-                                <v-card-title class="headline">{{ $ml.with('VueJS').get('add_success') }}.</v-card-title>
-                                <v-card-actions>
-                                    <div class="flex-grow-1"></div>
-                                    <v-btn color="green darken-1" text @click="$router.push({name: 'tasks'})">OK</v-btn>
-                                </v-card-actions>
-                            </v-card>
+                        <v-dialog v-model="dialog" hide-overlay persistent>
+                            <v-row>
+                                <v-col md="3"></v-col>
+                                <v-col md="6">
+                                    <v-card>
+                                        <v-card-title class="headline">{{ $ml.with('VueJS').get('add_success') }}.
+                                        </v-card-title>
+                                        <v-card-actions>
+                                            <div class="flex-grow-1"></div>
+                                            <v-btn color="green darken-1" text @click="$router.push({name: 'tasks'})">
+                                                OK
+                                            </v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                    <v-col md="3"></v-col>
+                                </v-col>
+                            </v-row>
                         </v-dialog>
                     </ValidationObserver>
                 </v-card>
@@ -134,5 +143,10 @@
 <style>
     .mycontent-left {
         border-right: 1px dashed #333;
+    }
+    @media screen and (max-width: 600px) {
+        body {
+            line-height: 10px;
+        }
     }
 </style>

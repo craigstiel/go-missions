@@ -6,9 +6,9 @@
                 <div class="my-2 mt-5">
                     <v-btn small color="error" v-if="all_tasks === false" outlined style="align-self: normal;"
                            @click="all_tasks = false" dark>{{ $ml.with('VueJS').get('only_my') }}</v-btn>
-                    <v-btn small color="error" v-else style="align-self: normal;" @click="all_tasks = false" dark>{{ $ml.with('VueJS').get('only_my') }}</v-btn></div>
+                    <v-btn small color="error" v-else style="align-self: normal" @click="all_tasks = false" dark>{{ $ml.with('VueJS').get('only_my') }}</v-btn></div>
             </v-col>
-            <v-col cols="12" md="1" key=3 style="margin-top: -55px; margin-left: -60px;">
+            <v-col cols="12" md="1" key=3 style="margin-top: -55px;" class="all-btn">
                 <div class="my-2 mt-5">
                     <v-btn small color="error" v-if="all_tasks === true" outlined style="align-self: normal;" @click="all_tasks = true" dark>{{ $ml.with('VueJS').get('all') }}</v-btn>
                     <v-btn small color="error" v-else style="align-self: normal;" @click="all_tasks = true" dark>{{ $ml.with('VueJS').get('all') }}</v-btn>
@@ -29,7 +29,7 @@
                             <v-progress-circular indeterminate color="purple" style="margin: 10px; left: -350%"></v-progress-circular>
                         </div>
                         <v-col v-else v-for="task in new_tasks" :key="task.id" cols="12" sm="6" md="12">
-                            <v-card @click="show(task)" max-width="344" class="mx-auto cards" style="cursor: pointer">
+                            <v-card @click="show(task)" class="mx-auto cards" style="cursor: pointer">
                                 <v-card-title><a style="color:white; font-size: 18px; line-height: 20px;">{{task.title}}</a></v-card-title>
                                 <v-card-text>{{task.short_description}}</v-card-text>
                             </v-card>
@@ -51,7 +51,7 @@
                             <v-progress-circular indeterminate color="purple" style="margin: 10px; left: -350%"></v-progress-circular>
                         </div>
                         <v-col v-else v-for="task in active_tasks" :key="task.id" cols="12" sm="6" md="12">
-                            <v-card @click="show(task)" style="cursor: pointer" max-width="344" class="mx-auto cards">
+                            <v-card @click="show(task)" style="cursor: pointer" class="mx-auto cards">
                                 <v-card-title><a style="color:white; font-size: 18px; line-height: 20px;">{{task.title}}</a></v-card-title>
                                 <v-card-text>{{task.short_description}}</v-card-text>
                             </v-card>
@@ -82,7 +82,7 @@
                             <v-progress-circular indeterminate color="purple" style="margin: 10px; left: -350%"></v-progress-circular>
                         </div>
                         <v-col v-else v-for="task in completed_tasks" :key="task.id" cols="12" sm="6" md="12">
-                            <v-card @click="show(task)" max-width="344" class="mx-auto cards" style="cursor: pointer">
+                            <v-card @click="show(task)" class="mx-auto cards" style="cursor: pointer">
                                 <v-card-title><a style="color:white; font-size: 18px; line-height: 20px;">{{task.title}}</a></v-card-title>
                                 <v-card-text>{{task.short_description}}</v-card-text>
                             </v-card>
@@ -224,8 +224,32 @@
         width: 400px;
         max-width: 100%;
     }
-    .v-dialog {
-        box-shadow: none !important;
-        width: 70% !important;
+    @media (min-width: 960px) {
+        .v-dialog {
+            box-shadow: none !important;
+            width: 70% !important;
+        }
+        .all-btn {
+            margin-left: -30px
+        }
+    }
+    @media (max-width: 960px) {
+        .v-dialog {
+            box-shadow: none !important;
+            width: 100% !important;
+        }
+        .all-btn {
+            margin-left: -60px
+        }
+    }
+    @media (min-width: 1904px) {
+        .all-btn {
+            margin-left: -250px
+        }
+    }
+    @media (min-width: 1264px) and (max-width: 1904px) {
+        .all-btn {
+            margin-left: -60px
+        }
     }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="row">
+    <v-row>
         <v-col md="1"></v-col>
         <v-col cols="12" md="10" key=12>
             <v-card class="mx-auto mycontent-left">
@@ -49,17 +49,17 @@
                                                 <v-card-text>
                                                     <v-container>
                                                         <v-row>
-                                                            <v-col cols="5" md="5" sm="5" key=11>
-                                                                <v-card-text>{{ $ml.with('VueJS').get('position') }}:</v-card-text>
+                                                            <v-col cols="6" md="5" sm="6" key=11>
+                                                                <v-card-text class="null-pad">{{ $ml.with('VueJS').get('position') }}:</v-card-text>
                                                             </v-col>
-                                                            <v-col cols="7" md="7" sm="7" key=12>
-                                                                <v-card-text>{{position}}</v-card-text>
+                                                            <v-col cols="6" md="7" sm="6" key=12>
+                                                                <v-card-text class="null-pad">{{position}}</v-card-text>
                                                             </v-col>
-                                                            <v-col cols="5" md="5" sm="5" key=13 style="margin-top: -30px">
-                                                                <v-card-text>{{ $ml.with('VueJS').get('active') }}:</v-card-text>
+                                                            <v-col cols="6" md="5" sm="6" key=13 style="margin-top: -30px">
+                                                                <v-card-text class="null-pad">{{ $ml.with('VueJS').get('active') }}:</v-card-text>
                                                             </v-col>
-                                                            <v-col cols="7" md="3" sm="3" key=14 style="margin-top: -30px">
-                                                                <v-card-text>{{is_active}}</v-card-text>
+                                                            <v-col cols="6" md="3" sm="6" key=14 style="margin-top: -30px">
+                                                                <v-card-text class="null-pad">{{is_active}}</v-card-text>
                                                             </v-col>
                                                         </v-row>
                                                     </v-container>
@@ -71,15 +71,21 @@
                                 </v-card-text>
                             </v-card>
                         </ValidationObserver>
-                        <v-dialog v-model="dialog" hide-overlay persistent width="300">
-                            <v-card>
-                                <v-card-title class="headline">{{ $ml.with('VueJS').get('profile_success') }}.
-                                </v-card-title>
-                                <v-card-actions>
-                                    <div class="flex-grow-1"></div>
-                                    <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
-                                </v-card-actions>
-                            </v-card>
+                        <v-dialog v-model="dialog" hide-overlay persistent>
+                            <v-row>
+                                <v-col md="3"></v-col>
+                                <v-col md="6">
+                                    <v-card>
+                                        <v-card-title class="headline">{{ $ml.with('VueJS').get('profile_success') }}.
+                                        </v-card-title>
+                                        <v-card-actions>
+                                            <div class="flex-grow-1"></div>
+                                            <v-btn color="green darken-1" text @click="dialog = false">OK</v-btn>
+                                        </v-card-actions>
+                                    </v-card>
+                                </v-col>
+                                <v-col md="3"></v-col>
+                            </v-row>
                         </v-dialog>
                     </v-tab-item>
                     <v-tab-item>
@@ -126,19 +132,26 @@
                         </v-card>
                     </v-tab-item>
                 </v-tabs-items>
-                <v-dialog v-model="dialog_pas" hide-overlay persistent width="300">
-                    <v-card>
-                        <v-card-title class="headline">{{ $ml.with('VueJS').get('pass_success') }}.</v-card-title>
-                        <v-card-actions>
-                            <div class="flex-grow-1"></div>
-                            <v-btn color="green darken-1" text @click="dialog_pas = false">OK</v-btn>
-                        </v-card-actions>
-                    </v-card>
+                <v-dialog v-model="dialog_pas" hide-overlay persistent>
+                    <v-row>
+                        <v-col md="3"></v-col>
+                        <v-col md="6">
+                            <v-card>
+                                <v-card-title class="headline">{{ $ml.with('VueJS').get('pass_success') }}.
+                                </v-card-title>
+                                <v-card-actions>
+                                    <div class="flex-grow-1"></div>
+                                    <v-btn color="green darken-1" text @click="dialog_pas = false">OK</v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-col>
+                        <v-col md="3"></v-col>
+                    </v-row>
                 </v-dialog>
             </v-card>
         </v-col>
         <v-col md="1"></v-col>
-    </div>
+    </v-row>
 </template>
 
 <script>
@@ -244,5 +257,16 @@
 </script>
 
 <style scoped>
-
+    .v-tabs-slider-wrapper {
+        left: 0 !important;
+    }
+    .v-application--is-ltr .v-tabs-bar.v-tabs-bar--is-mobile:not(.v-tabs-bar--show-arrows)>.v-slide-group__wrapper>
+    .v-tabs-bar__content>.v-tabs-slider-wrapper+.v-tab {
+        margin-left: 0 !important;
+    }
+    @media (min-width: 600px) and (max-width: 960px) {
+        .null-pad {
+            padding-right: 0 !important;
+        }
+    }
 </style>
