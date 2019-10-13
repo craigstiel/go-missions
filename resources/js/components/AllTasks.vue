@@ -19,9 +19,10 @@
         <v-col cols="12" md="4" sm="12">
             <v-card flat tile class="first-card">
                 <v-container key="New tasks" fluid>
-                    <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
+                    <v-badge class="align-self-center titles" style="margin-right: 22px" color="purple lighten-2">
                         <template v-slot:badge>{{ new_tasks.length }}</template>
-                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif; margin-left: 20px">{{ $ml.with('VueJS').get('new_tasks') }}</span>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif; margin-left: 20px">
+                            {{ $ml.with('VueJS').get('new_tasks') }}</span>
                     </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
@@ -41,9 +42,10 @@
         <v-col cols="12" md="4" sm="12">
             <v-card flat tile class="second-card">
                 <v-container key="In procces" fluid>
-                    <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
+                    <v-badge class="align-self-center titles" style="margin-right: 22px" color="purple lighten-2">
                         <template v-slot:badge>{{ active_tasks.length }}</template>
-                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif; margin-left: 20px">{{ $ml.with('VueJS').get('in_progress') }}</span>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif; margin-left: 20px">
+                            {{ $ml.with('VueJS').get('in_progress') }}</span>
                     </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
@@ -72,9 +74,10 @@
         <v-col cols="12" md="4" sm="12">
             <v-card flat tile class="third-card">
                 <v-container key="Done" fluid>
-                    <v-badge class="align-self-center" style="margin-right: 22px" color="purple lighten-2">
+                    <v-badge class="align-self-center titles" style="margin-right: 22px" color="purple lighten-2">
                         <template v-slot:badge>{{ completed_tasks.length }}</template>
-                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif; margin-left: 20px">{{ $ml.with('VueJS').get('done') }}</span>
+                        <span style="font-size: 24px; font-family: 'Roboto', sans-serif; margin-left: 20px">
+                            {{ $ml.with('VueJS').get('done') }}</span>
                     </v-badge>
                     <v-row>
                         <div class="flex-grow-1"></div>
@@ -245,6 +248,11 @@
     @media (min-width: 1904px) {
         .all-btn {
             margin-left: -250px
+        }
+    }
+    @media (max-width: 600px) {
+        .titles {
+            margin-top: 20px;
         }
     }
     @media (min-width: 1264px) and (max-width: 1904px) {

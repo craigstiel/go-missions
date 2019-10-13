@@ -73,8 +73,8 @@
                         </ValidationObserver>
                         <v-dialog v-model="dialog" hide-overlay persistent>
                             <v-row>
-                                <v-col md="3"></v-col>
-                                <v-col md="6">
+                                <v-col cols="1" md="3"></v-col>
+                                <v-col cols="10" md="6">
                                     <v-card>
                                         <v-card-title class="headline">{{ $ml.with('VueJS').get('profile_success') }}.
                                         </v-card-title>
@@ -84,7 +84,7 @@
                                         </v-card-actions>
                                     </v-card>
                                 </v-col>
-                                <v-col md="3"></v-col>
+                                <v-col cols="1" md="3"></v-col>
                             </v-row>
                         </v-dialog>
                     </v-tab-item>
@@ -134,8 +134,8 @@
                 </v-tabs-items>
                 <v-dialog v-model="dialog_pas" hide-overlay persistent>
                     <v-row>
-                        <v-col md="3"></v-col>
-                        <v-col md="6">
+                        <v-col cols="1" md="3"></v-col>
+                        <v-col cols="10" md="6">
                             <v-card>
                                 <v-card-title class="headline">{{ $ml.with('VueJS').get('pass_success') }}.
                                 </v-card-title>
@@ -145,7 +145,7 @@
                                 </v-card-actions>
                             </v-card>
                         </v-col>
-                        <v-col md="3"></v-col>
+                        <v-col cols="1" md="3"></v-col>
                     </v-row>
                 </v-dialog>
             </v-card>

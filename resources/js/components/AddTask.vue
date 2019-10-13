@@ -13,31 +13,31 @@
                                 <v-progress-circular indeterminate color="purple" style="margin: 10px;padding: 50px"></v-progress-circular>
                             </div>
                             <v-row v-else>
-                                <v-col cols="7" md="7" sm="7" key=1>
+                                <v-col cols="12" md="7" sm="7">
                                     <ValidationProvider name="title" rules="required">
                                         <v-text-field style="margin-left: 15px" v-model="title" slot-scope="{errors, valid}" :error-messages="errors"
                                                 :success="valid" :label="$ml.with('VueJS').get('title')"></v-text-field>
                                     </ValidationProvider>
                                 </v-col>
-                                <v-col cols="1" md="1" sm="1" key=2></v-col>
-                                <v-col cols="3" md="3" sm="3" key=3 style="margin-top: 20px">
+                                <v-col cols="0" md="1" sm="1"></v-col>
+                                <v-col cols="12" md="3" sm="3" class="xs-task-50">
                                     <v-select :items="dicts.items" :label="$ml.with('VueJS').get('priority')" v-model="item" outlined></v-select>
                                 </v-col>
-                                <v-col cols="7" md="7" sm="7" key=4>
+                                <v-col cols="12" md="7" sm="7">
                                     <ValidationProvider name="description" rules="required">
                                         <v-textarea style="margin-left: 15px; margin-top: -30px" outlined :label="$ml.with('VueJS').get('description')" slot-scope="{errors, valid}"
                                                     :error-messages="errors" :success="valid" v-model="description"></v-textarea>
                                     </ValidationProvider>
                                 </v-col>
-                                <v-col cols="1" md="1" sm="1" key=5></v-col>
-                                <v-col cols="3" md="3" sm="3" key=6 style="margin-top: -10px">
+                                <v-col cols="0" md="1" sm="1" key=5></v-col>
+                                <v-col cols="12" md="3" sm="3" key=6 class="xs-task-50">
                                     <v-select :items="dicts.types" item-value="id" item-text="name" :label="$ml.with('VueJS').get('type')" v-model="type" outlined></v-select>
                                 </v-col>
-                                <v-col cols="7" md="7" sm="7" key=7>
-                                    <v-image v-model="value" style="margin-top: -20px; margin-left: 15px"></v-image>
+                                <v-col cols="12" md="7" sm="7" key=7 class="xs-task-20 mg-task-20">
+                                    <v-image v-model="value" style="margin-left: 15px"></v-image>
                                 </v-col>
-                                <v-col cols="1" md="1" sm="1" key=8></v-col>
-                                <v-col cols="3" md="3" sm="3" key=9 style="margin-top: -50px" v-if="multiple">
+                                <v-col cols="0" md="1" sm="1" key=8></v-col>
+                                <v-col cols="12" md="3" sm="3" key=9 class="xs-task-30 mg-task-30" v-if="multiple">
                                     <v-select :items="dicts.masters" item-value="id" item-text="name" :label="$ml.with('VueJS').get('master')"
                                               v-model="master" outlined></v-select>
                                 </v-col>
@@ -46,8 +46,8 @@
                         </v-card-text>
                         <v-dialog v-model="dialog" hide-overlay persistent>
                             <v-row>
-                                <v-col md="3"></v-col>
-                                <v-col md="6">
+                                <v-col cols="1" md="3"></v-col>
+                                <v-col cols="10" md="6">
                                     <v-card>
                                         <v-card-title class="headline">{{ $ml.with('VueJS').get('add_success') }}.
                                         </v-card-title>
@@ -58,7 +58,7 @@
                                             </v-btn>
                                         </v-card-actions>
                                     </v-card>
-                                    <v-col md="3"></v-col>
+                                    <v-col cols="1" md="3"></v-col>
                                 </v-col>
                             </v-row>
                         </v-dialog>
@@ -145,8 +145,39 @@
         border-right: 1px dashed #333;
     }
     @media screen and (max-width: 600px) {
-        body {
-            line-height: 10px;
+        .xs-task-50 {
+            margin-top: -50px;
+        }
+        .xs-task-30 {
+            margin-top: -30px;
+        }
+        .xs-task-80 {
+            margin-top: -80px;
+        }
+        .xs-task-20 {
+            margin-top: -20px;
+        }
+        .container {
+            padding: 0 !important;
+        }
+        .null-pad {
+            padding-right: 0 !important;
+        }
+        .v-select {
+            max-width: 98%;
+            margin-left: 12px !important;
+        }
+        .uploader {
+            margin-left: 10px !important;
+            width: 97% !important;
+        }
+    }
+    @media screen and (min-width: 600px) {
+        .mg-task-20 {
+            margin-top: -20px;
+        }
+        .mg-task-30 {
+            margin-top: -30px;
         }
     }
 </style>

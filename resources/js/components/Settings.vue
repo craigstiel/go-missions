@@ -156,7 +156,7 @@
                                                 </div>
                                                 <v-row>
                                                     <v-card max-width="250" min-height="70" :style="{'background-color': type.color}"
-                                                            class="col-md-3 ml-3" :key="type.id" v-for="type in dicts.types">
+                                                            class="col-md-3 ml-3 mt-3" :key="type.id" v-for="type in dicts.types">
                                                         <v-card-text style="font-size: 16px;">{{ type.name }}
                                                         </v-card-text>
                                                         <v-dialog v-model="delete_type_dialog" persistent max-width="400px">
