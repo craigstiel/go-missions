@@ -17,10 +17,7 @@ Auth::routes(['verify' => true]);
 
 Route::post('/auth/register', 'AuthController@register');
 Route::post('/auth/login', 'AuthController@login');
-Route::get('/set_locale/{locale}', function ($locale) {
-    App::getLocale();
-    App::setLocale($locale);
-});
+Route::post('/set_locale', 'SettingsController@set_locale');
 Route::post('/verify/email/{id}', 'AuthController@verify');
 
 Route::group(['middleware' => 'jwt.auth'], function(){

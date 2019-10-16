@@ -24,7 +24,8 @@
             if(st_lang !== null)
                 this.lang = st_lang;
             else this.lang =  this.$ml.current;
-            axios.get('/set_locale/' + this.lang);
+            let data = {lang: this.lang};
+            axios.post('/set_locale', data);
         },
 
         data() {
@@ -40,7 +41,8 @@
             lang: function () {
                 this.$ml.change(this.lang);
                 localStorage.setItem('current_language', this.lang);
-                axios.get('/set_locale/' + this.lang);
+                let data = {lang: this.lang};
+                axios.post('/set_locale', data);
             }
         },
     }

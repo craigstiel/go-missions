@@ -17,6 +17,7 @@ import VeeValidate, {
     Validator
 } from "vee-validate";
 import ru from "vee-validate/dist/locale/ru";
+import en from "vee-validate/dist/locale/en";
 import {setupBus} from "./other/eventBus";
 import './other/multLang';
 import Notifications from 'vue-notification';

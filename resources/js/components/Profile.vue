@@ -38,7 +38,7 @@
                                             <v-text-field style="margin-left: 15px" label="Telegram" v-model="profile.telegram"></v-text-field>
                                         </v-col>
                                         <v-col v-else cols="6" md="6" sm="6" key=4 style="margin-top: -30px">
-                                            <ValidationProvider name="phone" rules="required|tel">
+                                            <ValidationProvider name="phone" rules="required">
                                                 <v-text-field style="margin-left: 15px" :label="$ml.with('VueJS').get('phone')" type="tel"
                                                               slot-scope="{errors, valid}" :error-messages="errors" :success="valid" v-model="profile.phone"></v-text-field>
                                             </ValidationProvider>

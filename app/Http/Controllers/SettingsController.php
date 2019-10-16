@@ -95,4 +95,15 @@ class SettingsController extends Controller
             'data' => 'Task type was deleted.'
         ], 200);
     }
+
+    public function set_locale(Request $request) {
+        if($request->lang === 'english')
+            app()->setLocale('en');
+        if($request->lang === 'russian')
+            app()->setLocale('ru');
+
+        return response([
+            'status' => 'success'
+        ], 200);
+    }
 }
