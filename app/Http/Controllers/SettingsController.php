@@ -7,6 +7,7 @@ use App\TaskTypes;
 use App\User;
 use App\UserPosition;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
@@ -53,7 +54,9 @@ class SettingsController extends Controller
         $system->save();
 
         if($request->multiple === false) {
-            DB::table('user_position')->update(['is_active' => false]);
+            DB::table('user_position')
+                ->where('position', '!=', 'admin')
+                ->update(['is_active' => false]);
         }
 
         return response([

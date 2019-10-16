@@ -35,7 +35,7 @@
                                             </div>
                                             <div v-if="!new_progress">
                                                 <div class="flex font-weight-light" style="font-size: 18px; font-family: 'Roboto', sans-serif; padding-bottom: 20px">
-                                                    {{$ml.with('VueJS').get('active_masters')}}
+                                                    {{$ml.with('VueJS').get('new_masters')}}
                                                 </div>
                                                 <v-row>
                                                     <v-card max-width="250" min-height="70" class="second-card col-md-3 ml-3" :key="master.id"
@@ -51,7 +51,7 @@
                                             </div>
                                         </v-card-text>
                                     </v-card>
-                                    <v-card v-if="multiple && dicts.active_masters[0]">
+                                    <v-card v-if="dicts.active_masters[0]">
                                         <v-card-text style="margin-top: 20px; min-height: 50px">
                                             <div style="text-align: center" v-if="active_progress">
                                                 <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
@@ -92,8 +92,7 @@
                                                 <v-row>
                                                     <v-card max-width="250" min-height="70" class="second-card col-md-3 ml-3" :key="master.id"
                                                             v-for="master in dicts.new_masters">
-                                                        <v-card-text style="font-size: 16px;">{{ master.name }}
-                                                        </v-card-text>
+                                                        <v-card-text style="font-size: 16px;">{{ master.name }}</v-card-text>
                                                     </v-card>
                                                 </v-row>
                                             </div>
@@ -113,6 +112,7 @@
                                         </template>
                                         <v-form ref="form" lazy-validation>
                                             <v-card>
+                                                <ValidationObserver ref="obs">
                                                 <v-card-title>
                                                     <span class="headline">{{$ml.with('VueJS').get('add_type')}}</span>
                                                 </v-card-title>
@@ -120,12 +120,17 @@
                                                     <v-container>
                                                         <v-row>
                                                             <v-col cols="6" sm="6" md="6">
-                                                                <v-text-field :label="$ml.with('VueJS').get('type_name')" required
-                                                                    v-model="type.name"></v-text-field>
+                                                                <ValidationProvider name="name" rules="required">
+                                                                <v-text-field :label="$ml.with('VueJS').get('type_name')"  :success="valid"
+                                                                    v-model="type.name" slot-scope="{errors, valid}" :error-messages="errors"></v-text-field>
+                                                                </ValidationProvider>
                                                             </v-col>
                                                             <v-col cols="6" sm="6" md="6">
+                                                                <ValidationProvider name="system_name" rules="required">
                                                                 <v-text-field :label="$ml.with('VueJS').get('type_system_name')"
-                                                                    hint="In English, please." v-model="type.system_name" required></v-text-field>
+                                                                    hint="In English, please." v-model="type.system_name" :success="valid"
+                                                                              slot-scope="{errors, valid}" :error-messages="errors"></v-text-field>
+                                                                </ValidationProvider>
                                                             </v-col>
                                                         </v-row>
                                                         <v-col cols="12" sm="12" md="12">
@@ -142,6 +147,7 @@
                                                         {{$ml.with('VueJS').get('save')}}
                                                     </v-btn>
                                                 </v-card-actions>
+                                                </ValidationObserver>
                                             </v-card>
                                         </v-form>
                                     </v-dialog>
@@ -203,7 +209,12 @@
 
 Playground
 <script>
+    import { ValidationObserver, ValidationProvider } from "vee-validate";
     export default {
+        components: {
+            ValidationProvider,
+            ValidationObserver
+        },
         mounted: function () {
             this.get_active_masters();
             this.get_new_masters();
@@ -313,9 +324,10 @@ Playground
                         _this.get_active_masters();
                     });
             },
-            add_type: function () {
+            add_type: async function () {
                 let _this = this;
-                if (this.$refs.form.validate()) {
+                const result = await this.$refs.obs.validate();
+                if (result) {
                     let data = {
                         name: _this.type.name,
                         system_name: _this.type.system_name,

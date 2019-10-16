@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\System;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -88,17 +89,23 @@ class DictsController extends Controller
                 'c.email as client_email', 'm.name as master', 't.created_at', 't.status', 't.priority')
             ->leftJoin('task_types as tt', 'tt.id', 't.type')
             ->leftJoin('users as c', 'c.id', 't.created_by')
-            ->leftJoin('users as m', 'm.id', 't.master');
+            ->leftJoin('users as m', 'm.id', 't.master')
+            ->leftJoin('user_position as up', 'up.user_id', 'm.id')
+            ->where('up.is_active', true);
+
+        $multiple =  DB::table('system')->latest('id')->first();
 
         $user = DB::table('user_position')->where('user_id', '=', Auth::user()->id)->first();
         if (!$user) {
             $tasks = $tasks->where('c.id', Auth::user()->id);
         }
         elseif($user->position === 'master') {
-            $tasks = $tasks->where(function ($query) {
-                $query->where('m.id', Auth::user()->id)
-                    ->orWhere('c.id', Auth::user()->id);
-            });
+            if($multiple->multiple === true) {
+                $tasks = $tasks->where(function ($query) {
+                    $query->where('m.id', Auth::user()->id)
+                        ->orWhere('c.id', Auth::user()->id);
+                });
+            } else $tasks = $tasks->where('c.id', Auth::user()->id);
         }
         elseif($user->position === 'admin') {
             if($all_tasks === false) {

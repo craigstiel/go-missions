@@ -54,6 +54,7 @@
                 master: false,
                 show1: false,
                 show2: true,
+                lang: '',
                 height: 570,
                 nameRules: [
                     v => !!v || 'Name is required',
@@ -84,7 +85,7 @@
         },
         methods: {
             register() {
-                var app = this
+                var app = this;
                 if (this.$refs.form.validate()) {
                     this.$auth.register({
                         data: {
@@ -93,9 +94,9 @@
                             password: app.password,
                             phone: app.phone,
                             telegram: app.telegram,
-                            is_master: app.master,
+                            is_master: app.master
                         },
-                        redirect: '/login'
+                        redirect: '/verify'
                     });
                 }
             }

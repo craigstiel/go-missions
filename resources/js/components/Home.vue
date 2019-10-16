@@ -40,16 +40,16 @@
                     </v-list-item-content>
                 </v-list-item>
                 <v-divider></v-divider>
-                <v-list-item @click="$router.push({name: 'profile'})" style="bottom: 100px; position: absolute; width: 100%;">
-                    <v-list-item-action><v-icon>fas fa-users-cog</v-icon></v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title class="grey--text">{{ $ml.with('VueJS').get('profile') }}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
-                <v-list-item v-if="user_status === 'admin'" @click="$router.push({name: 'settings'})" style="bottom: 50px; position: absolute; width: 100%;">
+                <v-list-item v-if="user_status === 'admin'" @click="$router.push({name: 'settings'})" style="bottom: 100px; position: absolute; width: 100%;">
                     <v-list-item-action><v-icon>settings</v-icon></v-list-item-action>
                     <v-list-item-content>
                         <v-list-item-title class="grey--text">{{ $ml.with('VueJS').get('settings') }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+                <v-list-item @click="$router.push({name: 'profile'})" style="bottom: 50px; position: absolute; width: 100%;">
+                    <v-list-item-action><v-icon>fas fa-users-cog</v-icon></v-list-item-action>
+                    <v-list-item-content>
+                        <v-list-item-title class="grey--text">{{ $ml.with('VueJS').get('profile') }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
                 <v-list-item @click.prevent="$auth.logout()" style="bottom: 0; position: absolute; width: 100%;">

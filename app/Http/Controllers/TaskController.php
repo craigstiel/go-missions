@@ -108,6 +108,12 @@ class TaskController extends Controller
 
     public function count() {
         $tasks_count = Tasks::where('master', Auth::user()->id)->where('status', '0')->count();
+        $tasks_count = DB::table('tasks as t')
+            ->where('t.master', '=', Auth::user()->id)
+            ->where('t.status', '0')
+            ->leftJoin('user_position as up', 'up.user_id', 't.master')
+            ->where('up.is_active', true)
+            ->count();
 
         return response()->json(['tasks_count' => $tasks_count]);
     }

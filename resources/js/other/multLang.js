@@ -71,6 +71,9 @@ export default new MLCreate({
             low: 'Low',
             medium: 'Medium',
             high: 'High',
+            error: 'Error!',
+            success: 'Success!',
+            verify: 'Email wasn\'t verified!',
         }),
 
         new MLanguage('russian').create({
@@ -137,6 +140,9 @@ export default new MLCreate({
             low: 'Низкий',
             medium: 'Средний',
             high: 'Высокий',
+            error: 'Ошибка!',
+            success: 'Успех!',
+            verify: 'E-mail не был верифицирован!',
         })
     ]
 })

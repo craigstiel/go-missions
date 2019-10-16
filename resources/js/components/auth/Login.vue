@@ -59,6 +59,7 @@
                         success: function () {
                         },
                         error: function () {
+                            this.$bus.$emit("alert", app.$ml.with('VueJS').get('verify'), "error");
                         },
                         rememberMe: true,
                         redirect: '/',

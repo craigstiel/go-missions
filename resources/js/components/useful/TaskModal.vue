@@ -34,8 +34,9 @@
                     {{task.type}}</v-card-text></v-col>
                 <v-col cols="0" md="2" sm="1" class="mg-task-20 sm-task-30"></v-col>
                 <v-col cols="5" md="2" sm="2" class="mg-task-20 sm-task-30 xs-task-50"><v-card-text class="null-pad">{{$ml.with('VueJS').get('master')}}:</v-card-text></v-col>
-                <v-col cols="7" md="3" sm="4" class="mg-task-20 sm-task-30 xs-task-50" v-if="task.user_position !== 'admin'"><v-card-text>{{task.master}}</v-card-text></v-col>
-                <v-col cols="7" md="3" sm="4" class="mg-task-20 sm-task-30 xs-task-50" v-else>
+                <v-col cols="7" md="3" sm="4" class="mg-task-20 sm-task-30 xs-task-50" v-if="task.user_position !== 'admin' || !multiple"><v-card-text>{{task.master}}</v-card-text></v-col>
+                <v-col cols="12" md="12" sm="12" class="no-multiple" v-if="task.user_position !== 'admin' || !multiple"></v-col>
+                <v-col cols="7" md="3" sm="4" class="mg-task-20 sm-task-30 xs-task-50" v-if="task.user_position === 'admin' && multiple">
                     <v-row>
                         <v-col cols="12" md="12" sm="12">
                             <v-select :items="dicts.masters" item-text="name" item-value="id" dense solo :label="task.master" v-model="master"></v-select>
@@ -95,6 +96,10 @@
                 .then(function (response) {
                     _this.dicts.masters = response.data.masters;
                 });
+            axios.get('/dict/multiple/get')
+                .then(function (response) {
+                    _this.multiple = response.data.multiple;
+                });
         },
         data: () => ({
             dicts: {
@@ -104,6 +109,7 @@
             master: null,
             loader: null,
             loading: false,
+            multiple: null,
         }),
         watch: {
             value: function () {
@@ -196,6 +202,9 @@
         .md-null-pad {
             padding-right: 0 !important;
         }
+        .no-multiple {
+            min-height: 100px
+        }
     }
     @media screen and (max-width: 600px) {
         .xs-task-50 {
@@ -216,6 +225,9 @@
         .null-pad {
             padding-right: 0 !important;
         }
+        .no-multiple {
+            min-height: 30px
+        }
     }
     @media (min-width: 600px) and (max-width: 960px) {
         .sm-task-30 {
@@ -235,6 +247,9 @@
         }
         .null-pad {
             padding-right: 0 !important;
+        }
+        .no-multiple {
+            min-height: 100px
         }
     }
 </style>

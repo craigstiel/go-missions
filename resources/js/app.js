@@ -19,6 +19,7 @@ import VeeValidate, {
 import ru from "vee-validate/dist/locale/ru";
 import {setupBus} from "./other/eventBus";
 import './other/multLang';
+import Notifications from 'vue-notification';
 
 Validator.localize("ru", ru);
 
@@ -35,6 +36,7 @@ Vue.use(VueRouter)
 Vue.use(Vuetify,opts)
 Vue.use(VueAxios, axios)
 Vue.use(VeeValidate)
+Vue.use(Notifications);
 setupBus();
 
 import App from './components/App';
@@ -45,6 +47,7 @@ import AddTask from './components/AddTask';
 import Settings from './components/Settings';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
+import Verify from './components/auth/Verify';
 
 axios.defaults.baseURL = 'http://go-missions/api';
 
@@ -96,6 +99,14 @@ const router = new VueRouter({
                     }
                 },
                 {
+                    path: '/verify',
+                    name: 'verify',
+                    component: Verify,
+                    meta: {
+                        auth: false
+                    }
+                },
+                {
                     path: '/login',
                     name: 'login',
                     component: Login,
@@ -130,6 +141,7 @@ App.router = Vue.router;
 Vue.component('v-image', require('./components/useful/ImageUploader.vue').default);
 Vue.component('v-prew-image', require('./components/useful/EnlargeImage.vue').default);
 Vue.component('v-task', require('./components/useful/TaskModal.vue').default);
+Vue.component('v-alert', require('./components/useful/Alert.vue').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

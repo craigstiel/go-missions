@@ -25,7 +25,6 @@
                             {{ $ml.with('VueJS').get('new_tasks') }}</span>
                     </v-badge>
                     <v-row>
-                        <div class="flex-grow-1"></div>
                         <div style="text-align: center" v-if="new_progress">
                             <v-progress-circular indeterminate color="purple" style="margin: 10px; left: -350%"></v-progress-circular>
                         </div>
