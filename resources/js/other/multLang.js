@@ -57,6 +57,7 @@ export default new MLCreate({
             confirm_new_pass: 'Confirm new password',
             change_profile: 'Change profile',
             change_pass: 'Change password',
+            not_match: 'Passwords do not match',
             phone: 'Phone',
             profile_success: 'Profile was saved successfully',
             pass_success: 'Password was saved successfully',
@@ -74,6 +75,10 @@ export default new MLCreate({
             error: 'Error!',
             success: 'Success!',
             verify: 'Email wasn\'t verified!',
+            exist: 'This account doesn\'t exist!',
+            forget: 'Forgot your password?',
+            reset_email: 'Send password reset email',
+            try_again: 'Go to the reset email page and try again.',
         }),
 
         new MLanguage('russian').create({
@@ -113,7 +118,7 @@ export default new MLCreate({
             priority: 'Приоритет',
             select_file: 'Выберите файл',
             upload: 'Загрузить',
-            drag: 'Перетащите ваше изображение сюда',
+            drag: 'Перетащите Ваше изображение сюда',
             or: 'или',
             add_success: 'Задание было успешно добавлено',
             name: 'Имя',
@@ -126,6 +131,7 @@ export default new MLCreate({
             confirm_new_pass: 'Подтвердите новый пароль',
             change_profile: 'Изменить профиль',
             change_pass: 'Изменить пароль',
+            not_match: 'Пароли не совпадают!',
             phone: 'Телефон',
             profile_success: 'Профиль успешно изменен',
             pass_success: 'Пароль успешно сохранен',
@@ -135,7 +141,7 @@ export default new MLCreate({
             sign_out: 'Выйти',
             profile: 'Профиль',
             settings: 'Настройки',
-            reg_rule: 'Для входа в аккаунт вам необходимо верифицировать e-mail',
+            reg_rule: 'Для входа в аккаунт Вам необходимо верифицировать e-mail',
             del_type: 'Вы действительно хотите удалить этот тип?',
             low: 'Низкий',
             medium: 'Средний',
@@ -143,6 +149,10 @@ export default new MLCreate({
             error: 'Ошибка!',
             success: 'Успех!',
             verify: 'E-mail не был верифицирован!',
+            exist: 'Такого аккаунта не существует!',
+            forget: 'Забыли Ваш пароль?',
+            reset_email: 'Отправить письмо для восстановления пароля',
+            try_again: 'Перейдите на страницу отправки письма и попробуйте еще раз.',
         })
     ]
 })

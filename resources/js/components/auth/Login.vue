@@ -18,6 +18,7 @@
                         <v-btn :disabled="!valid" color="success" class="mr-4" @click="login">
                             {{$ml.with('VueJS').get('sign_in')}}
                         </v-btn>
+                        <a @click="$router.push({name: 'restore_password'})">{{$ml.with('VueJS').get('forget')}}</a>
                     </v-col>
                 </v-form>
             </v-card>

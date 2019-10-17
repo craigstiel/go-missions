@@ -81,7 +81,7 @@ class DictsController extends Controller
         return response()->json(['tasks' => $this->correct_task(2, true)]);
     }
 
-    public function correct_task($status_id, $all_tasks)
+    protected function correct_task($status_id, $all_tasks)
     {
         $tasks = DB::table('tasks as t')
             ->where('t.status', '=', $status_id)

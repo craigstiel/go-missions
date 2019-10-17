@@ -13,6 +13,14 @@
         h5 {
             text-align: center;
             font-size: 2em;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-weight: bold;
+            color: #55107f;
+        }
+        h3 {
+            text-align: center;
+            font-size: 4em;
             margin-bottom: 10px;
             text-transform: uppercase;
             font-weight: bold;
@@ -34,7 +42,7 @@
             text-decoration: none;
             display: inline-block;
             font-size: 16px;
-            margin-left: 30%;
+            margin-left: 33%;
             cursor: pointer !important;
         }
     </style>
@@ -43,8 +51,9 @@
 
 <div class="body" >
 <div style="padding: 50px">
-    <h5>@lang('mail.hello')</h5>
+    <h3>{{ config('app.name') }}</h3>
     <div style="background: white; padding: 20px;">
+        <h5>@lang('mail.hello')</h5>
         <p><span>@lang('mail.thank', array('app' => config('app.name')))</span></p>
         <p><span>@lang('mail.please')</span></p>
         <form method="post" action="{{ url('/api/verify/email', $id)}}" style="cursor: pointer !important;">

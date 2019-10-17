@@ -11,6 +11,8 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 use Tymon\JWTAuth\Facades\JWTAuth;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Foundation\Auth\SendsPasswordResetEmails;
+use Illuminate\Foundation\Auth\ResetsPasswords;
 use App\User;
 
 class AuthController extends Controller
@@ -25,7 +27,7 @@ class AuthController extends Controller
             return response()->json(['errors' => $validator->errors()]);
         }
 
-        $verification_code = str_random(30);
+        $verification_code = \Str::random(32);
 
         $user = new User();
         $user->email = $request->email;
@@ -47,6 +49,12 @@ class AuthController extends Controller
                 ]);
         }
 
+        $this->sentVerifyMail($user);
+
+        return response()->json(compact('user'),201);
+    }
+
+    public function sentVerifyMail ($user) {
         $subject = Lang::get('mail.verify');
         $email = $user->email;
         $name = $user->name;
@@ -57,8 +65,6 @@ class AuthController extends Controller
                 $mail->to($email, $name);
                 $mail->subject($subject);
             });
-
-        return response()->json(compact('user'),201);
     }
 
     public function login(Request $request)
@@ -137,5 +143,70 @@ class AuthController extends Controller
             ]);
 
         return redirect()->guest('/#/login');
+    }
+
+    public function sendPasswordResetLink(Request $request)
+    {
+        $subject = Lang::get('mail.reset_password');
+        $token = \Str::random(32);
+        $user = User::where('email', $request->email)->first();
+        $user->remember_token = $token;
+        $user->save();
+
+        if($user) {
+            return $this->sendResetLinkEmail($user, $subject);
+        } else {
+            return response([
+                'status' => 'error',
+                'message' => 'There is no such account.'
+            ], 400);
+        }
+    }
+
+    protected function sendResetLinkEmail($user, $subject) {
+        if ($user->email_verified_at) {
+            $name = $user->name;
+            $email = $user->email;
+            $token = $user->remember_token;
+
+            Mail::send('email.restore', ['token' => $token],
+                function ($mail) use ($email, $name, $subject) {
+                    $mail->from('craigstiel@gmail.com', 'missioner');
+                    $mail->to($email, $name);
+                    $mail->subject($subject);
+                });
+
+            return response([
+                'status' => 'success'
+            ]);
+        } else {
+            return response([
+                'status' => 'error',
+                'message' => 'Account wasn\'t verified.'
+            ], 401);
+        }
+    }
+
+    public function resetPassword(Request $request) {
+        $validator = Validator::make($request->all(), [
+            'password' => 'required',
+            'token' => 'required',
+        ]);
+
+        if($request->token !== null) {
+            $user = User::where('remember_token', '=', $request->token)->first();
+            if($user !== null) {
+                $user->password = bcrypt($request->password);
+                $user->remember_token = null;
+                $user->save();
+                return response()->json(compact('user'),201);
+            } else return response([
+                'status' => 'error',
+                'message' => 'Try again.'
+            ], 400);
+        } else return response([
+                'status' => 'error',
+                'message' => 'Try again.'
+            ], 400);
     }
 }

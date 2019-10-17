@@ -19,6 +19,8 @@ Route::post('/auth/register', 'AuthController@register');
 Route::post('/auth/login', 'AuthController@login');
 Route::post('/set_locale', 'SettingsController@set_locale');
 Route::post('/verify/email/{id}', 'AuthController@verify');
+Route::post('/auth/restore', 'AuthController@sendPasswordResetLink');
+Route::put('/auth/reset', 'AuthController@resetPassword');
 
 Route::group(['middleware' => 'jwt.auth'], function(){
     Route::get('auth/user', 'AuthController@user');

@@ -18,5 +18,9 @@ return [
     'thank' => 'Thank you for creating an account on our website :app. Don\'t forget to complete your registration!',
     'please' => 'Please click on the button to confirm your email address:',
     'hello' => 'Hello!',
+    'whoops' => 'Whoops!',
+    'reset_password' => 'Password recovery',
+    'reset' => 'Reset password',
+    'start_new_pas' => 'Click the button below to get started created a new password.',
     'if_not' => 'If you don\'t see a button, click on the link below or copy it into the address bar of your browser to confirm your email address:',
 ];

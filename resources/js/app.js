@@ -49,6 +49,8 @@ import Settings from './components/Settings';
 import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Verify from './components/auth/Verify';
+import RestorePassword from './components/auth/RestorePassword';
+import ResetPassword from './components/auth/ResetPassword';
 
 axios.defaults.baseURL = 'http://go-missions/api';
 
@@ -111,6 +113,23 @@ const router = new VueRouter({
                     path: '/login',
                     name: 'login',
                     component: Login,
+                    meta: {
+                        auth: false
+                    }
+                },
+                {
+                    path: '/restore',
+                    name: 'restore_password',
+                    component: RestorePassword,
+                    meta: {
+                        auth: false
+                    }
+                },
+                {
+                    path: '/reset/:token',
+                    props: true,
+                    name: 'reset_password',
+                    component: ResetPassword,
                     meta: {
                         auth: false
                     }
