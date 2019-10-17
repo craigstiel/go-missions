@@ -25,22 +25,6 @@
                         </v-col>
                     </v-row>
                     <v-btn @click="change_password()">{{ $ml.with('VueJS').get('change') }}</v-btn>
-                    <v-dialog v-model="dialog_pas" hide-overlay persistent>
-                        <v-row>
-                            <v-col cols="1" md="3"></v-col>
-                            <v-col cols="10" md="6">
-                                <v-card>
-                                    <v-card-title class="headline">{{ $ml.with('VueJS').get('pass_success') }}.
-                                    </v-card-title>
-                                    <v-card-actions>
-                                        <div class="flex-grow-1"></div>
-                                        <v-btn color="green darken-1" text @click="dialog_pas = false">OK</v-btn>
-                                    </v-card-actions>
-                                </v-card>
-                            </v-col>
-                            <v-col cols="1" md="3"></v-col>
-                        </v-row>
-                    </v-dialog>
                 </v-form>
             </v-card>
         </v-col>
@@ -60,7 +44,6 @@
                 new_password: '',
                 confirm_new_password: '',
                 password: '',
-                dialog_pas: false,
                 show1: false,
                 show3: false,
                 passwordRules: {
@@ -93,7 +76,6 @@
                         };
                         axios.put('/auth/reset/', data)
                             .then(function () {
-                                _this.dialog_pas = true;
                                 _this.$router.push({name: 'login'});
                             })
                             .catch(function (error) {

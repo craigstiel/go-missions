@@ -14,7 +14,7 @@
                 </v-toolbar>
                 <v-tabs-items v-model="tab">
                     <v-tab-item>
-                        <ValidationObserver ref="obs">
+                        <v-form ref="obs" v-model="valid" lazy-validation style="padding: 20px;">
                             <v-card flat style="min-height: 50px">
                                 <div style="text-align: center" v-if="profile_progress">
                                     <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
@@ -22,26 +22,19 @@
                                 <v-card-text v-else>
                                     <v-row>
                                         <v-col cols="6" md="6" sm="6" key=1>
-                                            <ValidationProvider name="name" rules="required">
-                                                <v-text-field style="margin-left: 15px" v-model="profile.name" slot-scope="{errors, valid}" :error-messages="errors"
-                                                              :success="valid" :label="$ml.with('VueJS').get('name')"></v-text-field>
-                                            </ValidationProvider>
+                                            <v-text-field v-model="profile.name" :counter="255" :rules="nameRules"
+                                                          :label="$ml.with('VueJS').get('full_name')" required></v-text-field>
                                         </v-col>
                                         <v-col cols="6" md="6" sm="6" key=2>
-                                            <ValidationProvider name="email" rules="required|email">
-                                                <v-text-field v-if="profile.position === 'admin'" style="margin-left: 15px" label="E-mail" v-model="profile.email"
-                                                              slot-scope="{errors, valid}" :error-messages="errors" :success="valid"></v-text-field>
-                                                <v-text-field v-else style="margin-left: 15px" label="Email" v-model="profile.email" readonly></v-text-field>
-                                            </ValidationProvider>
+                                            <v-text-field v-if="profile.position === 'admin'" v-model="profile.email" :rules="emailRules" label="E-mail" required></v-text-field>
+                                            <v-text-field v-else v-model="profile.email" :rules="emailRules" label="E-mail" disabled></v-text-field>
                                         </v-col>
                                         <v-col v-if="profile.position" cols="6" md="6" sm="6" key=3 style="margin-top: -30px">
                                             <v-text-field style="margin-left: 15px" label="Telegram" v-model="profile.telegram"></v-text-field>
                                         </v-col>
                                         <v-col v-else cols="6" md="6" sm="6" key=4 style="margin-top: -30px">
-                                            <ValidationProvider name="phone" rules="required">
-                                                <v-text-field style="margin-left: 15px" :label="$ml.with('VueJS').get('phone')" type="tel"
-                                                              slot-scope="{errors, valid}" :error-messages="errors" :success="valid" v-model="profile.phone"></v-text-field>
-                                            </ValidationProvider>
+                                            <v-text-field v-model="profile.phone" :rules="phoneRules" :label="$ml.with('VueJS').get('phone')"
+                                                          required></v-text-field>
                                         </v-col>
                                         <v-col cols="6" md="6" sm="6" key=5></v-col>
                                         <v-col cols="12" md="6" sm="6" key=6 v-if="profile.position">
@@ -70,7 +63,7 @@
                                     <v-btn v-if="!profile_progress" @click="change_profile()">{{ $ml.with('VueJS').get('change') }}</v-btn>
                                 </v-card-text>
                             </v-card>
-                        </ValidationObserver>
+                        </v-form>
                         <v-dialog v-model="dialog" hide-overlay persistent>
                             <v-row>
                                 <v-col cols="1" md="3"></v-col>
@@ -94,40 +87,29 @@
                                 <v-progress-circular indeterminate color="purple" style="margin: 10px;"></v-progress-circular>
                             </div>
                             <v-card-text v-else>
-                                <ValidationObserver ref="pas">
+                                <v-form ref="form" v-model="valid" lazy-validation style="padding: 20px;">
                                     <v-row>
                                         <v-col cols="12" md="6" sm="6" key=9>
-                                            <ValidationProvider name="password" rules="'required|min:8|max:35|confirmed'">
-                                                <v-text-field v-model="new_password"
-                                                              :append-icon="show2 ? 'visibility' : 'visibility_off'"
-                                                              slot-scope="{errors, valid}" :error-messages="errors"
-                                                              :success="valid"
-                                                              :type="show2 ? 'text' : 'password'"
-                                                              :label="$ml.with('VueJS').get('new_pass')"
-                                                              hint="At least 8 characters" counter
-                                                              @click:append="show2 = !show1"></v-text-field>
-                                            </ValidationProvider>
+                                            <v-text-field v-model="new_password"
+                                                          :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                                                          :rules="[passwordRules.required, passwordRules.min]"
+                                                          :type="show1 ? 'text' : 'password'" name="input-10-1"
+                                                          :label="$ml.with('VueJS').get('new_pass')"
+                                                          hint="At least 8 characters" counter
+                                                          @click:append="show1 = !show1"></v-text-field>
                                         </v-col>
                                         <v-col cols="12" md="6" sm="6" key=10>
-                                            <ValidationProvider name="password_confirmation" rules="'required|confirmed:password'">
-                                                <v-text-field v-model="confirm_new_password"
-                                                              :append-icon="show3 ? 'visibility' : 'visibility_off'"
-                                                              slot-scope="{errors, valid}" :error-messages="errors"
-                                                              :success="valid"
-                                                              :type="show3 ? 'text' : 'password'" name="input-10-1"
-                                                              :label="$ml.with('VueJS').get('confirm_new_pass')"
-                                                              hint="At least 8 characters" counter
-                                                              @click:append="show3 = !show3"></v-text-field>
-                                            </ValidationProvider>
-                                            <span class="md-error">{{errors.first('password_confirmation')}}</span>
+                                            <v-text-field v-model="confirm_new_password"
+                                                          :append-icon="show3 ? 'visibility' : 'visibility_off'"
+                                                          :rules="[passwordRules.required, passwordRules.min]"
+                                                          :type="show3 ? 'text' : 'password'" name="input-10-1"
+                                                          :label="$ml.with('VueJS').get('confirm_new_pass')"
+                                                          hint="At least 8 characters" counter
+                                                          @click:append="show3 = !show3"></v-text-field>
                                         </v-col>
-                                        <div class="alert alert-danger" v-show="errors.any()">
-                                            <div v-if="errors.has('password')">{{ errors.first('password') }}</div>
-                                            <div v-if="errors.has('password_confirmation')">{{ errors.first('password_confirmation') }}</div>
-                                        </div>
                                     </v-row>
-                                    <v-btn v-if="!profile_progress" @click="change_password()">{{ $ml.with('VueJS').get('change') }}</v-btn>
-                                </ValidationObserver>
+                                    <v-btn @click="change_password()">{{ $ml.with('VueJS').get('change') }}</v-btn>
+                                </v-form>
                             </v-card-text>
                         </v-card>
                     </v-tab-item>
@@ -155,14 +137,7 @@
 </template>
 
 <script>
-    import {ValidationObserver, ValidationProvider} from "vee-validate";
-    import {MLBuilder} from 'vue-multilanguage';
-
     export default {
-        components: {
-            ValidationProvider,
-            ValidationObserver
-        },
         mounted: function () {
             let _this = this;
             axios.get('/dict/profile/get')
@@ -180,23 +155,40 @@
                     phone: '',
                     telegram: '',
                 },
-                show2: false,
+                show1: false,
                 show3: false,
+                valid: false,
                 profile_progress: true,
                 new_password: null,
                 confirm_new_password: null,
                 tab: null,
                 dialog: false,
                 dialog_pas: false,
+                nameRules: [
+                    v => !!v || 'Name is required',
+                    v => (v && v.length <= 255) || 'Name must be less than 255 characters',
+                ],
+                emailRules: [
+                    v => !!v || 'E-mail is required',
+                    v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+                ],
+                phoneRules: [
+                    v => !!v || 'Phone is required',
+                    v => /^[\+]?\d{2,}?[(]?\d{2,}[)]?[-\s\.]?\d{2,}?[-\s\.]?\d{2,}[-\s\.]?\d{0,9}$/im.test(v) || 'Phone must be valid',
+                ],
                 passwordRules: {
                     required: value => !!value || 'Password is required.',
-                    min: v => v.length >= 8 || 'Min 8 characters',
-                    emailMatch: () => ('The email and password you entered don\'t match'),
+                    min: v => v && v.length >= 8 || 'Min 8 characters',
                 },
             };
         },
         watch: {
             confirm_new_password: function () {
+                if (this.new_password === this.confirm_new_password) {
+                    this.profile.password = this.new_password;
+                }
+            },
+            new_password: function () {
                 if (this.new_password === this.confirm_new_password) {
                     this.profile.password = this.new_password;
                 }
@@ -217,10 +209,9 @@
             },
         },
         methods: {
-            change_profile: async function () {
+            change_profile: function () {
                 let _this = this;
-                const result = await this.$refs.obs.validate();
-                if (result) {
+                if (this.$refs.obs.validate()) {
                     this.profile_progress = true;
                     let data = {
                         name: _this.profile.name,
@@ -235,10 +226,9 @@
                         });
                 }
             },
-            change_password: async function () {
+            change_password: function () {
                 let _this = this;
-                const result = await this.$refs.pas.validate();
-                if (result) {
+                if (this.$refs.form.validate()) {
                     this.profile_progress = true;
                     if (this.profile.password === this.confirm_new_password) {
                         let data = {
@@ -249,6 +239,9 @@
                                 _this.dialog_pas = true;
                                 _this.profile_progress = false;
                             });
+                    } else {
+                        _this.$bus.$emit("alert", _this.$ml.with('VueJS').get('not_match'), "error");
+                        _this.profile_progress = false;
                     }
                 }
             }
