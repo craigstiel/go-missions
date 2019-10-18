@@ -230,7 +230,7 @@
                 let _this = this;
                 if (this.$refs.form.validate()) {
                     this.profile_progress = true;
-                    if (this.profile.password === this.confirm_new_password) {
+                    if (this.profile.password === this.confirm_new_password && this.profile.password === this.new_password) {
                         let data = {
                             password: _this.profile.password,
                         };

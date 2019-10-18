@@ -52,7 +52,7 @@ import Verify from './components/auth/Verify';
 import RestorePassword from './components/auth/RestorePassword';
 import ResetPassword from './components/auth/ResetPassword';
 
-axios.defaults.baseURL = 'http://go-missions/api';
+axios.defaults.baseURL = '/api';
 
 const router = new VueRouter({
     routes: [
@@ -60,6 +60,9 @@ const router = new VueRouter({
             path: '/',
             name: 'home',
             component: Home,
+            meta: {
+                title: 'GO-MISSIONS',
+            },
             children: [
                 {
                     path: '/tasks',
@@ -146,6 +149,10 @@ Vue.use(require('@websanova/vue-auth'), {
     router: require('@websanova/vue-auth/drivers/router/vue-router.2.x.js'),
 });
 App.router = Vue.router;
+Vue.directive('title', {
+    inserted: (el, binding) => document.title = binding.value,
+    update: (el, binding) => document.title = binding.value
+})
 
 /**
  * The following block of code may be used to automatically register your

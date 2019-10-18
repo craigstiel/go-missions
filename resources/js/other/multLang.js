@@ -55,6 +55,7 @@ export default new MLCreate({
             new_pass: 'New password',
             pass: 'Password',
             confirm_new_pass: 'Confirm new password',
+            confirm_pass: 'Confirm password',
             change_profile: 'Change profile',
             change_pass: 'Change password',
             not_match: 'Passwords do not match',
@@ -67,6 +68,9 @@ export default new MLCreate({
             sign_out: 'Sign out',
             profile: 'Profile',
             settings: 'Settings',
+            register: 'Register',
+            login: 'Login',
+            home: 'GO!MISSIONS',
             reg_rule: 'To enter your account you should verify email',
             del_type: 'Do you really want to delete this task type?',
             low: 'Low',
@@ -79,6 +83,7 @@ export default new MLCreate({
             forget: 'Forgot your password?',
             reset_email: 'Send password reset email',
             try_again: 'Go to the reset email page and try again.',
+            created: 'Account with this email does not exist.',
         }),
 
         new MLanguage('russian').create({
@@ -129,6 +134,7 @@ export default new MLCreate({
             new_pass: 'Новый пароль',
             pass: 'Пароль',
             confirm_new_pass: 'Подтвердите новый пароль',
+            confirm_pass: 'Подтвердите пароль',
             change_profile: 'Изменить профиль',
             change_pass: 'Изменить пароль',
             not_match: 'Пароли не совпадают!',
@@ -141,6 +147,9 @@ export default new MLCreate({
             sign_out: 'Выйти',
             profile: 'Профиль',
             settings: 'Настройки',
+            register: 'Регистрация',
+            login: 'Вход',
+            home: 'GO!MISSIONS',
             reg_rule: 'Для входа в аккаунт Вам необходимо верифицировать e-mail',
             del_type: 'Вы действительно хотите удалить этот тип?',
             low: 'Низкий',
@@ -153,6 +162,7 @@ export default new MLCreate({
             forget: 'Забыли Ваш пароль?',
             reset_email: 'Отправить письмо для восстановления пароля',
             try_again: 'Перейдите на страницу отправки письма и попробуйте еще раз.',
+            created: 'Аккаунта с этим e-mail адресом не существует.',
         })
     ]
 })

@@ -1,5 +1,5 @@
 <template>
-<v-select
+<v-select v-title="getTitle()"
         v-model="lang"
         :items="$ml.list"
         style="max-width: 50px; margin-right: 50px; margin-top: 20px;"
@@ -43,6 +43,12 @@
                 localStorage.setItem('current_language', this.lang);
                 let data = {lang: this.lang};
                 axios.post('/set_locale', data);
+            }
+        },
+        methods: {
+            getTitle: function () {
+                let name = this.$route.name;
+                return this.$ml.with('VueJS').get(name);
             }
         },
     }

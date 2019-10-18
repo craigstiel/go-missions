@@ -1,5 +1,5 @@
 <template>
-    <v-row>
+    <v-row style="margin-top: -20px">
         <v-col md="2"></v-col>
         <v-col cols="12" md="8">
             <v-card :height="height" class="mx-auto mycontent-left">
@@ -17,23 +17,30 @@
                     <v-col cols="12" md="12" style="margin-top: -20px">
                         <v-switch v-model="master" :label="$ml.with('VueJS').get('master')"></v-switch>
                     </v-col>
-                    <v-col cols="12" md="12" style="margin-top: -20px" v-if="!master">
+                    <v-col cols="12" md="12" style="margin-top: -30px" v-if="!master">
                         <v-text-field v-model="phone" :rules="phoneRules" :label="$ml.with('VueJS').get('phone')"
                                       required></v-text-field>
                     </v-col>
                     <v-col cols="12" md="12" style="margin-top: -20px">
-                        <v-text-field v-model="password" :append-icon="show1 ? 'visibility' : 'visibility_off'"
+                        <v-text-field v-model="new_password" :append-icon="show1 ? 'visibility' : 'visibility_off'"
                                       :rules="[passwordRules.required, passwordRules.min]"
                                       :type="show1 ? 'text' : 'password'" name="input-10-1"
                                       :label="$ml.with('VueJS').get('pass')"
                                       counter @click:append="show1 = !show1"></v-text-field>
                     </v-col>
-                    <v-col cols="12" md="12">
+                    <v-col cols="12" md="12" style="margin-top: -20px">
+                        <v-text-field v-model="confirm_new_password" :append-icon="show2 ? 'visibility' : 'visibility_off'"
+                                      :rules="[passwordRules.required, passwordRules.min]"
+                                      :type="show2 ? 'text' : 'password'" name="input-10-1"
+                                      :label="$ml.with('VueJS').get('confirm_pass')"
+                                      counter @click:append="show2 = !show2"></v-text-field>
+                    </v-col>
+                    <v-col style="margin-top: -15px" cols="12" md="12">
                         <v-btn :disabled="!valid" color="success" class="mr-4" @click="register">
                             {{$ml.with('VueJS').get('sign_up')}}
                         </v-btn>
                     </v-col>
-                    <v-card-text>{{$ml.with('VueJS').get('reg_rule')}}.</v-card-text>
+                    <v-card-text style="margin-top: -10px">{{$ml.with('VueJS').get('reg_rule')}}.</v-card-text>
                 </v-form>
             </v-card>
         </v-col>
@@ -48,14 +55,16 @@
                 name: '',
                 email: '',
                 password: '',
+                confirm_new_password: '',
+                new_password: '',
                 phone: '',
                 telegram: '',
                 valid: true,
                 master: false,
                 show1: false,
-                show2: true,
+                show2: false,
                 lang: '',
-                height: 570,
+                height: 630,
                 nameRules: [
                     v => !!v || 'Name is required',
                     v => (v && v.length <= 255) || 'Name must be less than 255 characters',
@@ -78,26 +87,40 @@
         watch: {
             master() {
                 if (this.master === false)
-                    this.height = 570;
+                    this.height = 630;
                 else
-                    this.height = 500;
+                    this.height = 580;
+            },
+            confirm_new_password: function () {
+                if (this.new_password === this.confirm_new_password) {
+                    this.password = this.new_password;
+                }
+            },
+            new_password: function () {
+                if (this.new_password === this.confirm_new_password) {
+                    this.password = this.new_password;
+                }
             },
         },
         methods: {
             register() {
                 var app = this;
                 if (this.$refs.form.validate()) {
-                    this.$auth.register({
-                        data: {
-                            name: app.name,
-                            email: app.email,
-                            password: app.password,
-                            phone: app.phone,
-                            telegram: app.telegram,
-                            is_master: app.master
-                        },
-                        redirect: '/verify'
-                    });
+                    if (app.password === app.confirm_new_password && app.password === app.new_password) {
+                        this.$auth.register({
+                            data: {
+                                name: app.name,
+                                email: app.email,
+                                password: app.password,
+                                phone: app.phone,
+                                telegram: app.telegram,
+                                is_master: app.master
+                            },
+                            redirect: '/verify'
+                        });
+                    } else {
+                        app.$bus.$emit("alert", app.$ml.with('VueJS').get('not_match'), "error");
+                    }
                 }
             }
         }

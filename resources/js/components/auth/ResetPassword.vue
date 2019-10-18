@@ -69,7 +69,7 @@
             change_password: function () {
                 var _this = this;
                 if (this.$refs.form.validate()) {
-                    if (_this.password === _this.confirm_new_password) {
+                    if (_this.password === _this.confirm_new_password && _this.password === _this.new_password) {
                         let data = {
                             password: _this.password,
                             token: _this.token,

@@ -72,24 +72,31 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
 
         $user = DB::table('users')->where('email', $credentials['email'])->first();
-        if($user->email_verified_at !== null) {
-            if ( ! $token = JWTAuth::attempt($credentials)) {
+        if ($user !== null) {
+            if($user->email_verified_at !== null) {
+                if ( ! $token = JWTAuth::attempt($credentials)) {
+                    return response([
+                        'status' => 'error',
+                        'error' => 'invalid.credentials',
+                        'msg' => 'Invalid Credentials.'
+                    ], 400);
+                }
                 return response([
-                    'status' => 'error',
-                    'error' => 'invalid.credentials',
-                    'msg' => 'Invalid Credentials.'
+                    'status' => 'success'
+                ])
+                    ->header('Authorization', $token);
+            }
+            else {
+                return response([
+                    'status'=> 'error',
+                    'message'=> 'Account wasn\'t verified.'
                 ], 400);
             }
-            return response([
-                'status' => 'success'
-            ])
-                ->header('Authorization', $token);
-        }
-        else {
+        } else {
             return response([
                 'status'=> 'error',
-                'message'=> 'Account wasn\'t verified.'
-            ], 400);
+                'message'=> 'Account wasn\'t created.'
+            ], 500);
         }
     }
 

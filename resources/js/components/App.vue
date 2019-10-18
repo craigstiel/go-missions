@@ -7,11 +7,14 @@
 
 <script>
     export default {
-        created: function(){
+        created: function () {},
+        props: {},
+        data:() => ({}),
+        computed:{
+            title: function () {
+                let name = this.$route.name;
+                return this.$ml.with('VueJS').get(name);
+            }
         },
-        props: {
-        },
-        data: () => ({
-        }),
     }
 </script>

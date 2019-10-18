@@ -89,15 +89,13 @@
         },
         mounted: function () {
             let _this = this;
-            this.$bus.$on("GetCount", () => {
-                _this.GetCount();
-            });
-            this.$bus.$on("GetAdmin", () => {
-                _this.GetAdmin();
-            });
             if(this.$auth.check()) {
-                _this.GetCount();
-                _this.GetAdmin();
+                this.$bus.$on("GetCount", () => {
+                    _this.GetCount();
+                });
+                this.$bus.$on("GetAdmin", () => {
+                    _this.GetAdmin();
+                });
             }
         },
         data: () => ({

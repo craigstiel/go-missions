@@ -59,8 +59,13 @@
                         },
                         success: function () {
                         },
-                        error: function () {
-                            this.$bus.$emit("alert", app.$ml.with('VueJS').get('verify'), "error");
+                        error: function (error) {
+                            if (error.response.status === 400) {
+                                this.$bus.$emit("alert", app.$ml.with('VueJS').get('verify'), "error");
+                            }
+                            if (error.response.status === 500) {
+                                this.$bus.$emit("alert", app.$ml.with('VueJS').get('created'), "error");
+                            }
                         },
                         rememberMe: true,
                         redirect: '/',
