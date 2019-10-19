@@ -2,6 +2,7 @@
     <v-col cols="12">
         <v-app-bar app clipped-left color="purple darken-3">
             <v-app-bar-nav-icon @click="drawer = !drawer"></v-app-bar-nav-icon>
+            <v-img src="./images/logo.png" max-width="50" max-height="50"></v-img>
             <span class="overline" style="font-size: 18px !important; font-family: 'Archivo Black', sans-serif;">GO!Missions</span>
             <div class="flex-grow-1"></div>
             <LocaleSwitcher></LocaleSwitcher>

@@ -57,14 +57,14 @@
                             email: app.email,
                             password: app.password
                         },
-                        success: function () {
+                        success: function (response) {
                         },
                         error: function (error) {
                             if (error.response.status === 400) {
-                                this.$bus.$emit("alert", app.$ml.with('VueJS').get('verify'), "error");
+                                app.$bus.$emit("alert", app.$ml.with('VueJS').get('verify'), "error");
                             }
                             if (error.response.status === 500) {
-                                this.$bus.$emit("alert", app.$ml.with('VueJS').get('created'), "error");
+                                app.$bus.$emit("alert", app.$ml.with('VueJS').get('created'), "error");
                             }
                         },
                         rememberMe: true,

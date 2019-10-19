@@ -54,6 +54,11 @@ import ResetPassword from './components/auth/ResetPassword';
 
 axios.defaults.baseURL = '/api';
 
+const token = localStorage.getItem("default_auth_token");
+if (token) {
+    axios.defaults.headers.common["Authorization"] = 'Bearer ' + token;
+}
+
 const router = new VueRouter({
     routes: [
         {
@@ -152,7 +157,7 @@ App.router = Vue.router;
 Vue.directive('title', {
     inserted: (el, binding) => document.title = binding.value,
     update: (el, binding) => document.title = binding.value
-})
+});
 
 /**
  * The following block of code may be used to automatically register your

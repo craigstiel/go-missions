@@ -59,7 +59,7 @@ class AuthController extends Controller
         $email = $user->email;
         $name = $user->name;
 
-        Mail::send('email.verify', ['id' => $user->id],
+        Mail::send('email.verify', ['token' => $user->api_token],
             function($mail) use ($email, $name, $subject){
                 $mail->from('craigstiel@gmail.com', 'missioner');
                 $mail->to($email, $name);
@@ -130,9 +130,9 @@ class AuthController extends Controller
         ]);
     }
 
-    public function verify($id) {
+    public function verify($token) {
         $user = DB::table('users')
-            ->where('id', $id)
+            ->where('api_token', $token)
             ->first();
 
         if($user->email_verified_at !== null){
@@ -143,7 +143,7 @@ class AuthController extends Controller
         }
 
         DB::table('users')
-            ->where('id', $id)
+            ->where('api_token', $token)
             ->update([
                 'api_token' => null,
                 'email_verified_at' =>DB::raw('current_timestamp')
