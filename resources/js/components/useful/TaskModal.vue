@@ -10,10 +10,31 @@
                         <v-btn v-if="task.status === 0" small color="success" dark @click="to_work()">{{$ml.with('VueJS').get('to_work')}}</v-btn>
                         <v-btn v-if="task.status === 1" small color="success" dark @click="done()">{{$ml.with('VueJS').get('to_done')}}</v-btn>
                     </div></v-col>
-                <v-col cols="6" md="2" sm="2" class="mg-task-20 xs-task-30 sm-task-30">
-                    <div class="my-2 mt-5" v-if="task.user_position === 'admin'"><v-btn @click="delete_task()" small color="error" dark>
-                        {{ $ml.with('VueJS').get('delete') }}</v-btn></div>
-                    <div class="my-2 mt-5" v-else></div></v-col>
+                <v-col cols="6" md="2" sm="2">
+                    <v-dialog v-if="task.user_position === 'admin'" v-model="delete_dialog" persistent max-width="400px">
+                        <template v-slot:activator="{ on }">
+                                <v-btn class="delete-button mg-task-plus-10" v-on="on" color="error" small dark>{{$ml.with('VueJS').get('delete')}}
+                                </v-btn>
+                        </template>
+                        <v-form ref="delete">
+                            <v-card>
+                                <v-card-title>
+                                    <span class="headline" style="color: #BD1818;">{{$ml.with('VueJS').get('delete_task')}}</span>
+                                </v-card-title>
+                                <v-card-text>{{$ml.with('VueJS').get('del_task')}}</v-card-text>
+                                <v-card-actions>
+                                    <div class="flex-grow-1"></div>
+                                    <v-btn color="blue darken-1" text @click="delete_dialog = false">
+                                        {{$ml.with('VueJS').get('close')}}
+                                    </v-btn>
+                                    <v-btn color="blue darken-1" text @click="delete_task()">
+                                        {{$ml.with('VueJS').get('delete')}}
+                                    </v-btn>
+                                </v-card-actions>
+                            </v-card>
+                        </v-form>
+                    </v-dialog>
+                    <div class="mg-task-20 xs-task-30 sm-task-30 my-2 mt-5" v-else></div></v-col>
                 <v-col cols="12" md="10" sm="10" class="mg-task-30 sm-task-30"><v-card-text>{{task.description}}</v-card-text></v-col>
                 <v-col cols="0" md="2" sm="2" class="mg-task-30 sm-task-30"></v-col>
                 <v-col cols="12" md="12" sm="12" class="mg-task-30 sm-task-30 xs-task-30" style="padding-bottom: 30px" v-if="task.images[0]">
@@ -42,7 +63,7 @@
                             <v-select :items="dicts.masters" item-text="name" item-value="id" dense solo :label="task.master" v-model="master"></v-select>
                         </v-col>
                         <v-col cols="12" md="12" sm="12">
-                            <v-btn @click="change_master()" :loading="loading" class="mg-task-30 sm-task-30 xs-task-50" small color="error" dark>{{$ml.with('VueJS').get('change')}}</v-btn>
+                            <v-btn @click="change_master()" :loading="loading" class="mg-task-30 sm-task-30 xs-task-50" small color="error" dark>{{$ml.with('VueJS').get('change_master')}}</v-btn>
                         </v-col>
                     </v-row>
                 </v-col>
@@ -110,6 +131,7 @@
             loader: null,
             loading: false,
             multiple: null,
+            delete_dialog: false,
         }),
         watch: {
             value: function () {
@@ -198,6 +220,9 @@
         }
         .mg-task-50 {
             margin-top: -50px;
+        }
+        .mg-task-plus-10 {
+            margin-top: 10px !important;
         }
         .md-null-pad {
             padding-right: 0 !important;

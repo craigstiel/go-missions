@@ -124,8 +124,7 @@ class AuthController extends Controller
     public function logout()
     {
         auth()->logout();
-
-        return response()->json(['message' => 'Successfully logged out']);
+        return redirect()->guest('/#/login');
     }
 
     protected function respondWithToken($token)

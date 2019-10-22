@@ -176,7 +176,7 @@
                                                             <v-form ref="delete">
                                                                 <v-card>
                                                                     <v-card-title>
-                                                                        <span class="headline" style="color: #BD1818;">Delete type</span>
+                                                                        <span class="headline" style="color: #BD1818;">{{$ml.with('VueJS').get('delete_type')}}</span>
                                                                     </v-card-title>
                                                                     <v-card-text>{{$ml.with('VueJS').get('del_type')}}</v-card-text>
                                                                     <v-card-actions>

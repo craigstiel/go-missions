@@ -32,6 +32,7 @@ class TaskController extends Controller
 
         $master = DB::table('user_position')->where('position', '=', 'admin')->first();
         $type = DB::table('task_types')->first();
+        $timezone = Carbon::now()->timezone(config('app.timezone'));
 
         if(isset($type))
             $type = $type->id;
@@ -40,7 +41,7 @@ class TaskController extends Controller
             $new_type->system_name = 'unknown';
             $new_type->name = 'unknown_type';
             $new_type->color = '#00BCFF';
-            $new_type->created_at = Carbon::now();
+            $new_type->created_at = $timezone;
             $new_type->save();
             $type = $new_type->id;
         }
@@ -54,7 +55,7 @@ class TaskController extends Controller
             $task->priority = $request->priority ? $request->priority : 'medium';
             $task->created_by = JWTAuth::user()->id;
             $task->master = $request->master ? $request->master : $master->user_id;
-            $task->created_at = Carbon::now();
+            $task->created_at = $timezone;
             $task->save();
         }
 
