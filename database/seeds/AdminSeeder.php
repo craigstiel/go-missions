@@ -12,7 +12,7 @@ class AdminSeeder extends Seeder
     public function run()
     {
         $user = DB::table('users')->insertGetId([
-            'name' => Str::random(10),
+            'name' => 'admin',
             'email' => 'admin@gmail.com',
             'password' => bcrypt('adminadmin'),
             'is_master' => true,

@@ -116,6 +116,11 @@
                                 telegram: app.telegram,
                                 is_master: app.master
                             },
+                            error: function (error) {
+                                if (error.response.status === 500) {
+                                    app.$bus.$emit("alert", app.$ml.with('VueJS').get('already_used'), "error");
+                                }
+                            },
                             redirect: '/verify'
                         });
                     } else {

@@ -1,7 +1,7 @@
 <template>
     <v-snackbar v-model="active" :timeout="timeout" top center :color="params.color">
         {{ params.title }} {{text }}
-        <v-btn color="white" @click="active = false"><span style="color: black">×</span></v-btn>
+        <v-btn :color="params.color" @click="active = false"><span style="color: white">×</span></v-btn>
     </v-snackbar>
 </template>
 <script>

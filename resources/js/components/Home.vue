@@ -90,14 +90,14 @@
         },
         mounted: function () {
             let _this = this;
-            if(this.$auth.check()) {
-                this.$bus.$on("GetCount", () => {
-                    _this.GetCount();
-                });
-                this.$bus.$on("GetAdmin", () => {
-                    _this.GetAdmin();
-                });
-            }
+            this.$bus.$on("GetCount", () => {
+                _this.GetCount();
+            });
+            this.$bus.$on("GetAdmin", () => {
+                _this.GetAdmin();
+            });
+            _this.GetCount();
+            _this.GetAdmin();
         },
         data: () => ({
             drawer: null,
@@ -107,17 +107,21 @@
         methods:{
             GetCount: function () {
                 let _this = this;
-                axios.get('/task/count/get')
-                    .then(function (response) {
-                        _this.tasks_count = response.data.tasks_count;
-                    });
+                if(this.$auth.check()) {
+                    axios.get('/task/count/get')
+                        .then(function (response) {
+                            _this.tasks_count = response.data.tasks_count;
+                        });
+                }
             },
             GetAdmin: function () {
                 let _this = this;
-                axios.get('/profile/is_admin')
-                    .then(function (response) {
-                        _this.user_status = response.data.user_status;
-                    });
+                if(this.$auth.check()) {
+                    axios.get('/profile/is_admin')
+                        .then(function (response) {
+                            _this.user_status = response.data.user_status;
+                        });
+                }
             }
         }
     }

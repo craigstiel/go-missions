@@ -70,6 +70,7 @@ export default new MLCreate({
             settings: 'Settings',
             register: 'Register',
             login: 'Login',
+            tasks: 'Tasks',
             home: 'GO!MISSIONS',
             restore_password: 'Restore password',
             reset_password: 'Reset password',
@@ -86,6 +87,8 @@ export default new MLCreate({
             reset_email: 'Send password reset email',
             try_again: 'Go to the reset email page and try again.',
             created: 'Account with this email does not exist.',
+            incorrect: 'You entered the wrong password.',
+            already_used: 'This email has been using already.',
         }),
 
         new MLanguage('russian').create({
@@ -133,6 +136,7 @@ export default new MLCreate({
             active: 'Активный',
             yes: 'Да',
             no: 'Нет',
+            tasks: 'Задания',
             new_pass: 'Новый пароль',
             pass: 'Пароль',
             confirm_new_pass: 'Подтвердите новый пароль',
@@ -167,6 +171,8 @@ export default new MLCreate({
             reset_email: 'Отправить письмо для восстановления пароля',
             try_again: 'Перейдите на страницу отправки письма и попробуйте еще раз.',
             created: 'Аккаунта с этим e-mail адресом не существует.',
+            incorrect: 'Вы ввели неправильный пароль.',
+            already_used: 'Этот email уже используется.',
         })
     ]
 })

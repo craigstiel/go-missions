@@ -58,6 +58,8 @@
                             password: app.password
                         },
                         success: function (response) {
+                            app.$bus.$emit("GetCount");
+                            app.$bus.$emit("GetAdmin");
                         },
                         error: function (error) {
                             if (error.response.status === 400) {
@@ -66,13 +68,15 @@
                             if (error.response.status === 500) {
                                 app.$bus.$emit("alert", app.$ml.with('VueJS').get('created'), "error");
                             }
+                            if (error.response.status === 401) {
+                                app.$bus.$emit("alert", app.$ml.with('VueJS').get('incorrect'), "error");
+                            }
                         },
                         rememberMe: true,
                         redirect: '/',
                         fetchUser: true,
                     });
-                    app.$bus.$emit("GetCount");
-                    app.$bus.$emit("GetAdmin");
+
                 }
             },
         }
