@@ -100,7 +100,7 @@ class DictsController extends Controller
             $tasks = $tasks->where('c.id', Auth::user()->id);
         }
         elseif($user->position === 'master') {
-            if($multiple->multiple === true) {
+            if($multiple->multiple === 1) {
                 $tasks = $tasks->where(function ($query) {
                     $query->where('m.id', Auth::user()->id)
                         ->orWhere('c.id', Auth::user()->id);

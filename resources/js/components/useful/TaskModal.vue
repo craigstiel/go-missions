@@ -63,13 +63,14 @@
                             <v-select :items="dicts.masters" item-text="name" item-value="id" dense solo :label="task.master" v-model="master"></v-select>
                         </v-col>
                         <v-col cols="12" md="12" sm="12">
-                            <v-btn @click="change_master()" :loading="loading" class="mg-task-30 sm-task-30 xs-task-50" small color="error" dark>{{$ml.with('VueJS').get('change_master')}}</v-btn>
+                            <v-btn @click="change_master()" :loading="loading" class="mg-task-30 sm-task-30 xs-task-50"
+                                   small color="error" style="margin-left: 10%" dark>{{$ml.with('VueJS').get('change_master')}}</v-btn>
                         </v-col>
                     </v-row>
                 </v-col>
                 <v-col cols="5" md="2" sm="2" class="mg-task-120 sm-task-120 xs-task-50"><v-card-text>{{$ml.with('VueJS').get('date')}}:</v-card-text></v-col>
                 <v-col cols="7" md="3" sm="5" class="mg-task-120 sm-task-120 xs-task-50"><v-card-text>{{task.created_at}}</v-card-text></v-col>
-                <v-col cols="0" md="7" sm="5" class="mg-task-120 sm-task-120"></v-col>
+                <v-col cols="0" md="5" sm="5" class="mg-task-120 sm-task-120"></v-col>
                 <v-col cols="0" md="2" sm="2" class="mg-task-50 sm-task-50" style="margin-left: 15px">{{$ml.with('VueJS').get('client')}}:</v-col>
                 <v-col cols="12" md="5" sm="5" class="mg-task-50 sm-task-50 xs-task-80">
                     <v-card>

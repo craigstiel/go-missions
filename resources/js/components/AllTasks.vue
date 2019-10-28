@@ -8,7 +8,7 @@
                            @click="all_tasks = false" dark>{{ $ml.with('VueJS').get('only_my') }}</v-btn>
                     <v-btn small color="error" v-else style="align-self: normal" outlined @click="all_tasks = false" dark>{{ $ml.with('VueJS').get('only_my') }}</v-btn></div>
             </v-col>
-            <v-col cols="12" md="1" key=3 style="margin-top: -55px;" class="all-btn">
+            <v-col cols="12" md="2" key=3 style="margin-top: -55px;" class="all-btn">
                 <div class="my-2 mt-5">
                     <v-btn small color="error" v-if="all_tasks === true" style="align-self: normal;" @click="all_tasks = true" dark>{{ $ml.with('VueJS').get('all') }}</v-btn>
                     <v-btn small color="error" v-else style="align-self: normal;" outlined @click="all_tasks = true" dark>{{ $ml.with('VueJS').get('all') }}</v-btn>
