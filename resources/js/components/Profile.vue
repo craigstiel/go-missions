@@ -30,7 +30,7 @@
                                             <v-text-field v-else v-model="profile.email" :rules="emailRules" label="E-mail" disabled></v-text-field>
                                         </v-col>
                                         <v-col v-if="profile.position" cols="6" md="6" sm="6" key=3 style="margin-top: -30px">
-                                            <v-text-field style="margin-left: 15px" label="Telegram" v-model="profile.telegram"></v-text-field>
+                                            <v-text-field label="Telegram" v-model="profile.telegram"></v-text-field>
                                         </v-col>
                                         <v-col v-else cols="6" md="6" sm="6" key=4 style="margin-top: -30px">
                                             <v-text-field v-model="profile.phone" :rules="phoneRules" :label="$ml.with('VueJS').get('phone')"
