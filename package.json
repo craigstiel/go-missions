@@ -32,7 +32,7 @@
     "dependencies": {
         "@websanova/vue-auth": "^2.21.14-beta",
         "i18next": "^17.1.0",
-        "jsonwebtoken": "^8.5.1",
+        "jsonwebtoken": "^9.0.0",
         "svg-country-flags": "^1.2.6",
         "vee-validate": "^2.2.0",
         "vue-multilanguage": "^4.0.9",
